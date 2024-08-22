@@ -1,0 +1,240 @@
+{
+  "name": "@soda/base",
+  "displayName": "基础组件",
+  "version": "1.0.0",
+  "components": [
+    {
+      "description": "表示一个按钮",
+      "label": "按钮",
+      "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iNiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE0IiByeD0iNCIgc3Ryb2tlPSIjMDQ3QUZGIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik05LjA2NTMzIDE2LjAzMzNDOS42Mzc3OSAxNi4wMzMzIDEwLjExNTQgMTUuODczOCAxMC40OTgxIDE1LjU1NDhDMTAuODg0MiAxNS4yNDk3IDExLjA4MDYgMTQuODM1IDExLjA4NzIgMTQuMzEwN0MxMS4wODcyIDEzLjk5NDUgMTAuOTkyNCAxMy43MDE4IDEwLjgwMjcgMTMuNDMyN0MxMC41OTk3IDEzLjE3MiAxMC4zMDAxIDEyLjk5ODYgOS45MDQwNSAxMi45MTI2VjEyLjg5NkMxMC4xMTM3IDEyLjgxMjggMTAuMjkwMSAxMi43MTk4IDEwLjQzMzIgMTIuNjE3MkMxMC41NzY0IDEyLjUyMDEgMTAuNjg2MiAxMi40MTc1IDEwLjc2MjcgMTIuMzA5M0MxMC45MTI1IDEyLjA4MTggMTAuOTg0MSAxMS44NDMzIDEwLjk3NzQgMTEuNTkzNkMxMC45Nzc0IDExLjEwNTQgMTAuNzk2IDEwLjcxMjkgMTAuNDMzMiAxMC40MTYxQzEwLjA3MzggMTAuMTIyIDkuNTM2MjggOS45NzIyMiA4LjgyMDcgOS45NjY2N0g2VjE2LjAzMzNIOS4wNjUzM1pNOC42OTU4NCAxMi41MjE1SDcuMTAzMjdWMTAuNzg2NEg4LjY5NTg0QzkuMDk4NTYgMTAuNzkxOSA5LjM5NDc4IDEwLjg3MzggOS41ODQ0OSAxMS4wMzE5QzkuNzc3NTMgMTEuMjAxMSA5Ljg3NDA1IDExLjQwNzggOS44NzQwNSAxMS42NTE5QzkuODc0MDUgMTEuODk2IDkuNzc3NTMgMTIuMDk4NSA5LjU4NDQ5IDEyLjI1OTRDOS4zOTQ3OCAxMi40MzQxIDkuMDk4NTYgMTIuNTIxNSA4LjY5NTg0IDEyLjUyMTVaTTcuMTAzMjcgMTUuMTYzN0g4LjgwMDY4QzkuMjEwMDYgMTUuMTU4MSA5LjUwOTYgMTUuMDY1MiA5LjY5OTMyIDE0Ljg4NDlDOS44ODkwMyAxNC43MDc0IDkuOTgzODggMTQuNDk2NSA5Ljk4Mzg4IDE0LjI1MjRDOS45ODM4OCAxNC4wMDI4IDkuODg5MDMgMTMuNzg5MiA5LjY5OTMyIDEzLjYxMTZDOS41MDk2IDEzLjQzNjkgOS4yMTAwNiAxMy4zNDY3IDguODAwNjggMTMuMzQxMkg3LjEwMzI3VjE1LjE2MzdaTTE0LjM3MjcgMTYuMDMzNFYxNS4yMTM3SDEzLjk4MzNDMTMuNzMwNCAxNS4yMTkyIDEzLjYwNzIgMTUuMTEyNCAxMy42MTM5IDE0Ljg5MzNWMTIuMzc1OUgxNC4zNzI3VjExLjcxNDNIMTMuNjEzOVYxMC4zOTk0SDEyLjU3MDVWMTEuNzE0M0gxMi4wNTEzVjEyLjM3NTlIMTIuNTcwNVYxNC45NjgyQzEyLjU3MDUgMTUuMzA5NCAxMi42OTAzIDE1LjU3MDEgMTIuOTI5OSAxNS43NTA0QzEzLjE2MjkgMTUuOTM5MSAxMy40NjI1IDE2LjAzMzQgMTMuODI4NiAxNi4wMzM0SDE0LjM3MjdaTTE2Ljg5OTcgMTMuNDYxOVYxNi4wMzMzSDE1Ljg1NjNWMTEuNzE0M0gxNi44OTk3VjEyLjE3MkgxNi45MTk3QzE3LjI2MjUgMTEuODMwOCAxNy43MTE4IDExLjY2MDIgMTguMjY3NiAxMS42NjAyQzE4LjY5NyAxMS42NjAyIDE5LjA4OTcgMTEuNzg2NCAxOS40NDU5IDEyLjAzODhDMTkuNzk4NiAxMi4yOTQgMTkuOTgzNCAxMi42Njg1IDIwIDEzLjE2MjNWMTYuMDMzM0gxOC45NTY2VjEzLjQ2MTlDMTguOTU2NiAxMy4xNTk1IDE4Ljg2MDEgMTIuOTI5MyAxOC42NjcgMTIuNzcxMkMxOC40NzczIDEyLjYxMDMgMTguMjMyNyAxMi41Mjk4IDE3LjkzMzIgMTIuNTI5OEMxNy42MzM2IDEyLjUyOTggMTcuMzg3MyAxMi42MTAzIDE3LjE5NDMgMTIuNzcxMkMxNi45OTc5IDEyLjkyOTMgMTYuODk5NyAxMy4xNTk1IDE2Ljg5OTcgMTMuNDYxOVoiIGZpbGw9IiNGRkE4MDAiLz4KPC9zdmc+Cg==",
+      "order": "12",
+      "componentName": "Button",
+      "propsMeta": [
+        {
+          "formDescriptor": [
+            {
+              "type": "string"
+            }
+          ],
+          "name": "str1",
+          "label": "字符串1",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "string"
+            }
+          ],
+          "name": "str2",
+          "label": "字符串2",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "number"
+            }
+          ],
+          "name": "num",
+          "label": "数字",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "object",
+              "children": []
+            }
+          ],
+          "name": "obj",
+          "label": "对象",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "password",
+          "label": "密码框",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "name": "bool",
+          "label": "布尔",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "multiLine",
+          "label": "文本框",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "color",
+          "label": "颜色",
+          "tab": "样式"
+        },
+        {
+          "formDescriptor": [],
+          "name": "url",
+          "label": "文件",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "select",
+          "label": "下拉框",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "radio",
+          "label": "枚举",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "tuple",
+              "children": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          ],
+          "name": "tuple",
+          "label": "元组",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "tuple",
+              "children": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          ],
+          "name": "tupleWithLabel",
+          "label": "标签元组",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "array",
+              "children": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ],
+          "name": "arr",
+          "label": "数组",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "string"
+            }
+          ],
+          "name": "editor",
+          "label": "editor",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "object",
+              "children": []
+            }
+          ],
+          "name": "onClick",
+          "label": "单击"
+        },
+        {
+          "formDescriptor": [],
+          "name": "setText",
+          "label": "设置按钮内容"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "object",
+              "children": []
+            }
+          ],
+          "name": "getText",
+          "label": "获取按钮内容"
+        }
+      ]
+    },
+    {
+      "description": "表示一个按钮",
+      "label": "按钮",
+      "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iNiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE0IiByeD0iNCIgc3Ryb2tlPSIjMDQ3QUZGIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik05LjA2NTMzIDE2LjAzMzNDOS42Mzc3OSAxNi4wMzMzIDEwLjExNTQgMTUuODczOCAxMC40OTgxIDE1LjU1NDhDMTAuODg0MiAxNS4yNDk3IDExLjA4MDYgMTQuODM1IDExLjA4NzIgMTQuMzEwN0MxMS4wODcyIDEzLjk5NDUgMTAuOTkyNCAxMy43MDE4IDEwLjgwMjcgMTMuNDMyN0MxMC41OTk3IDEzLjE3MiAxMC4zMDAxIDEyLjk5ODYgOS45MDQwNSAxMi45MTI2VjEyLjg5NkMxMC4xMTM3IDEyLjgxMjggMTAuMjkwMSAxMi43MTk4IDEwLjQzMzIgMTIuNjE3MkMxMC41NzY0IDEyLjUyMDEgMTAuNjg2MiAxMi40MTc1IDEwLjc2MjcgMTIuMzA5M0MxMC45MTI1IDEyLjA4MTggMTAuOTg0MSAxMS44NDMzIDEwLjk3NzQgMTEuNTkzNkMxMC45Nzc0IDExLjEwNTQgMTAuNzk2IDEwLjcxMjkgMTAuNDMzMiAxMC40MTYxQzEwLjA3MzggMTAuMTIyIDkuNTM2MjggOS45NzIyMiA4LjgyMDcgOS45NjY2N0g2VjE2LjAzMzNIOS4wNjUzM1pNOC42OTU4NCAxMi41MjE1SDcuMTAzMjdWMTAuNzg2NEg4LjY5NTg0QzkuMDk4NTYgMTAuNzkxOSA5LjM5NDc4IDEwLjg3MzggOS41ODQ0OSAxMS4wMzE5QzkuNzc3NTMgMTEuMjAxMSA5Ljg3NDA1IDExLjQwNzggOS44NzQwNSAxMS42NTE5QzkuODc0MDUgMTEuODk2IDkuNzc3NTMgMTIuMDk4NSA5LjU4NDQ5IDEyLjI1OTRDOS4zOTQ3OCAxMi40MzQxIDkuMDk4NTYgMTIuNTIxNSA4LjY5NTg0IDEyLjUyMTVaTTcuMTAzMjcgMTUuMTYzN0g4LjgwMDY4QzkuMjEwMDYgMTUuMTU4MSA5LjUwOTYgMTUuMDY1MiA5LjY5OTMyIDE0Ljg4NDlDOS44ODkwMyAxNC43MDc0IDkuOTgzODggMTQuNDk2NSA5Ljk4Mzg4IDE0LjI1MjRDOS45ODM4OCAxNC4wMDI4IDkuODg5MDMgMTMuNzg5MiA5LjY5OTMyIDEzLjYxMTZDOS41MDk2IDEzLjQzNjkgOS4yMTAwNiAxMy4zNDY3IDguODAwNjggMTMuMzQxMkg3LjEwMzI3VjE1LjE2MzdaTTE0LjM3MjcgMTYuMDMzNFYxNS4yMTM3SDEzLjk4MzNDMTMuNzMwNCAxNS4yMTkyIDEzLjYwNzIgMTUuMTEyNCAxMy42MTM5IDE0Ljg5MzNWMTIuMzc1OUgxNC4zNzI3VjExLjcxNDNIMTMuNjEzOVYxMC4zOTk0SDEyLjU3MDVWMTEuNzE0M0gxMi4wNTEzVjEyLjM3NTlIMTIuNTcwNVYxNC45NjgyQzEyLjU3MDUgMTUuMzA5NCAxMi42OTAzIDE1LjU3MDEgMTIuOTI5OSAxNS43NTA0QzEzLjE2MjkgMTUuOTM5MSAxMy40NjI1IDE2LjAzMzQgMTMuODI4NiAxNi4wMzM0SDE0LjM3MjdaTTE2Ljg5OTcgMTMuNDYxOVYxNi4wMzMzSDE1Ljg1NjNWMTEuNzE0M0gxNi44OTk3VjEyLjE3MkgxNi45MTk3QzE3LjI2MjUgMTEuODMwOCAxNy43MTE4IDExLjY2MDIgMTguMjY3NiAxMS42NjAyQzE4LjY5NyAxMS42NjAyIDE5LjA4OTcgMTEuNzg2NCAxOS40NDU5IDEyLjAzODhDMTkuNzk4NiAxMi4yOTQgMTkuOTgzNCAxMi42Njg1IDIwIDEzLjE2MjNWMTYuMDMzM0gxOC45NTY2VjEzLjQ2MTlDMTguOTU2NiAxMy4xNTk1IDE4Ljg2MDEgMTIuOTI5MyAxOC42NjcgMTIuNzcxMkMxOC40NzczIDEyLjYxMDMgMTguMjMyNyAxMi41Mjk4IDE3LjkzMzIgMTIuNTI5OEMxNy42MzM2IDEyLjUyOTggMTcuMzg3MyAxMi42MTAzIDE3LjE5NDMgMTIuNzcxMkMxNi45OTc5IDEyLjkyOTMgMTYuODk5NyAxMy4xNTk1IDE2Ljg5OTcgMTMuNDYxOVoiIGZpbGw9IiNGRkE4MDAiLz4KPC9zdmc+Cg==",
+      "order": "12",
+      "componentName": "Span",
+      "propsMeta": [
+        {
+          "formDescriptor": [
+            {
+              "type": "string"
+            }
+          ],
+          "name": "str",
+          "label": "字符串1",
+          "tab": "属性"
+        },
+        {
+          "formDescriptor": [],
+          "name": "setText",
+          "label": "设置按钮内容"
+        },
+        {
+          "formDescriptor": [
+            {
+              "type": "object",
+              "children": []
+            }
+          ],
+          "name": "getText",
+          "label": "获取按钮内容"
+        }
+      ]
+    },
+    {
+      "description": "表示一个按钮",
+      "label": "按钮",
+      "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iNiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE0IiByeD0iNCIgc3Ryb2tlPSIjMDQ3QUZGIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik05LjA2NTMzIDE2LjAzMzNDOS42Mzc3OSAxNi4wMzMzIDEwLjExNTQgMTUuODczOCAxMC40OTgxIDE1LjU1NDhDMTAuODg0MiAxNS4yNDk3IDExLjA4MDYgMTQuODM1IDExLjA4NzIgMTQuMzEwN0MxMS4wODcyIDEzLjk5NDUgMTAuOTkyNCAxMy43MDE4IDEwLjgwMjcgMTMuNDMyN0MxMC41OTk3IDEzLjE3MiAxMC4zMDAxIDEyLjk5ODYgOS45MDQwNSAxMi45MTI2VjEyLjg5NkMxMC4xMTM3IDEyLjgxMjggMTAuMjkwMSAxMi43MTk4IDEwLjQzMzIgMTIuNjE3MkMxMC41NzY0IDEyLjUyMDEgMTAuNjg2MiAxMi40MTc1IDEwLjc2MjcgMTIuMzA5M0MxMC45MTI1IDEyLjA4MTggMTAuOTg0MSAxMS44NDMzIDEwLjk3NzQgMTEuNTkzNkMxMC45Nzc0IDExLjEwNTQgMTAuNzk2IDEwLjcxMjkgMTAuNDMzMiAxMC40MTYxQzEwLjA3MzggMTAuMTIyIDkuNTM2MjggOS45NzIyMiA4LjgyMDcgOS45NjY2N0g2VjE2LjAzMzNIOS4wNjUzM1pNOC42OTU4NCAxMi41MjE1SDcuMTAzMjdWMTAuNzg2NEg4LjY5NTg0QzkuMDk4NTYgMTAuNzkxOSA5LjM5NDc4IDEwLjg3MzggOS41ODQ0OSAxMS4wMzE5QzkuNzc3NTMgMTEuMjAxMSA5Ljg3NDA1IDExLjQwNzggOS44NzQwNSAxMS42NTE5QzkuODc0MDUgMTEuODk2IDkuNzc3NTMgMTIuMDk4NSA5LjU4NDQ5IDEyLjI1OTRDOS4zOTQ3OCAxMi40MzQxIDkuMDk4NTYgMTIuNTIxNSA4LjY5NTg0IDEyLjUyMTVaTTcuMTAzMjcgMTUuMTYzN0g4LjgwMDY4QzkuMjEwMDYgMTUuMTU4MSA5LjUwOTYgMTUuMDY1MiA5LjY5OTMyIDE0Ljg4NDlDOS44ODkwMyAxNC43MDc0IDkuOTgzODggMTQuNDk2NSA5Ljk4Mzg4IDE0LjI1MjRDOS45ODM4OCAxNC4wMDI4IDkuODg5MDMgMTMuNzg5MiA5LjY5OTMyIDEzLjYxMTZDOS41MDk2IDEzLjQzNjkgOS4yMTAwNiAxMy4zNDY3IDguODAwNjggMTMuMzQxMkg3LjEwMzI3VjE1LjE2MzdaTTE0LjM3MjcgMTYuMDMzNFYxNS4yMTM3SDEzLjk4MzNDMTMuNzMwNCAxNS4yMTkyIDEzLjYwNzIgMTUuMTEyNCAxMy42MTM5IDE0Ljg5MzNWMTIuMzc1OUgxNC4zNzI3VjExLjcxNDNIMTMuNjEzOVYxMC4zOTk0SDEyLjU3MDVWMTEuNzE0M0gxMi4wNTEzVjEyLjM3NTlIMTIuNTcwNVYxNC45NjgyQzEyLjU3MDUgMTUuMzA5NCAxMi42OTAzIDE1LjU3MDEgMTIuOTI5OSAxNS43NTA0QzEzLjE2MjkgMTUuOTM5MSAxMy40NjI1IDE2LjAzMzQgMTMuODI4NiAxNi4wMzM0SDE0LjM3MjdaTTE2Ljg5OTcgMTMuNDYxOVYxNi4wMzMzSDE1Ljg1NjNWMTEuNzE0M0gxNi44OTk3VjEyLjE3MkgxNi45MTk3QzE3LjI2MjUgMTEuODMwOCAxNy43MTE4IDExLjY2MDIgMTguMjY3NiAxMS42NjAyQzE4LjY5NyAxMS42NjAyIDE5LjA4OTcgMTEuNzg2NCAxOS40NDU5IDEyLjAzODhDMTkuNzk4NiAxMi4yOTQgMTkuOTgzNCAxMi42Njg1IDIwIDEzLjE2MjNWMTYuMDMzM0gxOC45NTY2VjEzLjQ2MTlDMTguOTU2NiAxMy4xNTk1IDE4Ljg2MDEgMTIuOTI5MyAxOC42NjcgMTIuNzcxMkMxOC40NzczIDEyLjYxMDMgMTguMjMyNyAxMi41Mjk4IDE3LjkzMzIgMTIuNTI5OEMxNy42MzM2IDEyLjUyOTggMTcuMzg3MyAxMi42MTAzIDE3LjE5NDMgMTIuNzcxMkMxNi45OTc5IDEyLjkyOTMgMTYuODk5NyAxMy4xNTk1IDE2Ljg5OTcgMTMuNDYxOVoiIGZpbGw9IiNGRkE4MDAiLz4KPC9zdmc+Cg==",
+      "componentName": "A",
+      "propsMeta": [
+        {
+          "formDescriptor": [
+            {
+              "type": "string"
+            }
+          ],
+          "name": "str1",
+          "label": "字符串"
+        }
+      ]
+    }
+  ]
+}

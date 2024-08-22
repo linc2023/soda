@@ -1,0 +1,17 @@
+{
+  "name": "@soda/base",
+  "displayName": "基础组件",
+  "main": "base.js",
+  "module": "base.js",
+  "types": "base.d.ts",
+  "version": "1.0.0",
+  "author": "",
+  "description": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "createTime": "2024-08-22 16:36:03"
+}

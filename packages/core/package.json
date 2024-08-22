@@ -1,0 +1,19 @@
+{
+  "name": "@soda/core",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^5.0.7",
+    "axios": "^1.7.4"
+  },
+  "peerDependencies": {
+    "mobx": "^6.12.4",
+    "mobx-react": "^9.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

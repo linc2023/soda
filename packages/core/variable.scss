@@ -1,0 +1,95 @@
+// 全局前缀
+$project-prefix: 'soda';
+
+// 配色方案
+$primary-color: #047aff;
+$primary-color-hover: #3896ff;
+$primary-color-active: #0362cc;
+$primary-background-color: #e5f1ff;
+$primary-background-color-hover: #b3d7ff;
+$primary-background-color-active: #80bbff;
+$success-color: #08CB85;
+$success-color-hover: #49e591;
+$success-color-active: #00b252;
+$success-background-color: #e6fcf0;
+$success-background-color-hover: #b3f5d1;
+$success-background-color-active: #7decb0;
+$warning-color: #ffa800;
+$warning-color-hover: #ffba33;
+$warning-color-active: #cc8700;
+$warning-background-color: #fff7e6;
+$warning-background-color-hover: #ffe5b3;
+$warning-background-color-active: #ffd480;
+$error-color: #FF4C4C;
+$error-color-hover: #ff8d69;
+$error-color-active: #cc5a36;
+$error-background-color: #fff1ec;
+$error-background-color-hover: #ffd4c7;
+$error-background-color-active: #ffbda8;
+
+// 文字颜色
+$text-color: #011833;
+// $text-color-light: #677485;
+// $text-color-lighter: #b3bac2;
+
+
+// 边框颜色
+$border-color: #DEE1E4;
+// 线粗，用于输入框、按钮、分割线等
+$border-width: 1px;
+
+// 背景色
+$background-color: #ffffff;
+$background-color-lighter: #edeff3;
+$background-color-dark: #f0f0f0;
+
+// 字号
+$font-size-base: 14px; // 中文建议使用 14px，纯英文建议使用 16px
+$font-size: $font-size-base;
+$font-size-lg: $font-size-base + 2px; // 大号字体，用于标题
+$font-size-sm: $font-size-base - 2px; // 小号字体，最小不能小于 12px
+
+// // 行高
+// $line-height-base: 22px ; // 建议行高为偶数以避免某些场景图标和文字无法对齐的情况
+// $line-height: calc($line-height-base / $font-size-base);
+// $line-height-lg: 1.5;
+// $line-height-sm: 1.5;
+
+// 盒子内部的垂直留白
+$padding-y-base: 4px;
+$padding-y: $padding-y-base; 
+$padding-y-lg: $padding-y-base + 2px;
+$padding-y-sm: calc($padding-y-base - 2px);
+$padding-y-xs: calc($padding-y-base - 8px);
+
+// 盒子内部的水平留白
+$padding-x-base: 12px;
+$padding-x: $padding-x-base; 
+$padding-x-lg: $padding-x-base + 4px;
+$padding-x-sm: calc($padding-x-base - 4px);
+$padding-x-xs: calc($padding-x-base - 8px);
+
+// 盒子之间的垂直留白
+$margin-x-base: 12px;
+$margin-x: $margin-x-base; 
+$margin-x-lg: $margin-x-base + 4px;
+$margin-x-sm: calc($margin-x-base - 4px);
+$margin-x-xs: calc($margin-x-base - 8px);
+$margin-x-xxs: calc($margin-x-base - 10px);
+
+// 盒子之间的水平留白
+$margin-y-base: 12px;
+$margin-y: $margin-y-base; 
+$margin-y-lg: $margin-y-base + 4px;
+$margin-y-sm: calc($margin-y-base - 4px);
+
+// 盒子之间留白
+$margin-base: 12px;
+$margin: $margin-base; 
+$margin-lg: $margin-base + 4px;
+$margin-sm: calc($margin-base - 4px);
+
+// 圆角
+$border-radius: 4px; // 圆角越大、显得更简约、友好；圆角越小、显得更专业、严谨
+$border-radius-lg: $border-radius * 2; // 大号圆角
+$border-radius-sm: calc($border-radius / 2); // 小号圆角

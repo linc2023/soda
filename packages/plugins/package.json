@@ -1,0 +1,10 @@
+{
+  "name": "@soda/plugins",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.77.6"
+  }
+}

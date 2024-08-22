@@ -1,0 +1,17 @@
+{
+  "name": "@soda/cli",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.2.0",
+    "@soda/base": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.4.1"
+  }
+}
