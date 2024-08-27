@@ -1,24 +1,32 @@
 import { Component, Widget } from "@soda/core";
 import { globalState } from "./states";
 import { ReactNode, cloneElement, ReactElement } from "react";
-export enum PlatformModel {
-  DESIGN = "DESIGN",
-  PRODUCTION = "PRODUCTION",
-  PREVIEW = "PREVIEW",
-  ALL = "ALL",
-}
+import { PlatformModeValue } from "@soda/utils";
 
-export type PlatformModelValue = keyof typeof PlatformModel;
-export abstract class BasePlugin {
+export class Event {
   /**
-   * 销毁回调
-   * @returns
+   * 发射事件
+   * @param eventName
+   * @param plugin
+   * @param options
    */
-  destroy?: () => void | Promise<void>;
+  static $on?(eventName: string | string[], plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), options: PluginOptions = { allowOverride: true }) {
+    if (typeof plugin === "function") {
+      const tmp = new LogicPlugin();
+      tmp.exec = plugin;
+      tmp.uniqueName = eventName as string;
+      plugin = tmp;
+    }
+    globalState.event.on(eventName, plugin, options);
+  }
   /**
-   * 优先级
+   * 监听事件
+   * @param eventName
+   * @param logicPlugin
    */
-  priority: number = 0;
+  static $emit?(eventName: string | string[], logicPlugin: LogicPlugin) {
+    globalState.event.emit(eventName, logicPlugin);
+  }
 }
 
 enum Placement {
@@ -31,7 +39,10 @@ enum Placement {
  * 插件位置
  */
 export type UIPluginPlacement = Lowercase<keyof typeof Placement>;
-export abstract class UIPlugin extends BasePlugin {
+export class UIPlugin extends Component {
+  render(): ReactNode {
+    throw new Error("Method not implemented.");
+  }
   /**
    * 插件名称
    */
@@ -39,24 +50,45 @@ export abstract class UIPlugin extends BasePlugin {
   /**
    * 位置
    */
-  abstract placement: UIPluginPlacement;
-  /**
-   * 初始化方法
-   * @returns
-   */
-  init?(): Promise<void> | void;
-
-  /**
-   * 内容
-   */
-  abstract component(props: Record<string, unknown>): ReactNode;
-
+  placement?: UIPluginPlacement;
   /**
    * 分组序号
    */
   groupIndex: number = 0;
+
+  /**
+   * 优先级
+   */
+  priority?: number = 0;
+
+  /**
+   * 发射事件
+   * @param eventName
+   * @param plugin
+   * @param options
+   */
+  $on?(eventName: string | string[], plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), options: PluginOptions = { allowOverride: true }) {
+    Event.$on(eventName, plugin, options);
+  }
+  /**
+   * 监听事件
+   * @param eventName
+   * @param logicPlugin
+   */
+  $emit?(eventName: string | string[], logicPlugin: LogicPlugin) {
+    Event.$emit(eventName, logicPlugin);
+  }
 }
-export class LogicPlugin extends BasePlugin {
+export class LogicPlugin {
+  /**
+   * 销毁回调
+   * @returns
+   */
+  destroy?: () => void | Promise<void>;
+  /**
+   * 优先级
+   */
+  priority?: number = 0;
   /**
    * 事件名称
    */
@@ -72,7 +104,7 @@ export class LogicPlugin extends BasePlugin {
   /**
    * 模式
    */
-  model?: PlatformModelValue = "ALL";
+  mode?: PlatformModeValue = "ALL";
 }
 
 export type PluginOptions = {
@@ -88,15 +120,15 @@ export class PluginRender extends Component<{ placement: UIPluginPlacement; prop
     const { placement, props = {} } = this.props;
     const uiPlugins = globalState.plugin.uiPlugins;
     const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
-    return pluginGroup.map(({ groupCode, plugins }) => {
-      const className = `${globalState.environment.$project_name}-${placement}-${groupCode}`;
+    return pluginGroup.map(({ plugins }) => {
       return (
-        <div className={className} key={className}>
-          {plugins.map((plugin) => {
-            const key = `${placement}-plugin-${plugin.pluginName}`;
-            return cloneElement(plugin.component(props) as ReactElement, { key });
+        <>
+          {plugins.map((fn) => {
+            const Plugin = fn();
+            const key = `${placement}-plugin-${Plugin.pluginName}`;
+            return <Plugin {...props} key={key} />;
           })}
-        </div>
+        </>
       );
     });
   }

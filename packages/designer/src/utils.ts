@@ -1,3 +1,3 @@
 import { createRequest } from "@soda/core";
 
-export const Http = createRequest();
+export const Http = createRequest("", { useProxy: false });

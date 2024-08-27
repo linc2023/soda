@@ -9,7 +9,7 @@ export default class PluginState {
   /**
    * UI 插件
    */
-  @reactive uiPlugins: { [key: string]: UIPlugin[] } = {};
+  @reactive uiPlugins: { [key: string]: (typeof UIPlugin)[] } = {};
   /**
    * UI 插件是否已排序
    */
@@ -19,10 +19,10 @@ export default class PluginState {
    * @param plugin 插件
    * @param options 附加配置
    */
-  @action async register(plugin: UIPlugin | UIPlugin[], options: PluginOptions = { allowOverride: false }) {
-    const register = async (plugin: UIPlugin, options: PluginOptions) => {
+  @action async register(plugin: typeof UIPlugin | (typeof UIPlugin)[], options: PluginOptions = { allowOverride: false }) {
+    const register = async (plugin: typeof UIPlugin, options: PluginOptions) => {
       if (!plugin.pluginName) {
-        plugin.pluginName = plugin.constructor.name;
+        plugin.pluginName = plugin.name;
       }
       const { pluginName, placement } = plugin;
       const { allowOverride } = options;
@@ -36,18 +36,16 @@ export default class PluginState {
         if (!allowOverride) {
           throw new Error(`UIPlugin with name ${pluginName} exists`);
         }
-        const oldPlugin = uiPlugins[placement][pluginIndex];
-        uiPlugins[placement][pluginIndex] = plugin as UIPlugin;
-        await oldPlugin.destroy?.();
+        uiPlugins[placement][pluginIndex] = plugin;
         return;
       }
-      uiPlugins[placement].push(plugin);
+      uiPlugins[placement].push(() => plugin);
     };
     if (!Array.isArray(plugin)) {
-      await register(plugin, options);
+      register(plugin, options);
     } else {
       for (const i of plugin) {
-        await register(i, options);
+        register(i, options);
       }
     }
   }

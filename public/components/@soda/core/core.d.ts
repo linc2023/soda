@@ -4,6 +4,7 @@ declare module "core" {
 	export * from "core/lib/dev";
 	export * from "core/lib/mobx";
 	export * from "core/lib/request";
+	export * from "core/lib/renders";
 	module "react" {
 	    interface CSSProperties {
 	        [key: `--${string}`]: string | number;
@@ -11,14 +12,17 @@ declare module "core" {
 	}
 }
 declare module "core/lib/component" {
-	import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode, RefObject } from "react";
-	import { ComponentMeta, DesignComponent } from "@soda/utils";
-	export abstract class Component<P = object> extends ReactComponent<P, any, any> {
+	import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode } from "react";
+	import { ComponentMeta, PageSchema, PlatformModeValue } from "@soda/utils";
+	export abstract class Component<P = any> extends ReactComponent<P & {
+	    mode?: PlatformModeValue;
+	}, any, any> {
 	    abstract render(): ReactNode;
 	    state: Readonly<P>;
-	    /**
-	     *  @deprecated
-	     */
+	    /** @hidden */
+	    get mode(): (P & {
+	        mode?: PlatformModeValue;
+	    })["mode"];
 	    setState(): void;
 	    componentDidCatch(error: Error, errorInfo: ErrorInfo): void;
 	}
@@ -26,36 +30,25 @@ declare module "core/lib/component" {
 	    className?: string;
 	    placeholder?: string;
 	    style?: CSSProperties;
-	    dropDisabled?: boolean;
 	    childrenDragDisabled?: boolean;
 	    getWhiteList?: (meta: ComponentMeta) => boolean;
+	    components: {
+	        [key: string]: {
+	            version: string;
+	            [key: string]: object | string;
+	        }[];
+	    };
+	    mode: PlatformModeValue;
+	    chooseNode?: (selectedNode: PageSchema) => void;
 	};
 	/**
 	 * 容器
 	 */
 	export class Container extends Component<ContainerProps> {
 	    /**
-	     * 组件列表
+	     * 是否可设计
 	     */
-	    children: DesignComponent[];
-	    /**
-	     * 拖到开始 x 坐标
-	     */
-	    private dragStartX;
-	    /**
-	     * 拖到开始 y 坐标
-	     */
-	    private dragStartY;
-	    current: DesignComponent;
-	    componentRefMap: {
-	        [key: string]: RefObject<any>;
-	    };
-	    onDrop: (ev: any) => void;
-	    onDragOver: (ev: any) => void;
-	    initDesignComponent: (node: any) => void;
-	    onPointerDown: (ev: any) => void;
-	    onPointerUp: (ev: any) => void;
-	    onPointerMove: (ev: any) => void;
+	    get canDesign(): boolean;
 	    render(): ReactNode;
 	}
 }
@@ -79,7 +72,8 @@ declare module "core/lib/request" {
 	class Http {
 	    private baseUrl;
 	    private responseHandler;
-	    constructor(baseUrl?: string, responseHandler?: (res: AxiosResponse) => Promise<object>);
+	    private useProxy;
+	    constructor(baseUrl?: string, responseHandler?: (res: AxiosResponse) => Promise<object>, useProxy?: boolean);
 	    request<T>(url: string, args: object): Promise<T>;
 	    get<T>(url: string, params?: object, config?: AxiosRequestConfig<object>): Promise<T>;
 	    delete<T>(url: string, data?: object, config?: AxiosRequestConfig<object>): Promise<T>;
@@ -93,6 +87,71 @@ declare module "core/lib/request" {
 	 * @param responseHandler   异常处理
 	 * @returns
 	 */
-	export function createRequest(baseUrl?: string, responseHandler?: (res: AxiosResponse) => Promise<object>): Http;
+	export function createRequest(baseUrl?: string, { responseHandler, useProxy }?: {
+	    responseHandler?: (res: AxiosResponse) => Promise<object>;
+	    useProxy?: boolean;
+	}): Http;
+	/**
+	 * axios
+	 */
+	export const axios: import("axios").AxiosStatic;
+	export {};
+}
+declare module "core/lib/renders" {
+	import { ElementType, ReactNode } from "react";
+	import { Component } from "core/component";
+	import { PageSchema } from "@soda/utils";
+	/**
+	 * @container
+	 */
+	export class Page extends Component {
+	    render(): JSX.Element;
+	}
+	type RenderType = {
+	    schema: PageSchema;
+	    componentMap: {
+	        [key: string]: {
+	            version: string;
+	            [key: string]: object | string;
+	        }[];
+	    };
+	};
+	abstract class Render extends Component<RenderType> {
+	    /** refs */
+	    refsMap: {
+	        [key: string]: any;
+	    };
+	    /**
+	     * 所有 refs
+	     */
+	    get $refs(): {
+	        [key: string]: any;
+	    };
+	    /**
+	     * 查询组件
+	     * @param componentName
+	     * @param componentMap
+	     * @returns
+	     */
+	    getComponent(componentName: string, componentMap: RenderType["componentMap"]): ElementType;
+	    /**
+	     * 通过组件 schema 渲染组件
+	     * @param schemas
+	     * @param componentMap
+	     * @returns
+	     */
+	    schemasToComponent(schemas: PageSchema["componentsTree"], componentMap?: {
+	        [key: string]: {
+	            [key: string]: string | object;
+	            version: string;
+	        }[];
+	    }): JSX.Element[];
+	}
+	/**
+	 * 渲染浏览器组件
+	 */
+	export class WebRender extends Render {
+	    render(): ReactNode;
+	}
 	export {};
 }

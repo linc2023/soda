@@ -65,7 +65,7 @@ export default class EventState {
       return;
     }
     const exec = async (event: string) => {
-      for (const plugin of this.logicPluginMap[event]) {
+      for (const plugin of this.logicPluginMap[event] ?? []) {
         await plugin.exec(...(props ?? []));
       }
     };

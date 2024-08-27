@@ -1,35 +1,46 @@
-import { Widget, Component } from "@soda/core";
+import { Widget, reactive, Component } from "@soda/core";
 import "./span.scss";
+import { ReactNode } from "react";
+
+class A extends Component {
+  render(): ReactNode {
+    return (
+      <div>
+        <div>sadsddd</div> {this.props.children}
+      </div>
+    );
+  }
+}
 
 /**
- * 表示一个按钮
- * @label 按钮
+ * 表示一个文本组件
+ * @label 文本
  * @icon ./span.svg
  * @order 12
  */
 @Widget
 export class Span extends Component {
   /**
-   * @label 属性/字符串1
+   * @label 属性/字符串
    */
-  str = "初始值";
-
-  /**
-   * @label 设置按钮内容
-   * @param str 文本
-   */
-  setText(str: string) {
-    this.str = str;
-  }
-  /**
-   * @label 获取按钮内容
-   * @returns 文本
-   */
-  getText = () => {
-    return this.str;
-  };
+  @reactive num = 1;
 
   render() {
-    return <div className="button"></div>;
+    console.log(this.props);
+    return (
+      <div>
+        <button
+          className="button"
+          onClick={() => {
+            this.num++;
+          }}
+        >
+          aaa
+        </button>
+        <A>
+          <span>sssss</span>
+        </A>
+      </div>
+    );
   }
 }

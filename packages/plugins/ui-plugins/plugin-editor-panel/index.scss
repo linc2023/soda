@@ -1,54 +1,57 @@
 @import "../../../core/variable.scss";
-.plugin-editor-panel{
+.plugin-editor-panel {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  .ant-tabs {
+    width: 100%;
+    .ant-collapse-header {
+      padding: 8px 8px 4px 8px;
+      border-bottom: 1px solid $border-color;
+      background-color: $background-color-lighter;
+      .ant-collapse-header-text {
+        font-size: $font-size-sm;
+        color: $text-color;
+        font-weight: 700;
+      }
+    }
+    .ant-tabs-content-holder {
+      overflow: auto;
+    }
+    .ant-collapse .ant-collapse-item .ant-collapse-content .ant-collapse-content-box {
+      padding: $padding-y-lg $padding-x-sm;
+    }
+    .ant-tabs-nav-list {
+      width: 100%;
+      box-sizing: border-box;
+      padding-inline: $padding-x-xs;
+      .ant-tabs-tab {
+        font-size: 12px;
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  }
+  .editor-item {
     display: flex;
-    justify-content: center;
-    .ant-tabs{
-        width: 100%;
-        .ant-collapse-header{
-            padding: 8px 8px 4px 8px;
-            border-bottom: 1px solid $border-color;
-            background-color: $background-color-lighter;
-            .ant-collapse-header-text{
-                font-size: $font-size-sm;
-                color: $text-color;
-                font-weight: 700;
-            }
-        }
-        .ant-collapse .ant-collapse-item .ant-collapse-content .ant-collapse-content-box{
-            padding: $padding-y-lg $padding-x-sm;
-        }
-        .ant-tabs-nav-list{
-            width: 100%;
-            box-sizing: border-box;
-            padding-inline: $padding-x-xs;
-            .ant-tabs-tab{
-                font-size: 12px;
-                flex: 1;
-                justify-content: center;
-            }
-        }
-       
+    margin-bottom: $margin-y-sm;
+    .anticon-link {
+      width: 16px;
+      cursor: pointer;
+      transform: rotate(45deg);
+      margin-left: $margin-x-sm;
+      margin-right: $margin-x-xxs;
     }
-    .editor-item{
-        display: flex;
-        margin-bottom: $margin-y-sm;
-        .anticon-link{
-            width: 16px;
-            cursor: pointer;
-            transform: rotate(45deg);
-            margin-left: $margin-x-sm;
-            margin-right: $margin-x-xxs;
-        }
-        .ant-form-item{
-            margin-bottom: 0;
-            flex: 1;
-            .ant-form-item-label label{
-                font-size: $font-size-sm;
-                min-width: 60px;
-            }
-        }
+    .ant-form-item {
+      margin-bottom: 0;
+      flex: 1;
+      .ant-form-item-label label {
+        font-size: $font-size-sm;
+        min-width: 60px;
+      }
     }
-    .ant-input-number{
-        width: 100%;
-    }
+  }
+  .ant-input-number {
+    width: 100%;
+  }
 }

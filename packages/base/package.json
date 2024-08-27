@@ -8,10 +8,7 @@
     "build:name": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}",
     "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}/{version}"
   },
-  "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
+  "peerDependencies": {},
   "keywords": [],
   "author": "",
   "license": "ISC"

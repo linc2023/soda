@@ -1,6 +1,5 @@
-import { globalState } from "@soda/designer";
+import { App, globalState } from "@soda/designer";
 import { Component, Provider } from "@soda/core";
-import { App } from "../components/App";
 
 export default class Designer extends Component {
   render() {

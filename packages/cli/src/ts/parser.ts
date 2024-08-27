@@ -5,22 +5,32 @@ import { parseClassProperties } from "./classPaser";
 import { encodeDataURI, getMimeType } from "@soda/utils";
 
 type ComponentDescriptor = {};
+
+type ComponentMeta = { componentDescriptor: ComponentDescriptor[]; propsDescriptor: any };
 /**
  * 获取组件信息
  * @param sourceFile 入口文件 AST
  * @param typeChecker 语义分析器
  * @returns
  */
-export function getComponentDescriptors(sourceFile: ts.SourceFile, typeChecker: ts.TypeChecker): ComponentDescriptor[] {
+export function getComponentDescriptors(sourceFile: ts.SourceFile, typeChecker: ts.TypeChecker): ComponentMeta {
   const moduleSymbol = typeChecker.getSymbolAtLocation(sourceFile) ?? typeChecker.getAmbientModules().find((symbol) => symbol.getDeclarations()?.[0]?.getSourceFile() === sourceFile);
+  const res: ComponentMeta = {
+    componentDescriptor: [],
+    propsDescriptor: {},
+  };
   if (moduleSymbol) {
     const exportedSymbols = typeChecker.getExportsOfModule(moduleSymbol);
-    return exportedSymbols
+    exportedSymbols
       .map((exportedSymbol) => parseComponent(exportedSymbol, typeChecker))
       .filter(Boolean)
-      .sort(({ order: o1 = 0 }, { order: o2 = 0 }) => o2 - o1);
+      .sort(({ order: o1 = 0 }, { order: o2 = 0 }) => o2 - o1)
+      .forEach(({ componentDescriptor, propsDescriptor }) => {
+        res.componentDescriptor.push(componentDescriptor);
+        res.propsDescriptor[componentDescriptor.componentName] = propsDescriptor;
+      });
   }
-  return [];
+  return res;
 }
 /**
  * 转换单个模块
@@ -35,13 +45,18 @@ function parseComponent(exportedSymbol: ts.Symbol, typeChecker: ts.TypeChecker):
   }
   const symbol = component.symbol;
   const declaration = symbol.declarations![0];
-  const descriptor = parseClassComments(declaration);
-  descriptor.componentName = symbol.name;
-  descriptor.propsMeta = component
+  const componentDescriptor = parseClassComments(declaration);
+  componentDescriptor.componentName = symbol.name;
+  componentDescriptor.displayName = componentDescriptor.label;
+  delete componentDescriptor.label;
+  const propsDescriptor = component
     .getProperties()
     .map((property) => parseClassProperties(property, typeChecker))
     .filter(Boolean);
-  return descriptor;
+  return {
+    componentDescriptor,
+    propsDescriptor,
+  };
 }
 
 /**

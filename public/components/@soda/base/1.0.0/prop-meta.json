@@ -1,0 +1,204 @@
+{
+  "Button": [
+    {
+      "descriptor": [
+        {
+          "type": "string"
+        }
+      ],
+      "name": "str1",
+      "label": "字符串1",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "string"
+        }
+      ],
+      "name": "str2",
+      "label": "字符串2",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "number"
+        }
+      ],
+      "name": "num",
+      "label": "数字",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "obj",
+      "label": "对象",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "password",
+      "label": "密码框",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "boolean"
+        }
+      ],
+      "name": "bool",
+      "label": "布尔",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "multiLine",
+      "label": "文本框",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "color",
+      "label": "颜色",
+      "tab": "样式"
+    },
+    {
+      "descriptor": [],
+      "name": "url",
+      "label": "文件",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "select",
+      "label": "下拉框",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "radio",
+      "label": "枚举",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "tuple",
+          "children": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "name": "tuple",
+      "label": "元组",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "tuple",
+          "children": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "name": "tupleWithLabel",
+      "label": "标签元组",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "array",
+          "children": [
+            {
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "name": "arr",
+      "label": "数组",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [
+        {
+          "type": "string"
+        }
+      ],
+      "name": "editor",
+      "label": "editor",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "onClick",
+      "label": "单击"
+    },
+    {
+      "descriptor": [],
+      "name": "setText",
+      "label": "设置按钮内容"
+    },
+    {
+      "descriptor": [],
+      "name": "getText",
+      "label": "获取按钮内容"
+    },
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ],
+  "A": [
+    {
+      "descriptor": [
+        {
+          "type": "string"
+        }
+      ],
+      "name": "str",
+      "label": "字符串"
+    },
+    {
+      "descriptor": [],
+      "name": "test"
+    },
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ],
+  "Span": [
+    {
+      "descriptor": [
+        {
+          "type": "number"
+        }
+      ],
+      "name": "num",
+      "label": "字符串",
+      "tab": "属性"
+    },
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ]
+}

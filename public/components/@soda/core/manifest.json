@@ -1,129 +1,26 @@
 {
   "name": "@soda/core",
+  "library": "sodaCore",
   "displayName": "@soda/core",
   "version": "1.0.0",
   "components": [
     {
       "hidden": "true",
-      "componentName": "Component",
-      "propsMeta": []
+      "componentName": "Component"
     },
     {
       "description": "容器",
-      "componentName": "Container",
-      "propsMeta": [
-        {
-          "formDescriptor": [
-            {
-              "type": "array",
-              "children": [
-                {
-                  "type": "object",
-                  "children": []
-                }
-              ]
-            }
-          ],
-          "name": "children",
-          "description": "组件列表"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "number"
-            }
-          ],
-          "name": "dragStartX",
-          "hidden": "return true",
-          "description": "拖到开始 x 坐标"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "number"
-            }
-          ],
-          "name": "dragStartY",
-          "hidden": "return true",
-          "description": "拖到开始 y 坐标"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "current"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "componentRefMap"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "onDrop"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "onDragOver"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "initDesignComponent"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "onPointerDown"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "onPointerUp"
-        },
-        {
-          "formDescriptor": [
-            {
-              "type": "object",
-              "children": []
-            }
-          ],
-          "name": "onPointerMove"
-        }
-      ]
+      "componentName": "Container"
     },
     {
-      "componentName": "ReactRenderer",
-      "propsMeta": []
+      "componentName": "ReactRenderer"
+    },
+    {
+      "componentName": "Page"
+    },
+    {
+      "description": "渲染浏览器组件",
+      "componentName": "WebRender"
     }
   ]
 }

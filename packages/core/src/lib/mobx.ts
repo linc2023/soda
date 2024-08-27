@@ -8,7 +8,7 @@ export { Provider } from "mobx-react";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Widget(target: any) {
   observer.call(target, target as never);
-  return class Instance extends target {
+  return class extends target {
     constructor(args: never) {
       super(args);
       makeObservable(this);

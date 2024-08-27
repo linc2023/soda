@@ -3,7 +3,7 @@ import { resolvePackageJson } from "./utils";
 import { basename, resolve } from "path";
 import { createDTSBuidler } from "./ts/dtsBuilder";
 import { getComponentDescriptors } from "./ts/parser";
-import { Package, formatDate, packageNameToCamelCase } from "@soda/utils";
+import { Package, formatDate, getLibName, getMainVersion, packageNameToCamelCase } from "@soda/utils";
 import replace from "@rollup/plugin-replace";
 
 type BuildOption = {
@@ -11,6 +11,7 @@ type BuildOption = {
   minify?: boolean;
 };
 
+let libName = "";
 /**
  *
  * @param root 根路径
@@ -23,7 +24,6 @@ export const build = (root: string, options: BuildOption) => {
   const globals = {
     react: "window.React",
     "react-dom": "window.ReactDOM",
-    // "react/jsx-runtime": "react/jsx-runtime",
     mobx: "window.mobx",
     "mobx-react": "window.mobxReact",
     "@soda/core": "window.sodaCore",
@@ -32,6 +32,7 @@ export const build = (root: string, options: BuildOption) => {
     axios: "axios",
     "react-is": "window.ReactIs",
   };
+  libName = pkg.name === "@soda/core" ? "sodaCore" : `${getLibName(pkg.library, pkg.name)}${getMainVersion(pkg.version)}`;
   const external = getExternal();
   vite.build({
     root,
@@ -42,7 +43,7 @@ export const build = (root: string, options: BuildOption) => {
         entry: pkg.main,
         fileName: `${bundleName}`,
         formats: ["umd"],
-        name: packageNameToCamelCase(pkg.name),
+        name: libName,
       },
       minify: options.minify,
       rollupOptions: {
@@ -74,7 +75,7 @@ export const build = (root: string, options: BuildOption) => {
     return [...Object.keys(globals), "antd", ...peerDependencies];
   }
 };
-// cssLinkPlugin("");
+
 /**
  * 引入 css 文件
  * @param bundleName 包名
@@ -121,17 +122,38 @@ function generateDTS(root: string, pkg: Package): vite.Plugin {
   const bundleName = basename(name);
   return {
     name: generateDTS.name,
-    generateBundle() {
+    generateBundle(_, bundle) {
       const { code, entryFile, program } = createDTSBuidler(root, bundleName).build(resolve(root, types));
       this.emitFile({
         fileName: `${basename(bundleName)}.d.ts`,
         source: code,
         type: "asset",
       });
-      const components = entryFile ? getComponentDescriptors(entryFile, program.getTypeChecker()) : { files: [] };
+      for (const key in bundle) {
+        const chunk = bundle[key] as {
+          code: string;
+          modules: Record<string, any>;
+          exports: any[];
+        };
+        if (key.endsWith(".js")) {
+          const code = `arguments[0]["${libName}"] = ${JSON.stringify({ version: pkg.version })}; `;
+          const index = chunk.code.indexOf("{");
+          chunk.code = chunk.code.substring(0, index + 1) + code + chunk.code.substring(index + 1);
+        }
+        // if (hasCSS(chunk.modules)) {
+        //   const cssPath = `./${bundleName}.css`;
+        //   chunk.code = `const __link = document.head.appendChild(document.createElement("link"));
+        //       __link.rel = "stylesheet";
+        //       __link.href = new URL(${JSON.stringify(cssPath)},import.meta.url).href;
+        //   ${chunk.code}
+        //   `.replace(/\n/g, "");
+        // }
+      }
+      const { componentDescriptor: components = [], propsDescriptor: propsMap = {} } = entryFile ? getComponentDescriptors(entryFile, program.getTypeChecker()) : {};
       const pkgJson = generatePackageJson(pkg, bundleName);
       this.emitFile({ fileName: "package.json", type: "asset", source: JSON.stringify(pkgJson, null, 2) });
-      this.emitFile({ fileName: `manifest.json`, source: JSON.stringify({ name: name, displayName: pkgJson.displayName, version: pkgJson.version, components }, null, 2), type: "asset" });
+      this.emitFile({ fileName: `manifest.json`, source: JSON.stringify({ name: name, library: libName ?? packageNameToCamelCase(pkg.name), displayName: pkgJson.displayName, version: pkgJson.version, components }, null, 2), type: "asset" });
+      this.emitFile({ fileName: "prop-meta.json", type: "asset", source: JSON.stringify(propsMap, null, 2) });
     },
   };
 }

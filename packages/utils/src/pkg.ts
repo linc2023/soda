@@ -20,3 +20,20 @@ export function packageNameToCamelCase(packageName: string) {
 
   return scope ? `${scope}${camelCaseName}` : camelCaseName;
 }
+
+/**
+ * 获取主版本
+ * @param version
+ * @returns
+ */
+export function getMainVersion(version: string) {
+  return version?.length > 0 ? version.split(".")[0] : "1";
+}
+/**
+ * 获取包名
+ * @param pkg
+ * @returns
+ */
+export function getLibName(library: string, name: string = "") {
+  return `${library ?? packageNameToCamelCase(name)}`;
+}

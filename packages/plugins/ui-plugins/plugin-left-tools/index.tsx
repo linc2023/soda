@@ -9,7 +9,7 @@ import { ReactNode } from "react";
 export class LeftToolsPlugin extends UIPlugin {
   @reactive currentTab = "component";
 
-  component(): ReactNode {
+  render(): ReactNode {
     return (
       <div className={`${globalState.environment.$project_name}-left-tool`}>
         <Segmented<string>
@@ -25,6 +25,6 @@ export class LeftToolsPlugin extends UIPlugin {
       </div>
     );
   }
-  placement: UIPluginPlacement = "left";
-  priority: number = 1;
+  static placement: UIPluginPlacement = "left";
+  static priority: number = 1;
 }

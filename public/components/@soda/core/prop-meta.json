@@ -1,0 +1,61 @@
+{
+  "Component": [
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ],
+  "Container": [
+    {
+      "descriptor": [],
+      "name": "canDesign",
+      "description": "是否可设计"
+    },
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ],
+  "ReactRenderer": [],
+  "Page": [
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ],
+  "WebRender": [
+    {
+      "descriptor": [
+        {
+          "type": "object",
+          "children": []
+        }
+      ],
+      "name": "refsMap",
+      "description": "refs"
+    },
+    {
+      "descriptor": [],
+      "name": "$refs",
+      "description": "所有 refs"
+    },
+    {
+      "descriptor": [],
+      "name": "getComponent",
+      "description": "查询组件"
+    },
+    {
+      "descriptor": [],
+      "name": "schemasToComponent",
+      "description": "通过组件 schema 渲染组件"
+    },
+    {
+      "descriptor": [],
+      "name": "mode",
+      "hidden": "true"
+    }
+  ]
+}

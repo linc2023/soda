@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import request, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 async function handler(res: AxiosResponse): Promise<object> {
   if (res.status === 200) {
@@ -8,13 +8,13 @@ async function handler(res: AxiosResponse): Promise<object> {
 }
 
 class Http {
-  constructor(private baseUrl: string = "", private responseHandler: (res: AxiosResponse) => Promise<object> = handler) {}
+  constructor(private baseUrl: string = "", private responseHandler: (res: AxiosResponse) => Promise<object> = handler, private useProxy = true) {}
   async request<T>(url: string, args: object): Promise<T> {
     if (!args["headers"]) {
       args["headers"] = {};
     }
     args["headers"]["origin-url"] = url;
-    const res = await axios("/soda-app", args);
+    const res = this.useProxy ? await request("/soda-app", args) : await request(url, args);
     return this.responseHandler(res) as Promise<T>;
   }
   get<T>(url: string, params: object = {}, config: AxiosRequestConfig<object> = {}): Promise<T> {
@@ -45,6 +45,10 @@ class Http {
  * @param responseHandler   异常处理
  * @returns
  */
-export function createRequest(baseUrl?: string, responseHandler?: (res: AxiosResponse) => Promise<object>) {
-  return new Http(baseUrl, responseHandler);
+export function createRequest(baseUrl?: string, { responseHandler, useProxy }: { responseHandler?: (res: AxiosResponse) => Promise<object>; useProxy?: boolean } = {}) {
+  return new Http(baseUrl, responseHandler, useProxy);
 }
+/**
+ * axios
+ */
+export const axios = request;

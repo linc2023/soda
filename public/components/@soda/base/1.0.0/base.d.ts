@@ -106,8 +106,8 @@ declare module "base/button/button" {
 declare module "base/button/a" {
 	import { Component } from "@soda/core";
 	/**
-	 * 表示一个按钮
-	 * @label 按钮
+	 * 表示一个A
+	 * @label A
 	 * @icon ./button.svg
 	 * @hidden false
 	 */
@@ -115,33 +115,24 @@ declare module "base/button/a" {
 	    /**
 	     * @label 字符串
 	     */
-	    str1: string;
-	    render(): number;
+	    str: string;
+	    test(str: string): void;
+	    render(): JSX.Element;
 	}
 }
 declare module "base/span" {
 	import { Component } from "@soda/core";
 	/**
-	 * 表示一个按钮
-	 * @label 按钮
+	 * 表示一个文本组件
+	 * @label 文本
 	 * @icon ./span.svg
 	 * @order 12
 	 */
 	export class Span extends Component {
 	    /**
-	     * @label 属性/字符串1
+	     * @label 属性/字符串
 	     */
-	    str: string;
-	    /**
-	     * @label 设置按钮内容
-	     * @param str 文本
-	     */
-	    setText(str: string): void;
-	    /**
-	     * @label 获取按钮内容
-	     * @returns 文本
-	     */
-	    getText: () => string;
+	    num: number;
 	    render(): JSX.Element;
 	}
 }

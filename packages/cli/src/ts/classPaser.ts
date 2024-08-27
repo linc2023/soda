@@ -1,22 +1,7 @@
 import * as ts from "typescript";
 const reactDefaultFunctions = ["setState", "forceUpdate", "render", "componentWillReceiveProps", "componentWillMount", "componentWillUnmount", "componentDidMount", "shouldComponentUpdate", "getSnapshotBeforeUpdate", "componentWillUpdate", "componentDidUpdate", "componentDidCatch", "UNSAFE_componentWillMount", "UNSAFE_componentWillReceiveProps", "UNSAFE_componentWillUpdate"];
 const reactDefaultProperties = ["context", "props", "state", "refs"];
-
-type FormDescriptor = { type: string; children?: FormDescriptor[] }[];
-type PropertyDescriptor = {
-  name: string;
-  disabled?: boolean;
-  hidden?: string;
-  description?: string;
-
-  label: string;
-  tab?: string;
-  category?: string;
-  expanded?: boolean;
-  order: number;
-
-  formDescriptor?: FormDescriptor;
-};
+import { PropDescriptor } from "@soda/utils";
 
 /**
  * 转换属性
@@ -32,13 +17,13 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
   const declaration = property.declarations![0];
 
   const flags = property.getFlags();
-  const descriptor: PropertyDescriptor = { formDescriptor: [] } as unknown as PropertyDescriptor;
+  const descriptor: PropDescriptor = { descriptor: [] } as unknown as PropDescriptor;
   descriptor.name = property.name;
   parseBaseDescriptor(property, checker, descriptor);
 
   if (flags & ts.SymbolFlags.Property) {
     const type = checker.getTypeOfSymbolAtLocation(property, declaration);
-    parseType(type, checker, descriptor.formDescriptor);
+    parseType(type, checker, descriptor.descriptor);
   }
   if (["onClick", "setText", "getText"].includes(property.name)) {
     // debugger;
@@ -57,7 +42,7 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
  * @param descriptor 解析结果
  * @returns
  */
-function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descriptor: PropertyDescriptor) {
+function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descriptor: PropDescriptor) {
   const declaration = property.declarations![0];
 
   const modifiers = ts.getCombinedModifierFlags(declaration);
@@ -117,7 +102,7 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
       if (arr[1].endsWith("-")) {
         descriptor.expanded = false;
       }
-      descriptor.category = arr[1].replace(/\+$/, "");
+      descriptor.group = arr[1].replace(/\+$/, "");
     }
   }
 }
@@ -127,18 +112,18 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
  * @param checker 语义解析器
  * @param descriptor 解析结果
  */
-function parseType(type: ts.Type, checker: ts.TypeChecker, formDescriptor: PropertyDescriptor["formDescriptor"] = []) {
+function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["descriptor"] = []) {
   const TypeFlags = type.getFlags();
   if (TypeFlags & ts.TypeFlags.String) {
-    formDescriptor.push({ type: "string" });
+    descriptor.push({ type: "string" });
     return;
   }
   if (TypeFlags & (ts.TypeFlags.Number | ts.TypeFlags.BigInt)) {
-    formDescriptor.push({ type: "number" });
+    descriptor.push({ type: "number" });
     return;
   }
   if (TypeFlags & ts.TypeFlags.Boolean) {
-    formDescriptor.push({ type: "boolean" });
+    descriptor.push({ type: "boolean" });
     return;
   }
 
@@ -146,7 +131,7 @@ function parseType(type: ts.Type, checker: ts.TypeChecker, formDescriptor: Prope
     const descriptors = [];
     if (checker.isArrayType(type)) {
       parseType((type["typeArguments"] as ts.Type[])[0], checker, descriptors);
-      formDescriptor.push({
+      descriptor.push({
         type: "array",
         children: descriptors,
       });
@@ -154,17 +139,19 @@ function parseType(type: ts.Type, checker: ts.TypeChecker, formDescriptor: Prope
     }
     if (checker.isTupleType(type)) {
       (type["typeArguments"] as ts.Type[]).map((typeArgument) => parseType(typeArgument, checker, descriptors));
-      formDescriptor.push({
+      descriptor.push({
         type: "tuple",
         children: descriptors,
       });
       return;
     }
     // type.getProperties().map((prop) => parseType(checker.getTypeOfSymbolAtLocation(prop, prop.declarations![0]), checker, descriptors));
-    formDescriptor.push({
-      type: "object",
-      children: descriptors,
-    });
+    descriptor = [
+      {
+        type: "object",
+        children: descriptors,
+      },
+    ];
   }
 
   checker;

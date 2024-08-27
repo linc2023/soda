@@ -1,63 +1,74 @@
+import { Component } from "@soda/core";
 import { ComponentType } from "react";
+
 /**
  * 组件元数据
  */
-export class ComponentMeta {
-  // 组件名
+export interface ComponentMeta {
+  /** 组件名 */
   componentName: string;
-  // 组件展示名称
-  label: string;
-  // 组件描述
+  /** 组件展示名称 */
+  displayName: string;
+  /** 组件描述 */
   description?: string;
-  // 图标
+  /** 图标 */
   icon?: string;
-  // 分组
+  /** 分组 */
   group?: string;
-  // 组件优先级
-  order?: number = 0;
-  // 包名
-  packageName: string;
-  // 包版本
-  packageVersion: string;
-  // 是否隐藏
-  hidden?: boolean;
-}
-
-export class DesignComponent extends ComponentMeta {
-  // 唯一标识
-  id?: string;
-  // dom
-  element?: HTMLElement;
-  // 子组件
-  children?: DesignComponent[];
-  // 属性
-  // properties?:
-}
-
-// 属性编辑器
-export type EditorMeta = {
-  // 所在分区
-  block: string;
-  // 所在分组
-  group: string;
-  // 中文名称
-  label: string;
-  // // 展示类型
-  // display: 'block' | 'popup' | 'entry';
-  // 组件
-  component: ComponentType;
-  // 是否隐藏
-  condition?: (values: unknown) => boolean;
-  // 默认值
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  defaultValue?: unknown;
-  // 序号
+  /** 组件优先级 */
   order?: number;
-  // 属性名称
-  propName: string;
-  // onChange 事件
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // onChange?: (value: any, field: any) => void;
+  /** 包名 */
+  packageName: string;
+  /** 包版本 */
+  packageVersion: string;
+  /** 是否隐藏 */
+  hidden?: boolean;
+  /** 是否是容器 */
+  isContainer: boolean;
+}
+/**
+ * 页面 Schema
+ */
+export interface PageSchema {
+  components: {
+    package: string;
+    version: string;
+    componentName: string;
+  }[];
+  componentsTree: {
+    componentName: string;
+    id: string;
+    props?: any;
+    children?: PageSchema["componentsTree"];
+    advanced?: {
+      loop?: string;
+      isContainer?: boolean;
+    };
+  }[];
+}
+
+export class DesignNode {
+  /** 唯一标识 */
+  id?: string;
+  /** dom */
+  element?: HTMLElement;
+  /** 子组件 */
+  children?: DesignNode[];
+  /** 实例 */
+  type: Component;
+  /** 组件名称 */
+  componentName?: string;
+  /** 打包对象名 */
+  libary?: string;
+}
+
+export type ComponentSnippet = {
+  /** 组件名 */
+  componentName: string;
+  /** 父节点 */
+  parents?: ComponentSnippet[];
+  /** dom */
+  element?: HTMLElement;
 };
 
 /**
@@ -69,7 +80,7 @@ export enum DeviceType {
   TABLET = "TABLET",
   ALL = "ALL",
 }
-
+/** 设备类型取值 */
 export type DeviceTypeValue = keyof typeof DeviceType;
 /**
  * 场景
@@ -81,9 +92,11 @@ export enum Scenario {
   PWA = "PWA",
   ALL = "ALL",
 }
-
+/** 场景取值 */
 export type ScenarioValue = keyof typeof Scenario;
-
+/**
+ * npm 贡献者信息
+ */
 type NPMContributor = {
   email?: string;
   name?: string;
@@ -144,3 +157,61 @@ export interface ComponentGroup extends PackageCoreInfo {
   /** 具体组件信息 */
   components: ComponentMeta[];
 }
+
+/**
+ * 模式
+ */
+export enum PlatformMode {
+  DESIGN = "DESIGN",
+  PRODUCTION = "PRODUCTION",
+  PREVIEW = "PREVIEW",
+  ALL = "ALL",
+}
+/**
+ * 模式取值
+ */
+export type PlatformModeValue = keyof typeof PlatformMode;
+
+/**
+ * 属性编辑器
+ */
+export type FormDescriptor = {
+  /** 类型 */
+  type: string;
+  /** 默认值 */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultValue?: any;
+
+  children?: any[];
+};
+export type PropDescriptor = {
+  /** 是否隐藏 */
+  hidden?: string;
+  /** 描述 */
+  description?: string;
+  /** 是否展开分组 */
+  expanded?: boolean;
+  /** 组件信息 */
+  descriptor?: FormDescriptor[];
+
+  children?: PropDescriptor[];
+  /** 是否禁用 */
+  disabled?: boolean;
+
+  /** 所在分区 */
+  tab: string;
+  /** 所在分组 */
+  group: string;
+  /** 中文名称 */
+  label: string;
+  /** 属性名称 */
+  name: string;
+  // // 展示类型
+  // display: 'block' | 'popup' | 'entry';
+  // 组件
+  component: ComponentType;
+  /** 是否隐藏 */
+  condition?: (values: unknown) => boolean;
+  /** 序号 */
+  order?: number;
+};

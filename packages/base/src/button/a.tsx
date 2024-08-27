@@ -1,18 +1,22 @@
-import { Component } from "@soda/core";
+import { Component, Widget, reactive } from "@soda/core";
 
 /**
- * 表示一个按钮
- * @label 按钮
+ * 表示一个A
+ * @label A
  * @icon ./button.svg
  * @hidden false
  */
+@Widget
 export class A extends Component {
   /**
    * @label 字符串
    */
-  str1 = "初始值";
+  @reactive str = "初始值";
 
+  test(str: string) {
+    this.str = str;
+  }
   render() {
-    return 111;
+    return <span>{this.str}</span>;
   }
 }

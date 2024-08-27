@@ -11,9 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "jsxFactory": "jsx",
-    "jsxFragmentFactory": "jsx.Fragment",
+    "jsx": "react-jsx",
     "experimentalDecorators": true,
     /* Linting */
     "strict": false,

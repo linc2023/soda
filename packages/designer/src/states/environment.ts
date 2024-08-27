@@ -1,7 +1,6 @@
 import { makeObservable, computed, action } from "mobx";
 import { reactive } from "@soda/core";
-import { PlatformModelValue } from "../plugin";
-import { DeviceTypeValue, ScenarioValue } from "@soda/utils";
+import { DeviceTypeValue, PlatformModeValue, ScenarioValue } from "@soda/utils";
 
 export default class EnvironmentState {
   constructor() {
@@ -18,7 +17,7 @@ export default class EnvironmentState {
   /**
    * 环境
    */
-  @reactive model: PlatformModelValue = "DESIGN";
+  @reactive mode: PlatformModeValue = "DESIGN";
   /**
    * 类名前缀
    */
@@ -27,25 +26,15 @@ export default class EnvironmentState {
    * 是否是设计态
    */
   @computed get designMode() {
-    return this.model === "DESIGN";
+    return this.mode === "DESIGN";
   }
   /**
    * 环境初始化
    * @param opts
    */
-  @action async init(
-    opts: {
-      device: DeviceTypeValue;
-      scenario: ScenarioValue;
-      model: PlatformModelValue;
-    } = {
-      device: "PC",
-      model: "DESIGN",
-      scenario: "WEB",
-    }
-  ) {
-    this.device = opts.device;
-    this.model = opts.model;
-    this.scenario = opts.scenario;
+  @action async init(opts: { device?: DeviceTypeValue; scenario?: ScenarioValue; mode?: PlatformModeValue }) {
+    this.device = opts.device ?? "PC";
+    this.mode = opts.mode ?? "DESIGN";
+    this.scenario = opts.scenario ?? "WEB";
   }
 }

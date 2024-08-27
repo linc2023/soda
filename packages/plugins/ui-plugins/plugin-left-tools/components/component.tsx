@@ -7,16 +7,25 @@ import { ReactNode } from "react";
 @Widget
 export default class ComponentWidget extends Component<GlobalStateProps> {
   @computed get groups() {
-    return globalState.component.components;
+    return globalState.component.componentMeta;
   }
   /**
    * 搜索条件
    */
   @reactive keyWord = "";
 
-  onDragStart = (component: ComponentMeta) => {
+  onDragStart = ({ displayName, packageName, packageVersion, componentName, isContainer }: ComponentMeta) => {
     return (ev) => {
-      return ev.dataTransfer.setData("componentMeta", JSON.stringify(component));
+      return ev.dataTransfer.setData(
+        "componentMeta",
+        JSON.stringify({
+          displayName,
+          packageName,
+          packageVersion,
+          componentName,
+          isContainer,
+        })
+      );
     };
   };
 
@@ -25,8 +34,8 @@ export default class ComponentWidget extends Component<GlobalStateProps> {
     const groups = [];
     const groupMap = {};
     originGroups
-      .filter(({ label, componentName }) => {
-        return toPinYin(label).includes(keyWord) || label?.includes(keyWord) || componentName?.startsWith(keyWord);
+      .filter(({ displayName, componentName }) => {
+        return toPinYin(displayName).includes(keyWord) || displayName?.includes(keyWord) || componentName?.startsWith(keyWord);
       })
       .forEach((component) => {
         const { packageName, packageVersion, group: groupName = "默认分组" } = component;
@@ -60,12 +69,12 @@ export default class ComponentWidget extends Component<GlobalStateProps> {
               key,
               style,
               children: children.map((component) => {
-                const { label, icon, hidden, componentName, packageName, packageVersion } = component;
+                const { displayName, icon, hidden, componentName, packageName, packageVersion } = component;
                 const key = `${packageName}-${packageVersion}-${componentName}`;
                 return hidden ? null : (
                   <div className="component-item" key={key} draggable onDragStart={onDragStart(component)}>
                     <img src={icon} alt="" />
-                    <div className="component-name">{label}</div>
+                    <div className="component-name">{displayName}</div>
                   </div>
                 );
               }),

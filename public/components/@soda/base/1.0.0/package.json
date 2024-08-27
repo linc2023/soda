@@ -9,9 +9,6 @@
   "description": "",
   "license": "ISC",
   "keywords": [],
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "createTime": "2024-08-22 16:36:03"
+  "dependencies": {},
+  "createTime": "2024-08-27 16:47:22"
 }
