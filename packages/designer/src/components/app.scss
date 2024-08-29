@@ -14,6 +14,8 @@
   .#{$project-prefix}-designer-left {
     padding: 0px 4px;
     background: $background-color;
+    display: flex;
+    flex-direction: column;
     .#{$project-prefix}-left-group-0 {
       display: flex;
       flex-direction: column;

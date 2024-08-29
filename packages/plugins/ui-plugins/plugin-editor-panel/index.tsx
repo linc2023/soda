@@ -18,14 +18,14 @@ export class EditorPlugin extends UIPlugin {
   }
 
   componentDidMount(): void {
-    this.$on("selectedNode:change", (selectedNode: DesignNode) => {
+    this.$on("designNode:change", (selectedNode: DesignNode) => {
       const propsConfig = globalState.package.getPropsConfig(selectedNode.libary, selectedNode.componentName);
       this.setPropsConfig(propsConfig);
     });
   }
   @action onValuesChange = (value: unknown) => {
     const key = Object.keys(value)[0];
-    this.$emit("selectedNode:propsChange", key, value[key]);
+    this.$emit("designNode:propsChange", key, value[key]);
   };
   render(): ReactNode {
     const propsConfig: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};

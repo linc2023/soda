@@ -1,73 +1,74 @@
-@import '../../../core/variable.scss';
+@import "../../../core/variable.scss";
 
-.#{$project-prefix}-left-tool{
-    width: 100%;
-    box-sizing: border-box;
-    flex: 1;
-    overflow: hidden;
-    border: $border-width solid $border-color;
-    .ant-segmented{
-        margin: 8px
+.#{$project-prefix}-left-tool {
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden;
+  margin-bottom: $margin-sm;
+  border: $border-width solid $border-color;
+  .ant-segmented {
+    margin: 8px;
+  }
+  .#{$project-prefix}-component-wrapper {
+    height: calc(100% - 48px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .wrapper-name {
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $text-color;
+      height: 38px;
+      line-height: 38px;
+      padding-left: $padding-x;
+      margin: 8px;
     }
-    .#{$project-prefix}-component-wrapper{
-        height: calc(100% - 48px);
+    .ant-input {
+      margin: 0px 8px 8px 8px;
+      border-radius: $border-radius-sm;
+      width: calc(100% - 16px);
+    }
+    .ant-collapse {
+      width: 100%;
+      flex: 1;
+      overflow: auto;
+      .ant-collapse-content-box {
+        padding: 8px 4px;
         display: flex;
-        flex-direction: column;
-        gap: 8px;
-        .wrapper-name{
-            font-size: $font-size-lg;
-            font-weight: 700;
-            color: $text-color;
-            height: 38px;
-            line-height: 38px;
-            padding-left: $padding-x;
-            margin: 8px;
+        flex-wrap: wrap;
+        gap: 4px 8px;
+      }
+      .ant-collapse-header {
+        padding: 8px 8px 4px 8px;
+        border-bottom: 1px solid $border-color;
+        .ant-collapse-header-text {
+          font-size: $font-size-sm;
+          color: $text-color;
+          font-weight: 700;
         }
-        .ant-input{
-            margin: 0px 8px 8px 8px;
-            border-radius: $border-radius-sm;
-            width: calc(100% - 16px);
+      }
+      .component-item {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        border: 1px solid #dee1e4;
+        border-radius: $border-radius;
+        height: 40px;
+        padding: 0px 8px;
+        cursor: move;
+        width: calc(50% - 22px);
+        &:hover {
+          box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.15);
         }
-        .ant-collapse{
-            width: 100%;
-            flex: 1;
-            overflow: auto;
-            .ant-collapse-content-box{
-                padding: 8px 4px;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px 8px;
-            }
-            .ant-collapse-header{
-                padding: 8px 8px 4px 8px;
-                border-bottom: 1px solid $border-color;
-                .ant-collapse-header-text{
-                    font-size: $font-size-sm;
-                    color: $text-color;
-                    font-weight: 700;
-                }
-            }
-            .component-item{
-                display: flex;
-                gap: 4px;
-                align-items: center;
-                border: 1px solid #dee1e4;
-                border-radius: $border-radius;
-                height: 40px;
-                padding: 0px 8px;
-                cursor: move;
-                width: calc(50% - 22px);
-                &:hover{
-                    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, .15);
-                }
-                img{
-                    width: 24px;
-                }
-                .component-name{
-                    color: $text-color;
-                    font-size: $font-size-sm;
-                }
-            }
+        img {
+          width: 24px;
         }
+        .component-name {
+          color: $text-color;
+          font-size: $font-size-sm;
+        }
+      }
     }
+  }
 }

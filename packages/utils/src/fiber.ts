@@ -18,6 +18,17 @@ export function findFiberAndElement(fiber, condition: (fiber) => boolean) {
   }
   return { fiber: null, element: null };
 }
+/**
+ * 根据 fiber 查找 DOM
+ * @param fiber
+ * @returns
+ */
+export function findDomByFiber(fiber) {
+  while (fiber.tag !== 5) {
+    fiber = fiber.child;
+  }
+  return fiber?.stateNode;
+}
 
 /**
  * 获取设计信息

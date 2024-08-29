@@ -1,5 +1,5 @@
 // 全局前缀
-$project-prefix: 'soda';
+$project-prefix: "soda";
 
 // 配色方案
 $primary-color: #047aff;
@@ -8,7 +8,7 @@ $primary-color-active: #0362cc;
 $primary-background-color: #e5f1ff;
 $primary-background-color-hover: #b3d7ff;
 $primary-background-color-active: #80bbff;
-$success-color: #08CB85;
+$success-color: #08cb85;
 $success-color-hover: #49e591;
 $success-color-active: #00b252;
 $success-background-color: #e6fcf0;
@@ -20,7 +20,7 @@ $warning-color-active: #cc8700;
 $warning-background-color: #fff7e6;
 $warning-background-color-hover: #ffe5b3;
 $warning-background-color-active: #ffd480;
-$error-color: #FF4C4C;
+$error-color: #ff4c4c;
 $error-color-hover: #ff8d69;
 $error-color-active: #cc5a36;
 $error-background-color: #fff1ec;
@@ -32,9 +32,8 @@ $text-color: #011833;
 // $text-color-light: #677485;
 // $text-color-lighter: #b3bac2;
 
-
 // 边框颜色
-$border-color: #DEE1E4;
+$border-color: #dee1e4;
 // 线粗，用于输入框、按钮、分割线等
 $border-width: 1px;
 
@@ -57,21 +56,21 @@ $font-size-sm: $font-size-base - 2px; // 小号字体，最小不能小于 12px
 
 // 盒子内部的垂直留白
 $padding-y-base: 4px;
-$padding-y: $padding-y-base; 
+$padding-y: $padding-y-base;
 $padding-y-lg: $padding-y-base + 2px;
 $padding-y-sm: calc($padding-y-base - 2px);
 $padding-y-xs: calc($padding-y-base - 8px);
 
 // 盒子内部的水平留白
 $padding-x-base: 12px;
-$padding-x: $padding-x-base; 
+$padding-x: $padding-x-base;
 $padding-x-lg: $padding-x-base + 4px;
 $padding-x-sm: calc($padding-x-base - 4px);
 $padding-x-xs: calc($padding-x-base - 8px);
 
 // 盒子之间的垂直留白
 $margin-x-base: 12px;
-$margin-x: $margin-x-base; 
+$margin-x: $margin-x-base;
 $margin-x-lg: $margin-x-base + 4px;
 $margin-x-sm: calc($margin-x-base - 4px);
 $margin-x-xs: calc($margin-x-base - 8px);
@@ -79,13 +78,13 @@ $margin-x-xxs: calc($margin-x-base - 10px);
 
 // 盒子之间的水平留白
 $margin-y-base: 12px;
-$margin-y: $margin-y-base; 
+$margin-y: $margin-y-base;
 $margin-y-lg: $margin-y-base + 4px;
 $margin-y-sm: calc($margin-y-base - 4px);
 
 // 盒子之间留白
 $margin-base: 12px;
-$margin: $margin-base; 
+$margin: $margin-base;
 $margin-lg: $margin-base + 4px;
 $margin-sm: calc($margin-base - 4px);
 

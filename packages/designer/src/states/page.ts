@@ -1,5 +1,5 @@
 import { makeObservable, action } from "mobx";
-import { Component, reactive } from "@soda/core";
+import { Component, computed, reactive } from "@soda/core";
 import { ComponentMeta, NodeSchema, PageSchema, getMainVersion, packageNameToCamelCase, uuid } from "@soda/utils";
 import PackageState from "./package";
 

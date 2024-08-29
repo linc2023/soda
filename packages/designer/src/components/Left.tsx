@@ -1,5 +1,6 @@
-import { Component, Node, CSSProperties } from "@soda/core";
-import { GlobalStateProps, UIPluginPlacement, PluginRender, globalState } from "@soda/designer";
+import { Component } from "@soda/core";
+import { GlobalStateProps, UIPluginPlacement, globalState, pluginRunder } from "@soda/designer";
+import { CSSProperties } from "react";
 
 type LeftProps = {
   width?: number;
@@ -13,12 +14,11 @@ export default class Left extends Component<GlobalStateProps & LeftProps> {
    */
   placement: UIPluginPlacement = "left";
 
-  render(): Node {
-    const { placement } = this;
+  render() {
     const { style = {}, className = "", width = 240 } = this.props;
     return (
       <div className={`${globalState.environment.$project_name}-designer-left ${className}`} style={{ width, height: "100%", ...style }}>
-        {<PluginRender placement={placement}></PluginRender>}
+        {pluginRunder(this.placement)}
       </div>
     );
   }

@@ -1,14 +1,11 @@
-import { Component, Widget, computed, reactive } from "@soda/core";
+import { Component, Widget, reactive } from "@soda/core";
 import { ComponentMeta, toPinYin } from "@soda/utils";
 import { Collapse, Input } from "@soda/common";
 import { GlobalStateProps, globalState } from "@soda/designer";
 import { ReactNode } from "react";
 
 @Widget
-export default class ComponentWidget extends Component<GlobalStateProps> {
-  @computed get groups() {
-    return globalState.package.componentMeta;
-  }
+export default class ComponentPanel extends Component<GlobalStateProps> {
   /**
    * 搜索条件
    */
@@ -30,7 +27,8 @@ export default class ComponentWidget extends Component<GlobalStateProps> {
   };
 
   render(): ReactNode {
-    const { groups: originGroups, keyWord, onDragStart } = this;
+    const { keyWord, onDragStart } = this;
+    const originGroups = globalState.package.componentMeta;
     const groups = [];
     const groupMap = {};
     originGroups

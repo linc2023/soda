@@ -2,7 +2,7 @@ import { globalState } from "../states";
 import React, { DragEvent, ReactNode, createRef } from "react";
 import ReactDOM from "react-dom/client";
 import { BorderBox, DesignNodeBox } from "../components/borderBox";
-import { ComponentMeta, DesignNode, findDesignInfoByDOM } from "@soda/utils";
+import { ComponentMeta, DesignNode, findDesignInfoByDOM, findDomByFiber } from "@soda/utils";
 import { UIPlugin } from "..";
 import { Widget, WebRender, reactive, action } from "@soda/core";
 
@@ -46,15 +46,25 @@ export class Designer extends UIPlugin {
     const res = globalState.page.getLibraryByComponentName(designNode.type, this.componentMap);
     designNode.componentName = res.componentName;
     designNode.libary = res.packageName;
-    this.$emit("selectedNode:change", designNode);
+    this.$emit("designNode:change", designNode);
     this.designNode = designNode;
   };
   componentDidMount(): void {
-    this.$on("selectedNode:propsChange", (key: string, value: any) => {
+    this.$on("designNode:propsChange", (key: string, value: any) => {
       const node = globalState.page.getNodeSchemaById(this.designNode.id);
       node.props[key] = value;
       this.webRenderRef.current.modifyNodeProps(this.designNode.id, key, value);
       setTimeout(() => (this.designNode = { ...this.designNode }));
+    });
+    this.$on("designNode:changeDesignNodeById", (id: string) => {
+      const instance = this.webRenderRef.current.$refs[id];
+      const fiber = instance._reactInternals;
+      const element = findDomByFiber(fiber);
+      this.chooseNode({ element, type: fiber?.type, id: fiber?.key });
+      // const node = globalState.page.getNodeSchemaById(this.designNode.id);
+      // node.props[key] = value;
+      // this.webRenderRef.current.modifyNodeProps(this.designNode.id, key, value);
+      // setTimeout(() => (this.designNode = { ...this.designNode }));
     });
   }
 

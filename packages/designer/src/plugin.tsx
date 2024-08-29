@@ -108,22 +108,15 @@ export type PluginOptions = {
 /**
  * 渲染插件
  */
-@Widget
-export class PluginRender extends Component<{ placement: UIPluginPlacement; props?: Record<string, unknown> }> {
-  render(): ReactNode {
-    const { placement, props = {} } = this.props;
-    const uiPlugins = globalState.plugin.uiPlugins;
-    const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
-    return pluginGroup.map(({ groupCode, plugins }) => {
-      return (
-        <div key={groupCode} style={{ width: "100%", height: "100%" }}>
-          {plugins.map((fn: () => any) => {
-            const Plugin = fn();
-            const key = `${placement}-plugin-${Plugin.pluginName}`;
-            return <Plugin {...props} key={key} />;
-          })}
-        </div>
-      );
+
+export function pluginRunder(placement: UIPluginPlacement, props: Record<string, unknown> = {}) {
+  const uiPlugins = globalState.plugin.uiPlugins;
+  const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
+  return pluginGroup.map(({ plugins }) => {
+    return plugins.map((fn: () => any) => {
+      const Plugin = fn();
+      const key = `${placement}-plugin-${Plugin.pluginName}`;
+      return <Plugin {...props} key={key} />;
     });
-  }
+  });
 }
