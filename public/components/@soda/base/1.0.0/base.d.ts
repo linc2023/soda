@@ -4,17 +4,18 @@ declare module "base" {
 	export * from "base/button/a";
 	export * from "base/span";
 	export const a = 1;
+	export * from "base/event";
 	export function add(num1: number, num2: number): number;
 }
 declare module "base/button/button" {
-	import { Component } from "@soda/core";
+	import { BaseComponent } from "@soda/core";
 	/**
 	 * 表示一个按钮
 	 * @label 按钮
 	 * @icon ./button.svg
 	 * @order 12
 	 */
-	export class Button extends Component {
+	export class Button extends BaseComponent {
 	    /**
 	     * @label 属性/字符串1
 	     */
@@ -104,14 +105,14 @@ declare module "base/button/button" {
 	}
 }
 declare module "base/button/a" {
-	import { Component } from "@soda/core";
+	import { BaseComponent } from "@soda/core";
 	/**
 	 * 表示一个A
 	 * @label A
 	 * @icon ./button.svg
 	 * @hidden false
 	 */
-	export class A extends Component {
+	export class A extends BaseComponent {
 	    /**
 	     * @label 字符串
 	     */
@@ -121,18 +122,58 @@ declare module "base/button/a" {
 	}
 }
 declare module "base/span" {
-	import { Component } from "@soda/core";
+	import { BaseComponent } from "@soda/core";
 	/**
 	 * 表示一个文本组件
 	 * @label 文本
 	 * @icon ./span.svg
 	 * @order 12
 	 */
-	export class Span extends Component {
+	export class Span extends BaseComponent {
 	    /**
 	     * @label 属性/字符串
 	     */
 	    num: number;
 	    render(): JSX.Element;
 	}
+}
+declare module "base/event" {
+	import { BaseComponent } from "@soda/core";
+	type User = {
+	    name: string;
+	    age: string;
+	};
+	type Params = {
+	    total: number;
+	    list: User[];
+	};
+	type Handler = (data: number) => void;
+	/**
+	 * 表示一个事件测试
+	 * @label 事件测试
+	 */
+	export class EventTest extends BaseComponent {
+	    /**
+	     * @label 只有声明
+	     */
+	    onClick: () => void;
+	    /**
+	     * @label 类型声明
+	     */
+	    onSearch: Handler;
+	    /**
+	     * @label 默认事件
+	     * @param res
+	     */
+	    onSuccess(res: Params): void;
+	    /**
+	     * 属性声明
+	     * @param error
+	     */
+	    onError: (error?: {
+	        message: string;
+	    }) => void;
+	    render(): JSX.Element;
+	}
+	export {};
 }

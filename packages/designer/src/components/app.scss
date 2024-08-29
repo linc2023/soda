@@ -4,6 +4,7 @@
   display: flex;
   background: $background-color-lighter;
   .#{$project-prefix}-designer-main {
+    user-select: none;
     flex: 1;
     margin: 16px;
     background: $background-color;

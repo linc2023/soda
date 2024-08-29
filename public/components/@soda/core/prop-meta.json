@@ -1,60 +1,62 @@
 {
   "Component": [
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ],
   "Container": [
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "canDesign",
       "description": "是否可设计"
     },
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ],
   "ReactRenderer": [],
   "Page": [
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ],
   "WebRender": [
     {
-      "descriptor": [
-        {
-          "type": "object",
-          "children": []
-        }
-      ],
+      "editorsProps": [],
       "name": "refsMap",
       "description": "refs"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "$refs",
       "description": "所有 refs"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "getComponent",
       "description": "查询组件"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "schemasToComponent",
       "description": "通过组件 schema 渲染组件"
     },
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    }
+  ],
+  "TypeEditor": [
+    {
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ]

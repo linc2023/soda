@@ -23,6 +23,11 @@
       "order": "12",
       "componentName": "Span",
       "displayName": "文本"
+    },
+    {
+      "description": "表示一个事件测试",
+      "componentName": "EventTest",
+      "displayName": "事件测试"
     }
   ]
 }

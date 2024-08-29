@@ -9,13 +9,19 @@ export default class EventState {
    * @param plugin 插件
    * @param options 额外信息
    */
-  on(eventName: string | string[], plugin: LogicPlugin, options: PluginOptions = { allowOverride: false }) {
+  on(eventName: string | string[], plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), options: PluginOptions = { allowOverride: false }) {
     const register = (event: string, plugin: LogicPlugin) => {
+      if (typeof plugin === "function") {
+        const tmp = new LogicPlugin();
+        tmp.exec = plugin;
+        tmp.uniqueName = eventName as string;
+        plugin = tmp;
+      }
       const { logicPluginMap } = this;
       if (!logicPluginMap[event]) {
         logicPluginMap[event] = [];
       }
-      const { uniqueName } = plugin;
+      const uniqueName = plugin.uniqueName ?? eventName;
       const pluginIndex = logicPluginMap[event].findIndex((i) => {
         if (uniqueName?.length > 0) {
           return i.uniqueName === uniqueName || i.exec === plugin.exec;
@@ -24,7 +30,7 @@ export default class EventState {
       });
       if (pluginIndex >= 0) {
         if (!options.allowOverride) {
-          throw new Error(`LogicPlugin with name ${uniqueName} exist`);
+          console.warn(`LogicPlugin with name ${uniqueName} exist`);
         }
         logicPluginMap[event][pluginIndex] = plugin;
         return;
@@ -70,8 +76,8 @@ export default class EventState {
       }
     };
     if (Array.isArray(eventName)) {
-      for (const evemt of eventName) {
-        await exec(evemt);
+      for (const event of eventName) {
+        await exec(event);
       }
     } else {
       await exec(eventName);

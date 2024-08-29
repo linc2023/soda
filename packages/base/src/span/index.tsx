@@ -1,8 +1,8 @@
-import { Widget, reactive, Component } from "@soda/core";
+import { Widget, reactive, BaseComponent } from "@soda/core";
 import "./span.scss";
 import { ReactNode } from "react";
 
-class A extends Component {
+class A extends BaseComponent {
   render(): ReactNode {
     return (
       <div>
@@ -19,7 +19,7 @@ class A extends Component {
  * @order 12
  */
 @Widget
-export class Span extends Component {
+export class Span extends BaseComponent {
   /**
    * @label 属性/字符串
    */

@@ -21,6 +21,10 @@
     {
       "description": "渲染浏览器组件",
       "componentName": "WebRender"
+    },
+    {
+      "hidden": "true",
+      "componentName": "TypeEditor"
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { Component, reactive, Widget } from "@soda/core";
+import { BaseComponent, reactive, Widget } from "@soda/core";
 import "./button.scss";
 
 /**
@@ -8,7 +8,7 @@ import "./button.scss";
  * @order 12
  */
 @Widget
-export class Button extends Component {
+export class Button extends BaseComponent {
   /**
    * @label 属性/字符串1
    */

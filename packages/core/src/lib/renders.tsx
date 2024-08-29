@@ -1,20 +1,24 @@
 import { ElementType, ReactNode, forwardRef } from "react";
 import { Component, Container } from "./component";
-import { PageSchema, getMainVersion, packageNameToCamelCase } from "@soda/utils";
+import { NodeSchema, PageSchema, getMainVersion, packageNameToCamelCase } from "@soda/utils";
 
 /**
  * @container
  */
-export class Page extends Component {
+export class Page extends Container {
   render() {
     const { children } = this.props;
-    return <div className="default-page">{children}</div>;
+    return (
+      <div className="default-page" style={{ width: "100%", height: "100%" }}>
+        {children}
+      </div>
+    );
   }
 }
 
 type RenderType = {
   schema: PageSchema;
-  componentMap: { [key: string]: { version: string; [key: string]: object | string }[] };
+  componentMap: { [key: string]: { [key: string]: Component }[] };
 };
 
 abstract class Render extends Component<RenderType> {
@@ -38,8 +42,8 @@ abstract class Render extends Component<RenderType> {
       const libName = packageNameToCamelCase(packageName) + getMainVersion(version);
       return componentMap[libName][componentName];
     };
-    const pkg = this.props.schema.components.find(({ componentName: cname }) => componentName === cname);
-    let Comp = pkg ? findComponent(pkg) : null;
+    const meta = this.props.schema.components.find(({ componentName: cname }) => componentName === cname);
+    let Comp = meta ? findComponent(meta) : null;
     if (!Comp) {
       if (componentName === "Page") {
         Comp = Page;
@@ -47,6 +51,7 @@ abstract class Render extends Component<RenderType> {
         Comp = forwardRef(() => <div>{componentName}组件不存在</div>);
       }
     }
+    Comp.__componentMeta = meta;
     return Comp as ElementType;
   }
   /**
@@ -55,17 +60,26 @@ abstract class Render extends Component<RenderType> {
    * @param componentMap
    * @returns
    */
-  schemasToComponent(schemas: PageSchema["componentsTree"], componentMap = this.props.componentMap) {
+  schemasToComponent(schemas: NodeSchema[], componentMap = this.props.componentMap) {
     return schemas.map((schema) => {
-      const { componentName, id, children: childrenMeta, props = {}, advanced: { isContainer = true } = { isContainer: true } } = schema;
+      const { componentName, id, children: childrenMeta, props, advanced: { isContainer } = { isContainer: false } } = schema;
       const Comp = this.getComponent(componentName, componentMap);
       const children = !Array.isArray(childrenMeta) ? null : this.schemasToComponent(childrenMeta, componentMap);
       return (
-        <Comp key={id} id={id} {...props} ref={(ref) => (this.refsMap[id] = ref)}>
+        <Comp key={id} id={id} {...this.calcProps(props)} ref={(ref) => (this.refsMap[id] = ref)}>
           {isContainer ? <Container children={children}></Container> : children}
         </Comp>
       );
     });
+  }
+  calcProps(props = {}) {
+    const res = {};
+    Object.keys(props).forEach((key) => {
+      // if (props[key]?.type === "function") {
+      // }
+      res[key] = props[key];
+    });
+    return res;
   }
 }
 
@@ -76,5 +90,10 @@ export class WebRender extends Render {
   render(): ReactNode {
     const { componentsTree } = this.props.schema;
     return <>{this.schemasToComponent(componentsTree)}</>;
+  }
+  modifyNodeProps(nodeId: string, propKey: string, value: any) {
+    if (this.$refs && this.$refs[nodeId] && this.$refs[nodeId][propKey]) {
+      this.$refs[nodeId][propKey] = value;
+    }
   }
 }

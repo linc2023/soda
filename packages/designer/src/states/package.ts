@@ -1,11 +1,15 @@
 import { makeObservable, action } from "mobx";
 import { computed, reactive } from "@soda/core";
-import { ComponentGroup, PropDescriptor, getLibName, getMainVersion } from "@soda/utils";
+import { ComponentGroup, EditorDescriptor, PropDescriptor, getLibName, getMainVersion } from "@soda/utils";
 
 import { Http } from "../utils";
-import { A, Button, Span } from "@soda/base";
+import { A, Button, EventTest, Span } from "@soda/base";
+import { StringTypeEditor } from "../typeEditor/editors/stringTypeEditor";
+import { ColorTypeEditor } from "../typeEditor/editors/colorTypeEditor";
+import { BooleanTypeEditor } from "../typeEditor/editors/booleanTypeEditor";
+import { NumberTypeEditor } from "../typeEditor/editors/numberTypeEditor";
 
-export default class ComponentState {
+export default class PackageState {
   constructor() {
     makeObservable(this);
   }
@@ -35,13 +39,22 @@ export default class ComponentState {
     }
     this.propsMeta = propsMeta;
   }
-
+  /**
+   * url 注册
+   * @param urls
+   */
   @action async register(urls: string[]) {
     this.urls = urls;
     const [groups, props] = await Promise.all([Promise.all(urls.map((url) => Http.get<ComponentGroup>(`${url}/manifest.json`))), Promise.all(urls.map((url) => Http.get<PropDescriptor[]>(`${url}/prop-meta.json`)))]);
     this.init(groups, props);
   }
-  @action getPropsMeta(packageName: string, componentName: string) {
+  /**
+   * 获取组件配置数据
+   * @param packageName
+   * @param componentName
+   * @returns
+   */
+  @action getPropsConfig(packageName: string, componentName: string) {
     return this.propsMeta[packageName]?.[componentName] ?? [];
   }
   /**
@@ -71,6 +84,27 @@ export default class ComponentState {
         map[library] = [classes];
       }
     });
-    return Object.keys(map).length ? map : { sodaBase1: { Span, A, Button, version: "1.0.0" } };
+    return Object.keys(map).length ? map : { sodaBase1: { Span, A, Button, EventTest, version: "1.0.0" } };
+  }
+  /**
+   * 根据类型获取属性编辑器
+   * @param descriptor
+   * @returns
+   */
+  @action getEditors(descriptors: EditorDescriptor[]) {
+    const getEditorComponrnt = (type: string) => {
+      switch (type) {
+        case "number":
+          return NumberTypeEditor;
+        case "Color":
+          return ColorTypeEditor;
+        case "boolean":
+          return BooleanTypeEditor;
+        case "string":
+        default:
+          return StringTypeEditor;
+      }
+    };
+    return descriptors.map((i) => getEditorComponrnt(i.type));
   }
 }

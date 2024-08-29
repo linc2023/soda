@@ -1,175 +1,150 @@
-import * as SodaCore from "@soda/core";
 import { globalState } from "../states";
 import React, { DragEvent, ReactNode, createRef } from "react";
 import ReactDOM from "react-dom/client";
 import { BorderBox, DesignNodeBox } from "../components/borderBox";
-import { ComponentMeta, DesignNode, PageSchema, getMainVersion, packageNameToCamelCase, uuid } from "@soda/utils";
+import { ComponentMeta, DesignNode, findDesignInfoByDOM } from "@soda/utils";
+import { UIPlugin } from "..";
+import { Widget, WebRender, reactive, action } from "@soda/core";
 
-const schema: PageSchema = {
-  components: [
-    { package: "@soda/base", version: "1.0.0", componentName: "A" },
-    { package: "@soda/base", version: "1.0.0", componentName: "Button" },
-    { package: "@soda/base", version: "1.0.0", componentName: "Span" },
-  ],
-  componentsTree: [
-    {
-      componentName: "Page",
-      id: "aqasiz7lkk7a3dy222z1",
-      children: [
-        { componentName: "A", id: "aqasiz7lkk7a3dyz1" },
-        { componentName: "Button", id: "kje68elzgza63nve2" },
-        { componentName: "A", id: "aqasiz7lkk7a3dyz" },
-        { componentName: "Span", id: "kje68elzgza63nve" },
-      ],
-    },
-  ],
-};
-
-@SodaCore.Widget
-export class Designer extends SodaCore.Component {
+@Widget
+export class Designer extends UIPlugin {
   /** 需要挂载的根节点 */
-  solidDesignNodeBoxRef = createRef<any>();
-  dashBorderBoxRef = createRef<any>();
-  /** schema */
-  @SodaCore.reactive pageSchema = schema;
+  positionRef = createRef<HTMLElement>();
+  webRenderRef = createRef<WebRender>();
+  dragDomRef = createRef<HTMLDivElement>();
+  /** 组件库 */
+  componentMap = globalState.package.componentMap;
+  /** 设计中的节点 */
+  @reactive designNode: DesignNode;
+  /** 鼠标移入节点 */
+  @reactive hoverNode: DesignNode;
+  /** 画布中移动的节点 */
+  moveNode: DesignNode;
 
-  /** 选中节点 */
-  selectedNode: DesignNode;
+  offsetX = 0;
+  offsetY = 0;
 
   render(): ReactNode {
-    const componentMap = globalState.component.componentMap;
     return (
-      <div className={`${globalState.environment.$project_name}-designer-main`} onDragOver={(e) => e.preventDefault()} onPointerMove={this.onPointerMove} onDrop={this.addComponent} onPointerDown={this.onPointerDown}>
-        <SodaCore.WebRender schema={this.pageSchema} mode={globalState.environment.mode} componentMap={componentMap} />
-        <DesignNodeBox borderStyle="solid" ref={this.solidDesignNodeBoxRef} components={[]}></DesignNodeBox>
-        <BorderBox borderWidth={1} borderStyle="dashed" ref={this.dashBorderBoxRef}></BorderBox>
+      <div className={`${globalState.environment.$project_name}-designer-main`} onPointerLeave={this.onPointerLeave} onDragLeave={this.hidePositionRef} onDragOver={this.changePositionRef} onPointerMove={this.onPointerMove} onPointerUp={this.onPointerUp} onDrop={this.insertComponent} onPointerDown={this.onPointerDown}>
+        <WebRender ref={this.webRenderRef} schema={globalState.page.schema} componentMap={this.componentMap} />
+        <div className="design-tool">
+          <DesignNodeBox designNode={this.designNode}></DesignNodeBox>
+          <BorderBox designNode={this.hoverNode} borderWidth={1} borderStyle="dashed"></BorderBox>
+          <div ref={this.dragDomRef} style={{ padding: "8px 10px", boxShadow: "0px 0px 2px 2px #eeeeee", color: "#555555", position: "absolute", pointerEvents: "none" }}></div>
+          <span ref={this.positionRef} style={{ borderLeft: "4px solid #1772f6", position: "absolute" }}></span>
+        </div>
       </div>
     );
   }
-  getLibraryByComponentName(instance: SodaCore.Component) {
-    const componentMap = globalState.component.componentMap;
-    const res = this.pageSchema.components
-      .map(({ package: packageName, version, componentName }) => {
-        const libName = packageNameToCamelCase(packageName) + getMainVersion(version);
-        return {
-          packageName,
-          version,
-          componentName,
-          libName,
-          component: componentMap[libName][componentName],
-        };
-      })
-      .find((c) => c.component === instance) ?? { libName: null, componentName: null };
-    return { packageName: res.libName, componentName: res.componentName };
-  }
+
   /**
    * 选中节点
    * @param designNode
    */
-  chooseNode = (designNode: DesignNode) => {
-    const rect: DOMRect = designNode?.element?.getBoundingClientRect();
-    this.solidDesignNodeBoxRef.current.resize(rect);
-    this.selectedNode = designNode;
-
-    const res = this.getLibraryByComponentName(designNode.type);
+  @action chooseNode = (designNode: DesignNode) => {
+    const res = globalState.page.getLibraryByComponentName(designNode.type, this.componentMap);
     designNode.componentName = res.componentName;
     designNode.libary = res.packageName;
+    this.$emit("selectedNode:change", designNode);
+    this.designNode = designNode;
+  };
+  componentDidMount(): void {
+    this.$on("selectedNode:propsChange", (key: string, value: any) => {
+      const node = globalState.page.getNodeSchemaById(this.designNode.id);
+      node.props[key] = value;
+      this.webRenderRef.current.modifyNodeProps(this.designNode.id, key, value);
+      setTimeout(() => (this.designNode = { ...this.designNode }));
+    });
+  }
 
-    globalState.event.emit("selectedNode:change", designNode);
+  /**
+   * 隐藏插入位置
+   */
+  hidePositionRef = () => {
+    this.positionRef.current.style.height = "0px";
   };
   /**
-   * 绘制虚线框
-   * @param designNode
+   * 修改插入位置
+   * @param ev
    */
-  drawDashBox = (designNode: DesignNode) => {
-    const rect: DOMRect = designNode?.element?.getBoundingClientRect();
-    this.dashBorderBoxRef.current.resize(rect);
-  };
-  addComponent = (ev: DragEvent) => {
-    const componentMeta: ComponentMeta = JSON.parse(ev.dataTransfer.getData("componentMeta"));
-    this.pageSchema = {
-      ...this.pageSchema,
-      componentsTree: [
-        {
-          ...this.pageSchema.componentsTree[0],
-          children: [...this.pageSchema.componentsTree[0].children, { componentName: componentMeta.componentName, id: uuid() }],
-        },
-      ],
-    };
+  changePositionRef = (ev) => {
+    ev.preventDefault();
+    const slibing = this.findDesignInfoByDOM(ev.target as HTMLElement);
+    let lastChildNode = slibing.element.previousElementSibling;
+    if (slibing.type.__isContainer__) {
+      const childNodes = slibing.element.childNodes;
+      lastChildNode = childNodes[childNodes.length - 1] as HTMLElement;
+    }
+    const { x, y, height, width } = (lastChildNode ?? slibing.element).getBoundingClientRect();
+    this.positionRef.current.style.top = `${y}px`;
+    this.positionRef.current.style.left = `${x + (lastChildNode ? width : 0) - 4}px`;
+    this.positionRef.current.style.height = `${height}px`;
   };
 
-  onPointerUp = (ev) => {
-    this.selectedNode = null;
+  changeDragDOMRef = (ev) => {
+    if (this.moveNode?.componentName) {
+      this.dragDomRef.current.style.left = ev.clientX - this.offsetX + "px";
+      this.dragDomRef.current.style.top = ev.clientY - this.offsetY + "px";
+      this.dragDomRef.current.innerHTML = this.moveNode.componentName;
+      this.dragDomRef.current.style.display = "inline";
+    }
   };
-  onPointerMove = (ev) => {
-    this.drawDashBox(this.findDesignNodeByDOM(ev.target));
-    // const { clientX, clientY } = ev
-    // const {offsetLeft,offsetTop} = ev.target
-    // this.current.node.style.cursor = 'move'
-    // this.current.node.style.left = clientX+ 'px'
-    // this.current.node.style.top = clientY+ 'px'
-    // console.log(ev, 111000);
-    // console.log(clientX,this.dragStartX,offsetLeft)
-    // console.log(clientY,this.dragStartY,offsetTop)
-    // console.log( ev.target,offsetTop,offsetLeft,clientX - offsetLeft, clientY - offsetTop)
+  /**
+   * 新增组件
+   * @param ev
+   */
+  insertComponent = (ev: DragEvent<HTMLElement>) => {
+    const componentMeta: ComponentMeta = JSON.parse(ev.dataTransfer.getData("componentMeta"));
+    const sibling = this.findDesignInfoByDOM(ev.target as HTMLElement);
+    globalState.page.insertNodeSchema(componentMeta, sibling);
+    this.hidePositionRef();
+  };
+
+  @action onPointerUp = (ev) => {
+    const sibling = this.findDesignInfoByDOM(ev.target as HTMLElement);
+    if (this.moveNode && this.moveNode.id !== sibling.id) {
+      const nodeSchema = globalState.page.deleteNode(this.moveNode.id);
+      globalState.page.insertNodeSchema(nodeSchema, sibling);
+    }
+    this.dragDomRef.current.style.display = "none";
+    this.hidePositionRef();
+    this.moveNode = null;
+    setTimeout(() => (this.designNode = { ...this.designNode }));
+  };
+  /**
+   * 鼠标移出
+   */
+  @action onPointerLeave = (ev) => {
+    this.hoverNode = null;
+  };
+  @action onPointerMove = (ev) => {
+    ev.preventDefault();
+    if (this.moveNode) {
+      this.changePositionRef(ev);
+      this.changeDragDOMRef(ev);
+    } else {
+      this.hoverNode = this.findDesignInfoByDOM(ev.target);
+    }
   };
   onPointerDown = (ev) => {
-    this.selectedNode = this.findDesignNodeByDOM(ev.target);
-    this.chooseNode(this.selectedNode);
-    // const { clientX, clientY } = ev;
-    // const { offsetLeft, offsetTop } = ev.target;
-    // this.dragStartX = clientX - offsetLeft;
-    // this.dragStartY = clientY - offsetTop;
-    // this.current.node.style.position = 'absolute'
-    // this.current.node.clientX
-    // if(!componentId){
-    //     return
-    // }
-    // console.log(dom,componentId,1112)
+    const node = this.findDesignInfoByDOM(ev.target);
+    if (!node) {
+      return;
+    }
+    this.offsetX = ev.clientX - node.element.getBoundingClientRect().left;
+    this.offsetY = ev.clientY - node.element.getBoundingClientRect().top;
+    this.moveNode = node;
+    this.chooseNode(node);
   };
   /**
-   * 获取设计节点
-   * @param node
-   * @returns
+   * 获取设计信息
+   * @param dom DOM节点
+   * @returns node 鼠标所在节点
    */
-  findDesignNodeByDOM = (node): DesignNode => {
-    const __reactFiberPropty = Object.keys(node).find((i) => i.startsWith("__reactFiber"));
-    /** 往上找第一个 class 组件 */
-    const findDeisgnNode = (fiber) => {
-      let element = null;
-      while (fiber) {
-        if (fiber.tag === 5) {
-          element = fiber.stateNode;
-        }
-        fiber = fiber.return;
-        if (fiber?.tag == 1) {
-          return { fiber, element };
-        }
-      }
-      return null;
-    };
-    let classComponent = findDeisgnNode(node[__reactFiberPropty]);
-    /** 如果找到的组件不是容器组件，继续找 */
-    let parentClassComponent = classComponent;
-    const parents: DesignNode[] = [];
-    while (parentClassComponent?.fiber) {
-      parentClassComponent = findDeisgnNode(parentClassComponent.fiber);
-      const { element, fiber } = parentClassComponent ?? {};
-      if (!parentClassComponent || !element) {
-        break;
-      }
-      parents.push({ element, type: fiber.type, id: fiber.key });
-      if (["Page"].includes(parentClassComponent.fiber.type.name)) {
-        break;
-      }
-      if (!["Container", "Designer"].includes(parentClassComponent.fiber.type.name)) {
-        classComponent = parentClassComponent;
-      }
-    }
-    if (!classComponent.fiber || !classComponent.fiber.key) {
-      return null;
-    }
-    return { element: classComponent.element, type: classComponent.fiber.type, id: classComponent.fiber.key };
+  findDesignInfoByDOM = (dom: HTMLElement): DesignNode => {
+    const isDesignComponent = (fiber) => fiber?.tag == 1 && fiber?.type.__sodaComponent;
+    return findDesignInfoByDOM(dom, isDesignComponent) as DesignNode;
   };
 }
 

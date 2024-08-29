@@ -26,6 +26,20 @@ export interface ComponentMeta {
   /** 是否是容器 */
   isContainer: boolean;
 }
+
+/**
+ * 节点信息
+ */
+export interface NodeSchema {
+  componentName: string;
+  id: string;
+  props?: any;
+  children?: NodeSchema[];
+  advanced?: {
+    loop?: string;
+    isContainer?: boolean;
+  };
+}
 /**
  * 页面 Schema
  */
@@ -35,16 +49,7 @@ export interface PageSchema {
     version: string;
     componentName: string;
   }[];
-  componentsTree: {
-    componentName: string;
-    id: string;
-    props?: any;
-    children?: PageSchema["componentsTree"];
-    advanced?: {
-      loop?: string;
-      isContainer?: boolean;
-    };
-  }[];
+  componentsTree: NodeSchema[];
 }
 
 export class DesignNode {
@@ -55,11 +60,13 @@ export class DesignNode {
   /** 子组件 */
   children?: DesignNode[];
   /** 实例 */
-  type: Component;
+  type?: Component;
   /** 组件名称 */
   componentName?: string;
   /** 打包对象名 */
   libary?: string;
+  /** 属性信息 */
+  props?: PropDescriptor[];
 }
 
 export type ComponentSnippet = {
@@ -173,17 +180,20 @@ export enum PlatformMode {
 export type PlatformModeValue = keyof typeof PlatformMode;
 
 /**
- * 属性编辑器
+ * 属性编辑器信息
  */
-export type FormDescriptor = {
+export type EditorDescriptor = {
   /** 类型 */
   type: string;
-  /** 默认值 */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  defaultValue?: any;
+  /** 是否禁用 */
+  disabled?: boolean;
 
-  children?: any[];
+  /** 子属性 */
+  children?: PropDescriptor[];
 };
+/**
+ * 属性信息
+ */
 export type PropDescriptor = {
   /** 是否隐藏 */
   hidden?: string;
@@ -192,11 +202,14 @@ export type PropDescriptor = {
   /** 是否展开分组 */
   expanded?: boolean;
   /** 组件信息 */
-  descriptor?: FormDescriptor[];
+  editorsProps?: EditorDescriptor[];
+  /** 子节点 */
+  children: PropDescriptor[];
 
-  children?: PropDescriptor[];
-  /** 是否禁用 */
-  disabled?: boolean;
+  type?: "event" | "property";
+
+  /** 默认值 */
+  defaultValue?: any;
 
   /** 所在分区 */
   tab: string;

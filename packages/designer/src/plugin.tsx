@@ -1,6 +1,6 @@
 import { Component, Widget } from "@soda/core";
 import { globalState } from "./states";
-import { ReactNode, cloneElement, ReactElement } from "react";
+import { ReactNode } from "react";
 import { PlatformModeValue } from "@soda/utils";
 
 export class Event {
@@ -11,21 +11,15 @@ export class Event {
    * @param options
    */
   static $on?(eventName: string | string[], plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), options: PluginOptions = { allowOverride: true }) {
-    if (typeof plugin === "function") {
-      const tmp = new LogicPlugin();
-      tmp.exec = plugin;
-      tmp.uniqueName = eventName as string;
-      plugin = tmp;
-    }
     globalState.event.on(eventName, plugin, options);
   }
   /**
    * 监听事件
    * @param eventName
-   * @param logicPlugin
+   * @param props
    */
-  static $emit?(eventName: string | string[], logicPlugin: LogicPlugin) {
-    globalState.event.emit(eventName, logicPlugin);
+  static $emit?(eventName: string | string[], ...props: unknown[]) {
+    globalState.event.emit(eventName, ...props);
   }
 }
 
@@ -73,10 +67,10 @@ export class UIPlugin extends Component {
   /**
    * 监听事件
    * @param eventName
-   * @param logicPlugin
+   * @param props
    */
-  $emit?(eventName: string | string[], logicPlugin: LogicPlugin) {
-    Event.$emit(eventName, logicPlugin);
+  $emit?(eventName: string | string[], ...props: unknown[]) {
+    Event.$emit(eventName, ...props);
   }
 }
 export class LogicPlugin {
@@ -120,15 +114,15 @@ export class PluginRender extends Component<{ placement: UIPluginPlacement; prop
     const { placement, props = {} } = this.props;
     const uiPlugins = globalState.plugin.uiPlugins;
     const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
-    return pluginGroup.map(({ plugins }) => {
+    return pluginGroup.map(({ groupCode, plugins }) => {
       return (
-        <>
-          {plugins.map((fn) => {
+        <div key={groupCode} style={{ width: "100%", height: "100%" }}>
+          {plugins.map((fn: () => any) => {
             const Plugin = fn();
             const key = `${placement}-plugin-${Plugin.pluginName}`;
             return <Plugin {...props} key={key} />;
           })}
-        </>
+        </div>
       );
     });
   }

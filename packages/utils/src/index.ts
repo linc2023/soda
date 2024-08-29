@@ -4,3 +4,4 @@ export * from "./component";
 export * from "./date";
 export * from "./file";
 export * from "./pkg";
+export * from "./fiber";

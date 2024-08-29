@@ -17,19 +17,18 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
   const declaration = property.declarations![0];
 
   const flags = property.getFlags();
-  const descriptor: PropDescriptor = { descriptor: [] } as unknown as PropDescriptor;
+  const descriptor: PropDescriptor = { editorsProps: [] } as unknown as PropDescriptor;
   descriptor.name = property.name;
   parseBaseDescriptor(property, checker, descriptor);
 
   if (flags & ts.SymbolFlags.Property) {
     const type = checker.getTypeOfSymbolAtLocation(property, declaration);
-    parseType(type, checker, descriptor.descriptor);
+    parseType(type, checker, descriptor.editorsProps);
   }
   if (["onClick", "setText", "getText"].includes(property.name)) {
     // debugger;
   }
   if (flags & ts.SymbolFlags.Method) {
-    console.log();
     // descriptor.type = "Function";
   }
   return descriptor;
@@ -50,7 +49,7 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
     descriptor.hidden = "return true";
   }
   if (modifiers & ts.ModifierFlags.Readonly) {
-    descriptor.disabled = true;
+    // descriptor.disabled = true;
   }
   let jsDoc: ts.JSDoc = (ts.getJSDocCommentsAndTags(declaration) as ts.JSDoc[])[0];
   /** 如果当前属性不存在注释，读取父属性 */
@@ -112,7 +111,7 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
  * @param checker 语义解析器
  * @param descriptor 解析结果
  */
-function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["descriptor"] = []) {
+function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = []) {
   const TypeFlags = type.getFlags();
   if (TypeFlags & ts.TypeFlags.String) {
     descriptor.push({ type: "string" });

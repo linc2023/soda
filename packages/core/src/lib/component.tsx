@@ -2,20 +2,25 @@ import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode } from
 import { ComponentMeta, PageSchema, PlatformModeValue } from "@soda/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export abstract class Component<P = any> extends ReactComponent<P & { mode?: PlatformModeValue }, any, any> {
+export abstract class Component<P = any> extends ReactComponent<P, any, any> {
   abstract render(): ReactNode;
   state: Readonly<P> = {} as Readonly<P>;
 
-  /** @hidden */
-  get mode() {
-    return this.props.mode;
-  }
   setState(): void {
     throw new Error("setState is not allowed");
   }
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.log(error, errorInfo);
   }
+}
+
+export abstract class BaseComponent<P = any> extends Component<P> {
+  /** @hidden */
+  get __mode() {
+    return this.props.__mode;
+  }
+  /** 组件标识 */
+  static __sodaComponent = true;
 }
 
 export type ContainerProps = {
@@ -32,7 +37,9 @@ export type ContainerProps = {
 /**
  * 容器
  */
-export class Container extends Component<ContainerProps> {
+export class Container extends BaseComponent<ContainerProps> {
+  /** 容器组件标识 */
+  static __isContainer__ = true;
   /**
    * 是否可设计
    */

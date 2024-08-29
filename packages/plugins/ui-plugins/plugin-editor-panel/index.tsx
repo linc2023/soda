@@ -1,46 +1,72 @@
-import { Collapse, Dropdown, Form, InputNumber, LinkOutlined, MenuProps, Tabs } from "@soda/common";
-import { Widget, reactive } from "@soda/core";
+import { Collapse, Dropdown, Form, LinkOutlined, Tabs } from "@soda/common";
+import { Widget, action, reactive } from "@soda/core";
 import "./index.scss";
-import { UIPlugin, globalState } from "@soda/designer";
+import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
 import { DesignNode, PropDescriptor } from "@soda/utils";
 import { ReactNode } from "react";
 
 @Widget
 export class EditorPlugin extends UIPlugin {
   @reactive values = {};
-  @reactive editors = [];
+  /** 组件配置 */
+  @reactive propsConfig: PropDescriptor[] = [];
+
+  propsConfigMap: { [key: string]: PropDescriptor } = {};
+
+  @action setPropsConfig(propsConfig) {
+    this.propsConfig = propsConfig;
+  }
+
   componentDidMount(): void {
     this.$on("selectedNode:change", (selectedNode: DesignNode) => {
-      const editors = globalState.component.getPropsMeta(selectedNode.libary, selectedNode.componentName);
-      this.editors = editors;
+      const propsConfig = globalState.package.getPropsConfig(selectedNode.libary, selectedNode.componentName);
+      this.setPropsConfig(propsConfig);
     });
   }
-  getFormCompoent(componentName: string) {
-    return InputNumber;
-  }
+  @action onValuesChange = (value: unknown) => {
+    const key = Object.keys(value)[0];
+    this.$emit("selectedNode:propsChange", key, value[key]);
+  };
   render(): ReactNode {
-    const blocks: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};
-    this.editors.forEach((editor) => {
-      if (!(editor.group?.length > 0)) {
-        editor.group = editor.tab ?? "";
+    const propsConfig: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};
+    const events: PropDescriptor[] = [];
+    this.propsConfig.forEach((item) => {
+      // 隐藏
+      if (item.hidden) {
+        const hidden = !new Function(`return ${item.hidden}`)();
+        if (hidden) {
+          return;
+        }
       }
-      const tab = editor.tab ?? "属性";
-      if (!blocks[tab]) {
-        blocks[tab] = {};
+      // 事件
+      if (item.name.startsWith("on") && item.type === "event") {
+        events.push(item);
+        return;
       }
-      if (!blocks[tab][editor.group]) {
-        blocks[tab][editor.group] = [];
+      const config = { ...item };
+      this.propsConfigMap[item.name] = item;
+      if (!(config.group?.length > 0)) {
+        config.group = config.tab ?? "";
       }
-      if (typeof editor.order !== "number") {
-        editor.order = 0;
+      const tab = config.tab ?? "属性";
+      if (!propsConfig[tab]) {
+        propsConfig[tab] = {};
       }
-      const index = blocks[tab][editor.group].findLastIndex((i: PropDescriptor) => i.order <= editor.order);
-      blocks[tab][editor.group].splice(index + 1, 0, editor);
+      if (!propsConfig[tab][config.group]) {
+        propsConfig[tab][config.group] = [];
+      }
+      if (typeof config.order !== "number") {
+        config.order = 0;
+      }
+      const index = propsConfig[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
+      propsConfig[tab][config.group].splice(index + 1, 0, config);
     });
     const { componentName } = this.props;
 
+    // propsConfig["事件"] = { "": events };
+
     return (
-      <Form onValuesChange={(_changedValues: unknown, values: unknown) => (this.values = values)} className="plugin-editor-panel">
+      <Form onValuesChange={this.onValuesChange} className="plugin-editor-panel">
         <Tabs
           tabBarStyle={{
             height: 40,
@@ -48,14 +74,14 @@ export class EditorPlugin extends UIPlugin {
             borderBottom: "1px solid #DEE1E4",
           }}
           centered
-          items={Object.keys(blocks).map((tab) => {
-            const groups = Object.keys(blocks[tab])
+          items={Object.keys(propsConfig).map((tab) => {
+            const groups = Object.keys(propsConfig[tab])
               .filter((i) => i !== "")
               .map((i) => ({
                 groupName: i,
-                items: blocks[tab][i],
+                items: propsConfig[tab][i],
               }));
-            const items = blocks[tab][""] ?? [];
+            const items = propsConfig[tab][""] ?? [];
             return {
               label: tab,
               key: tab,
@@ -88,11 +114,12 @@ export class EditorPlugin extends UIPlugin {
       </Form>
     );
     function renderFormItems(items) {
-      return items.map((editor) => {
-        const { name, label, descriptor } = editor;
+      return items.map((config) => {
+        const { name, label, editorsProps } = config;
         const key = `${name}-${componentName}`;
-        const visible = editor.condition ? editor.condition(this.values) : true;
-        const FormComponent = this.getFormCompoent(descriptor.type);
+        const visible = config.condition ? config.condition(this.values) : true;
+        const components = globalState.package.getEditors(editorsProps) ?? [];
+        const formComponents = Array.isArray(components) ? components : [];
         return !visible ? null : (
           <div className={`editor-item`} key={key}>
             <Form.Item
@@ -103,7 +130,9 @@ export class EditorPlugin extends UIPlugin {
                 </Dropdown>
               }
             >
-              <FormComponent />
+              {formComponents.map((Comp, key) => {
+                return <Comp key={key} />;
+              })}
             </Form.Item>
             <LinkOutlined></LinkOutlined>
           </div>

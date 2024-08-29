@@ -1,7 +1,7 @@
 {
   "Button": [
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "string"
         }
@@ -11,7 +11,7 @@
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "string"
         }
@@ -21,7 +21,7 @@
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "number"
         }
@@ -31,19 +31,19 @@
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "obj",
       "label": "对象",
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "password",
       "label": "密码框",
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "boolean"
         }
@@ -53,37 +53,37 @@
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "multiLine",
       "label": "文本框",
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "color",
       "label": "颜色",
       "tab": "样式"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "url",
       "label": "文件",
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "select",
       "label": "下拉框",
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "radio",
       "label": "枚举",
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "tuple",
           "children": [
@@ -101,7 +101,7 @@
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "tuple",
           "children": [
@@ -119,7 +119,7 @@
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "array",
           "children": [
@@ -134,7 +134,7 @@
       "tab": "属性"
     },
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "string"
         }
@@ -144,29 +144,29 @@
       "tab": "属性"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "onClick",
       "label": "单击"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "setText",
       "label": "设置按钮内容"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "getText",
       "label": "获取按钮内容"
     },
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ],
   "A": [
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "string"
         }
@@ -175,18 +175,18 @@
       "label": "字符串"
     },
     {
-      "descriptor": [],
+      "editorsProps": [],
       "name": "test"
     },
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ],
   "Span": [
     {
-      "descriptor": [
+      "editorsProps": [
         {
           "type": "number"
         }
@@ -196,8 +196,35 @@
       "tab": "属性"
     },
     {
-      "descriptor": [],
-      "name": "mode",
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    }
+  ],
+  "EventTest": [
+    {
+      "editorsProps": [],
+      "name": "onClick",
+      "label": "只有声明"
+    },
+    {
+      "editorsProps": [],
+      "name": "onSearch",
+      "label": "类型声明"
+    },
+    {
+      "editorsProps": [],
+      "name": "onSuccess",
+      "label": "默认事件"
+    },
+    {
+      "editorsProps": [],
+      "name": "onError",
+      "description": "属性声明"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
       "hidden": "true"
     }
   ]

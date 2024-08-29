@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 @Widget
 export default class ComponentWidget extends Component<GlobalStateProps> {
   @computed get groups() {
-    return globalState.component.componentMeta;
+    return globalState.package.componentMeta;
   }
   /**
    * 搜索条件

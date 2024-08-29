@@ -1,4 +1,4 @@
-import { Component, Widget, reactive } from "@soda/core";
+import { BaseComponent, Widget, reactive } from "@soda/core";
 
 /**
  * 表示一个A
@@ -7,7 +7,7 @@ import { Component, Widget, reactive } from "@soda/core";
  * @hidden false
  */
 @Widget
-export class A extends Component {
+export class A extends BaseComponent {
   /**
    * @label 字符串
    */
@@ -17,6 +17,7 @@ export class A extends Component {
     this.str = str;
   }
   render() {
+    console.log(this.props);
     return <span>{this.str}</span>;
   }
 }

@@ -1,20 +1,23 @@
-import ComponentState from "./component"
-import PluginState from "./plugin"
-import EnvironmentState from "./environment"
-import EventState from './event'
+import PackageState from "./package";
+import PluginState from "./plugin";
+import EnvironmentState from "./environment";
+import EventState from "./event";
+import PageState from "./page";
 
 export const globalState = {
-    component: new ComponentState(),
-    plugin: new PluginState(),
-    environment: new EnvironmentState(),
-    event: new EventState()
-}
+  package: new PackageState(),
+  plugin: new PluginState(),
+  environment: new EnvironmentState(),
+  event: new EventState(),
+  page: new PageState(),
+};
 
 export type GlobalStateProps = {
-    store?: {
-        component: ComponentState;
-        plugin: PluginState,
-        environment: EnvironmentState,
-        event: EventState
-    }
-}
+  store?: {
+    package: PackageState;
+    plugin: PluginState;
+    environment: EnvironmentState;
+    event: EventState;
+    page: PageState;
+  };
+};
