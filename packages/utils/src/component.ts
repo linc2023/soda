@@ -183,14 +183,26 @@ export type PlatformModeValue = keyof typeof PlatformMode;
  * 属性编辑器信息
  */
 export type EditorDescriptor = {
-  /** 类型 */
-  type: string;
-  /** 是否禁用 */
-  disabled?: boolean;
-
   /** 子属性 */
   children?: PropDescriptor[];
+  /** 类型 */
+  type?: PropDescriptorTypeValue;
 };
+
+export enum PropDescriptorType {
+  Property,
+  String,
+  Number,
+  Boolean,
+  Color,
+  Array,
+  Tuple,
+  Function,
+  Method,
+  Object,
+}
+export type PropDescriptorTypeValue = keyof typeof PropDescriptorType;
+
 /**
  * 属性信息
  */
@@ -201,12 +213,15 @@ export type PropDescriptor = {
   description?: string;
   /** 是否展开分组 */
   expanded?: boolean;
+  /** 默认属性编辑器 */
+  defaultEditorType: PropDescriptorTypeValue;
   /** 组件信息 */
   editorsProps?: EditorDescriptor[];
   /** 子节点 */
   children: PropDescriptor[];
 
-  type?: "event" | "property";
+  /** 是否禁用 */
+  disabled?: boolean;
 
   /** 默认值 */
   defaultValue?: any;
@@ -223,8 +238,7 @@ export type PropDescriptor = {
   // display: 'block' | 'popup' | 'entry';
   // 组件
   component: ComponentType;
-  /** 是否隐藏 */
-  condition?: (values: unknown) => boolean;
+
   /** 序号 */
   order?: number;
 };

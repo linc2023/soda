@@ -48,7 +48,6 @@ function parseComponent(exportedSymbol: ts.Symbol, typeChecker: ts.TypeChecker):
   const componentDescriptor = parseClassComments(declaration);
   componentDescriptor.componentName = symbol.name;
   componentDescriptor.displayName = componentDescriptor.label;
-  delete componentDescriptor.label;
   const propsDescriptor = component
     .getProperties()
     .map((property) => parseClassProperties(property, typeChecker))

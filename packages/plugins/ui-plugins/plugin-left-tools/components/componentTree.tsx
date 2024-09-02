@@ -1,7 +1,9 @@
 import { Tree } from "@soda/common";
+import { Widget } from "@soda/core";
 import { UIPlugin, globalState } from "@soda/designer";
 import { ReactNode } from "react";
 
+@Widget
 export class ComponentTree extends UIPlugin {
   render(): ReactNode {
     const treeData = globalState.page.schema.componentsTree as unknown[];

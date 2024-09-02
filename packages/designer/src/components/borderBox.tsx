@@ -1,4 +1,4 @@
-import { Component, Widget } from "@soda/core";
+import { Component } from "@soda/core";
 import { DesignNode } from "@soda/utils";
 import { CSSProperties, ReactNode } from "react";
 
@@ -16,7 +16,6 @@ export class BorderBox extends Component<{ borderStyle: "dashed" | "solid"; bord
   }
 }
 
-@Widget
 export class DesignNodeBox extends Component<{ designNode: DesignNode }> {
   render(): ReactNode {
     return <BorderBox borderStyle="solid" designNode={this.props.designNode}></BorderBox>;

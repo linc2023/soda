@@ -1,9 +1,7 @@
-import { Component, Widget } from '@soda/core'
+import { Component } from "@soda/core";
 
-
-@Widget
 export class Previewer extends Component {
-    render() {
-        return 1111
-    }
+  render() {
+    return 1111;
+  }
 }

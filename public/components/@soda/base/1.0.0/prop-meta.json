@@ -1,19 +1,86 @@
 {
-  "Button": [
+  "EventTest": [
     {
       "editorsProps": [
         {
-          "type": "string"
+          "type": "String"
         }
       ],
-      "name": "str1",
-      "label": "字符串1",
-      "tab": "属性"
+      "name": "a",
+      "label": "A",
+      "tab": "属性",
+      "defaultValue": "this.__mode"
     },
     {
       "editorsProps": [
         {
-          "type": "string"
+          "type": "Function"
+        }
+      ],
+      "name": "onClick",
+      "label": "单击",
+      "tab": "交互"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Function"
+        }
+      ],
+      "name": "onSearch",
+      "label": "搜索",
+      "tab": "交互"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
+      "name": "getText",
+      "label": "获取文本"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
+      "name": "setText",
+      "label": "设置文本"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "Button": [
+    {
+      "editorsProps": [
+        {
+          "type": "String"
+        }
+      ],
+      "name": "str1",
+      "label": "字符串1",
+      "tab": "属性",
+      "defaultValue": "\"初始值\""
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "String"
         }
       ],
       "name": "str2",
@@ -23,12 +90,13 @@
     {
       "editorsProps": [
         {
-          "type": "number"
+          "type": "Number"
         }
       ],
       "name": "num",
       "label": "数字",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "2"
     },
     {
       "editorsProps": [],
@@ -45,12 +113,13 @@
     {
       "editorsProps": [
         {
-          "type": "boolean"
+          "type": "Boolean"
         }
       ],
       "name": "bool",
       "label": "布尔",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "true"
     },
     {
       "editorsProps": [],
@@ -62,19 +131,22 @@
       "editorsProps": [],
       "name": "color",
       "label": "颜色",
-      "tab": "样式"
+      "tab": "样式",
+      "defaultValue": "\"#409eff\""
     },
     {
       "editorsProps": [],
       "name": "url",
       "label": "文件",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "\"http://127.0.0.1:8080/img.png\""
     },
     {
       "editorsProps": [],
       "name": "select",
       "label": "下拉框",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "\"x3x\""
     },
     {
       "editorsProps": [],
@@ -85,31 +157,32 @@
     {
       "editorsProps": [
         {
-          "type": "tuple",
+          "type": "Tuple",
           "children": [
             {
-              "type": "string"
+              "type": "String"
             },
             {
-              "type": "number"
+              "type": "Number"
             }
           ]
         }
       ],
       "name": "tuple",
       "label": "元组",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "[\"初始值\", 123]"
     },
     {
       "editorsProps": [
         {
-          "type": "tuple",
+          "type": "Tuple",
           "children": [
             {
-              "type": "string"
+              "type": "String"
             },
             {
-              "type": "number"
+              "type": "Number"
             }
           ]
         }
@@ -121,10 +194,10 @@
     {
       "editorsProps": [
         {
-          "type": "array",
+          "type": "Array",
           "children": [
             {
-              "type": "string"
+              "type": "String"
             }
           ]
         }
@@ -136,25 +209,38 @@
     {
       "editorsProps": [
         {
-          "type": "string"
+          "type": "String"
         }
       ],
       "name": "editor",
       "label": "editor",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "\"\""
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "Function"
+        }
+      ],
       "name": "onClick",
       "label": "单击"
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
       "name": "setText",
       "label": "设置按钮内容"
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
       "name": "getText",
       "label": "获取按钮内容"
     },
@@ -162,25 +248,95 @@
       "editorsProps": [],
       "name": "__mode",
       "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "B": [
+    {
+      "editorsProps": [
+        {
+          "type": "String"
+        }
+      ],
+      "name": "str",
+      "label": "字符串1",
+      "defaultValue": "\"初始值\""
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
+      "name": "test"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
     }
   ],
   "A": [
     {
       "editorsProps": [
         {
-          "type": "string"
+          "type": "String"
         }
       ],
       "name": "str",
-      "label": "字符串"
+      "label": "字符串",
+      "defaultValue": "\"初始值\""
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "String"
+        }
+      ],
+      "name": "str2",
+      "label": "str2",
+      "defaultValue": "\"xx\""
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
       "name": "test"
     },
     {
       "editorsProps": [],
       "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
       "hidden": "true"
     }
   ],
@@ -188,43 +344,27 @@
     {
       "editorsProps": [
         {
-          "type": "number"
+          "type": "Number"
         }
       ],
       "name": "num",
       "label": "字符串",
-      "tab": "属性"
+      "tab": "属性",
+      "defaultValue": "1"
     },
     {
       "editorsProps": [],
       "name": "__mode",
       "hidden": "true"
-    }
-  ],
-  "EventTest": [
-    {
-      "editorsProps": [],
-      "name": "onClick",
-      "label": "只有声明"
     },
     {
-      "editorsProps": [],
-      "name": "onSearch",
-      "label": "类型声明"
-    },
-    {
-      "editorsProps": [],
-      "name": "onSuccess",
-      "label": "默认事件"
-    },
-    {
-      "editorsProps": [],
-      "name": "onError",
-      "description": "属性声明"
-    },
-    {
-      "editorsProps": [],
-      "name": "__mode",
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
       "hidden": "true"
     }
   ]

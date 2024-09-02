@@ -46,7 +46,7 @@ export class Designer extends UIPlugin {
     const res = globalState.page.getLibraryByComponentName(designNode.type, this.componentMap);
     designNode.componentName = res.componentName;
     designNode.libary = res.packageName;
-    this.$emit("designNode:change", designNode);
+    this.$emit("designNode:change", designNode, this.webRenderRef.current.$refs[designNode.id]);
     this.designNode = designNode;
   };
   componentDidMount(): void {
@@ -54,19 +54,19 @@ export class Designer extends UIPlugin {
       const node = globalState.page.getNodeSchemaById(this.designNode.id);
       node.props[key] = value;
       this.webRenderRef.current.modifyNodeProps(this.designNode.id, key, value);
-      setTimeout(() => (this.designNode = { ...this.designNode }));
+      setTimeout(() => this.refreshDesignNode());
     });
     this.$on("designNode:changeDesignNodeById", (id: string) => {
       const instance = this.webRenderRef.current.$refs[id];
       const fiber = instance._reactInternals;
       const element = findDomByFiber(fiber);
       this.chooseNode({ element, type: fiber?.type, id: fiber?.key });
-      // const node = globalState.page.getNodeSchemaById(this.designNode.id);
-      // node.props[key] = value;
-      // this.webRenderRef.current.modifyNodeProps(this.designNode.id, key, value);
-      // setTimeout(() => (this.designNode = { ...this.designNode }));
     });
   }
+
+  @action private refreshDesignNode = () => {
+    this.designNode = { ...this.designNode };
+  };
 
   /**
    * 隐藏插入位置
@@ -120,7 +120,7 @@ export class Designer extends UIPlugin {
     this.dragDomRef.current.style.display = "none";
     this.hidePositionRef();
     this.moveNode = null;
-    setTimeout(() => (this.designNode = { ...this.designNode }));
+    setTimeout(() => this.refreshDesignNode());
   };
   /**
    * 鼠标移出

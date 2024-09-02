@@ -5,8 +5,10 @@
   "version": "1.0.0",
   "components": [
     {
-      "hidden": "true",
       "componentName": "Component"
+    },
+    {
+      "componentName": "BaseComponent"
     },
     {
       "description": "容器",

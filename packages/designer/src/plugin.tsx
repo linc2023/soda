@@ -33,6 +33,7 @@ enum Placement {
  * 插件位置
  */
 export type UIPluginPlacement = Lowercase<keyof typeof Placement>;
+
 export class UIPlugin extends Component {
   render(): ReactNode {
     throw new Error("Method not implemented.");
@@ -113,9 +114,9 @@ export function pluginRunder(placement: UIPluginPlacement, props: Record<string,
   const uiPlugins = globalState.plugin.uiPlugins;
   const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
   return pluginGroup.map(({ plugins }) => {
-    return plugins.map((fn: () => any) => {
+    return plugins.map((fn: () => any, index) => {
       const Plugin = fn();
-      const key = `${placement}-plugin-${Plugin.pluginName}`;
+      const key = `${placement}-plugin-${Plugin.pluginName}-${index}`;
       return <Plugin {...props} key={key} />;
     });
   });

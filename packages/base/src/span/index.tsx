@@ -1,4 +1,4 @@
-import { Widget, reactive, BaseComponent } from "@soda/core";
+import { reactive, BaseComponent } from "@soda/core";
 import "./span.scss";
 import { ReactNode } from "react";
 
@@ -18,7 +18,6 @@ class A extends BaseComponent {
  * @icon ./span.svg
  * @order 12
  */
-@Widget
 export class Span extends BaseComponent {
   /**
    * @label 属性/字符串

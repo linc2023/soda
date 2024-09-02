@@ -1,9 +1,9 @@
 import { Collapse, Dropdown, Form, LinkOutlined, Tabs } from "@soda/common";
-import { Widget, action, reactive } from "@soda/core";
+import { Component, Widget, action, reactive } from "@soda/core";
 import "./index.scss";
 import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
 import { DesignNode, PropDescriptor } from "@soda/utils";
-import { ReactNode } from "react";
+import { ReactNode, createRef } from "react";
 
 @Widget
 export class EditorPlugin extends UIPlugin {
@@ -13,13 +13,39 @@ export class EditorPlugin extends UIPlugin {
 
   propsConfigMap: { [key: string]: PropDescriptor } = {};
 
+  formRef = createRef();
+
   @action setPropsConfig(propsConfig) {
     this.propsConfig = propsConfig;
   }
 
   componentDidMount(): void {
-    this.$on("designNode:change", (selectedNode: DesignNode) => {
-      const propsConfig = globalState.package.getPropsConfig(selectedNode.libary, selectedNode.componentName);
+    this.$on("designNode:change", (selectedNode: DesignNode, component: Component) => {
+      const configs = globalState.package.getPropsConfig(selectedNode.libary, selectedNode.componentName);
+      const propsConfig: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};
+      configs.forEach((item) => {
+        if (item.editorsProps?.[0]?.type === "Method") {
+          return;
+        }
+        // 隐藏
+        const config = { ...item };
+        config.hidden = item.hidden ? new Function(`return ${item.hidden}`).bind(component) : () => false;
+        this.propsConfigMap[item.name] = item;
+        config.group = config.group ?? "";
+        const tab = config.tab ?? "属性";
+        if (!propsConfig[tab]) {
+          propsConfig[tab] = {};
+        }
+        if (!propsConfig[tab][config.group]) {
+          propsConfig[tab][config.group] = [];
+        }
+        if (typeof config.order !== "number") {
+          config.order = 0;
+        }
+        config.defaultValue = component[item.name];
+        const index = propsConfig[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
+        propsConfig[tab][config.group].splice(index + 1, 0, config);
+      });
       this.setPropsConfig(propsConfig);
     });
   }
@@ -28,45 +54,10 @@ export class EditorPlugin extends UIPlugin {
     this.$emit("designNode:propsChange", key, value[key]);
   };
   render(): ReactNode {
-    const propsConfig: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};
-    const events: PropDescriptor[] = [];
-    this.propsConfig.forEach((item) => {
-      // 隐藏
-      if (item.hidden) {
-        const hidden = !new Function(`return ${item.hidden}`)();
-        if (hidden) {
-          return;
-        }
-      }
-      // 事件
-      if (item.name.startsWith("on") && item.type === "event") {
-        events.push(item);
-        return;
-      }
-      const config = { ...item };
-      this.propsConfigMap[item.name] = item;
-      if (!(config.group?.length > 0)) {
-        config.group = config.tab ?? "";
-      }
-      const tab = config.tab ?? "属性";
-      if (!propsConfig[tab]) {
-        propsConfig[tab] = {};
-      }
-      if (!propsConfig[tab][config.group]) {
-        propsConfig[tab][config.group] = [];
-      }
-      if (typeof config.order !== "number") {
-        config.order = 0;
-      }
-      const index = propsConfig[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
-      propsConfig[tab][config.group].splice(index + 1, 0, config);
-    });
+    const { propsConfig } = this;
     const { componentName } = this.props;
-
-    // propsConfig["事件"] = { "": events };
-
     return (
-      <Form onValuesChange={this.onValuesChange} className="plugin-editor-panel">
+      <Form onValuesChange={this.onValuesChange} className="plugin-editor-panel" ref={this.formRef}>
         <Tabs
           tabBarStyle={{
             height: 40,
@@ -115,26 +106,30 @@ export class EditorPlugin extends UIPlugin {
     );
     function renderFormItems(items) {
       return items.map((config) => {
-        const { name, label, editorsProps } = config;
+        const { name, label, editorsProps, hidden, defaultValue } = config;
         const key = `${name}-${componentName}`;
-        const visible = config.condition ? config.condition(this.values) : true;
         const components = globalState.package.getEditors(editorsProps) ?? [];
         const formComponents = Array.isArray(components) ? components : [];
-        return !visible ? null : (
-          <div className={`editor-item`} key={key}>
-            <Form.Item
-              name={name}
-              label={
-                <Dropdown menu={{ items }} trigger={["contextMenu"]}>
-                  <span>{label ?? name}</span>
-                </Dropdown>
-              }
-            >
-              {formComponents.map((Comp, key) => {
-                return <Comp key={key} />;
-              })}
-            </Form.Item>
-            <LinkOutlined></LinkOutlined>
+        return (
+          <div key={key}>
+            {formComponents.map((Comp, key) => {
+              return !hidden() ? (
+                <div key={key} className={`editor-item`}>
+                  <Form.Item
+                    name={name}
+                    initialValue={defaultValue}
+                    label={
+                      <Dropdown menu={{ items }} trigger={["contextMenu"]}>
+                        <span>{label ?? name}</span>
+                      </Dropdown>
+                    }
+                  >
+                    <Comp />
+                  </Form.Item>
+                  <LinkOutlined></LinkOutlined>
+                </div>
+              ) : null;
+            })}
           </div>
         );
       });

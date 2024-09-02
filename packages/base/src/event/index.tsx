@@ -1,35 +1,39 @@
-import { Widget, BaseComponent } from "@soda/core";
+import { BaseComponent, reactive } from "@soda/core";
 
 type User = { name: string; age: string };
 type Params = { total: number; list: User[] };
-type Handler = (data: number) => void;
+type Handler<T> = (data: number, b: T) => T;
 
 /**
  * 表示一个事件测试
  * @label 事件测试
  */
-@Widget
 export class EventTest extends BaseComponent {
   /**
-   * @label 只有声明
+   * @label 属性/A
+   */
+  @reactive a: string = 9998;
+  /**
+   * @label 交互/单击
    */
   onClick: () => void;
   /**
-   * @label 类型声明
+   * @label 交互/搜索
    */
-  onSearch: Handler;
+  onSearch: Handler<string>;
   /**
-   * @label 默认事件
+   * @label 获取文本
    * @param res
    */
-  onSuccess(res: Params) {
+  getText(res: Params) {
     console.log(res);
+    return "";
   }
   /**
-   * 属性声明
-   * @param error
+   * @label 设置文本
+   * @param error 属性
    */
-  onError = (error = { message: "服务端异常" }) => {
+  setText = (error = { message: "服务端异常" }) => {
     console.log(error);
   };
 

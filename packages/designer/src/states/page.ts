@@ -157,7 +157,6 @@ export default class PageState {
    * @param referenceNode
    */
   @action insertNodeSchema(newNode: ComponentMeta | NodeSchema, referenceNode: any) {
-    debugger;
     const parent = this.getParent(referenceNode.id);
     const index = parent.children.findIndex((i) => i.id === referenceNode.id);
     const node = { id: uuid(), ...newNode };

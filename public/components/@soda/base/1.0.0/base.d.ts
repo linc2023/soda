@@ -1,11 +1,55 @@
 
 declare module "base" {
+	export * from "base/event";
 	export * from "base/button/button";
 	export * from "base/button/a";
 	export * from "base/span";
 	export const a = 1;
-	export * from "base/event";
 	export function add(num1: number, num2: number): number;
+}
+declare module "base/event" {
+	import { BaseComponent } from "@soda/core";
+	type User = {
+	    name: string;
+	    age: string;
+	};
+	type Params = {
+	    total: number;
+	    list: User[];
+	};
+	type Handler<T> = (data: number, b: T) => T;
+	/**
+	 * 表示一个事件测试
+	 * @label 事件测试
+	 */
+	export class EventTest extends BaseComponent {
+	    /**
+	     * @label 属性/A
+	     */
+	    a: string;
+	    /**
+	     * @label 交互/单击
+	     */
+	    onClick: () => void;
+	    /**
+	     * @label 交互/搜索
+	     */
+	    onSearch: Handler<string>;
+	    /**
+	     * @label 获取文本
+	     * @param res
+	     */
+	    getText(res: Params): string;
+	    /**
+	     * @label 设置文本
+	     * @param error 属性
+	     */
+	    setText: (error?: {
+	        message: string;
+	    }) => void;
+	    render(): JSX.Element;
+	}
+	export {};
 }
 declare module "base/button/button" {
 	import { BaseComponent } from "@soda/core";
@@ -112,11 +156,23 @@ declare module "base/button/a" {
 	 * @icon ./button.svg
 	 * @hidden false
 	 */
-	export class A extends BaseComponent {
+	export class B extends BaseComponent {
+	    /**
+	     * @label 字符串1
+	     */
+	    str: string;
+	    test(str: string): void;
+	    render(): JSX.Element;
+	}
+	export class A extends B {
 	    /**
 	     * @label 字符串
 	     */
 	    str: string;
+	    /**
+	     *  @label str2
+	     */
+	    str2: string;
 	    test(str: string): void;
 	    render(): JSX.Element;
 	}
@@ -136,44 +192,4 @@ declare module "base/span" {
 	    num: number;
 	    render(): JSX.Element;
 	}
-}
-declare module "base/event" {
-	import { BaseComponent } from "@soda/core";
-	type User = {
-	    name: string;
-	    age: string;
-	};
-	type Params = {
-	    total: number;
-	    list: User[];
-	};
-	type Handler = (data: number) => void;
-	/**
-	 * 表示一个事件测试
-	 * @label 事件测试
-	 */
-	export class EventTest extends BaseComponent {
-	    /**
-	     * @label 只有声明
-	     */
-	    onClick: () => void;
-	    /**
-	     * @label 类型声明
-	     */
-	    onSearch: Handler;
-	    /**
-	     * @label 默认事件
-	     * @param res
-	     */
-	    onSuccess(res: Params): void;
-	    /**
-	     * 属性声明
-	     * @param error
-	     */
-	    onError: (error?: {
-	        message: string;
-	    }) => void;
-	    render(): JSX.Element;
-	}
-	export {};
 }

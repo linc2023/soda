@@ -1,14 +1,15 @@
-import { Widget, reactive } from "@soda/core";
+import { Widget, action, reactive } from "@soda/core";
 import { Segmented, UnorderedListOutlined, LinkOutlined, FunctionOutlined, ApartmentOutlined } from "@soda/common";
 import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
 import { ReactNode } from "react";
 import { ComponentTree } from "./components/componentTree";
 import ComponentPanel from "./components/componentPanel";
 import "./index.scss";
-
 @Widget
 export class LeftToolsPlugin extends UIPlugin {
   @reactive currentTab = "component";
+
+  @action onTabChange = (value) => (this.currentTab = value);
 
   render(): ReactNode {
     return (
@@ -21,7 +22,7 @@ export class LeftToolsPlugin extends UIPlugin {
             { label: <FunctionOutlined />, value: "var" },
           ]}
           block
-          onChange={(value) => (this.currentTab = value)}
+          onChange={this.onTabChange}
         />
         {this.currentTab === "component" ? <ComponentPanel /> : null}
         {this.currentTab === "componentTree" ? <ComponentTree /> : null}

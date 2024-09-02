@@ -1,9 +1,10 @@
 import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode } from "react";
 import { ComponentMeta, PageSchema, PlatformModeValue } from "@soda/utils";
+import { Widget, reactive } from "./mobx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export abstract class Component<P = any> extends ReactComponent<P, any, any> {
-  abstract render(): ReactNode;
+
+export class Component<P = any> extends ReactComponent<P, any, any> {
   state: Readonly<P> = {} as Readonly<P>;
 
   setState(): void {
@@ -12,15 +13,28 @@ export abstract class Component<P = any> extends ReactComponent<P, any, any> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.log(error, errorInfo);
   }
+  render(): ReactNode {
+    return <></>;
+  }
 }
 
-export abstract class BaseComponent<P = any> extends Component<P> {
+@Widget
+export class BaseComponent<P = any> extends Component<P> {
   /** @hidden */
   get __mode() {
     return this.props.__mode;
   }
   /** 组件标识 */
   static __sodaComponent = true;
+
+  /**
+   *  是否锁定
+   *  @hidden
+   */
+  @reactive lock: boolean;
+  render(): ReactNode {
+    throw new Error("没有实现 render 方法");
+  }
 }
 
 export type ContainerProps = {

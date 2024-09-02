@@ -15,21 +15,26 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
     return null;
   }
   const declaration = property.declarations![0];
+  const initializer = (declaration as ts.PropertyDeclaration).initializer;
 
   const flags = property.getFlags();
   const descriptor: PropDescriptor = { editorsProps: [] } as unknown as PropDescriptor;
   descriptor.name = property.name;
-  parseBaseDescriptor(property, checker, descriptor);
 
-  if (flags & ts.SymbolFlags.Property) {
+  parseBaseDescriptor(property, checker, descriptor);
+  // 方法
+  if (flags & (ts.SymbolFlags.Method | ts.SymbolFlags.Constructor | ts.SymbolFlags.Signature)) {
+    praseFunctionSignature(property, checker, descriptor.editorsProps);
+  } else if (flags & ts.SymbolFlags.Property) {
     const type = checker.getTypeOfSymbolAtLocation(property, declaration);
     parseType(type, checker, descriptor.editorsProps);
-  }
-  if (["onClick", "setText", "getText"].includes(property.name)) {
-    // debugger;
-  }
-  if (flags & ts.SymbolFlags.Method) {
-    // descriptor.type = "Function";
+    // 有初始值的 Function 是 Method
+    if (initializer && descriptor.editorsProps?.[0]?.type === "Function") {
+      descriptor.editorsProps[0].type = "Method";
+    } else {
+      // 不是方法，解析默认值
+      descriptor.defaultValue = parseExpression(initializer);
+    }
   }
   return descriptor;
 }
@@ -49,7 +54,7 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
     descriptor.hidden = "return true";
   }
   if (modifiers & ts.ModifierFlags.Readonly) {
-    // descriptor.disabled = true;
+    descriptor.disabled = true;
   }
   let jsDoc: ts.JSDoc = (ts.getJSDocCommentsAndTags(declaration) as ts.JSDoc[])[0];
   /** 如果当前属性不存在注释，读取父属性 */
@@ -94,7 +99,7 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
     const arr = label.split("/");
 
     descriptor.label = arr[arr.length - 1];
-    if (arr.length > 1) {
+    if (arr.length === 1) {
       descriptor.tab = arr[0];
     }
     if (arr.length === 3) {
@@ -112,48 +117,288 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
  * @param descriptor 解析结果
  */
 function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = []) {
-  const TypeFlags = type.getFlags();
-  if (TypeFlags & ts.TypeFlags.String) {
-    descriptor.push({ type: "string" });
+  const typeFlags = type.getFlags();
+  if (typeFlags & ts.TypeFlags.String) {
+    descriptor.push({ type: "String" });
     return;
   }
-  if (TypeFlags & (ts.TypeFlags.Number | ts.TypeFlags.BigInt)) {
-    descriptor.push({ type: "number" });
+  if (typeFlags & (ts.TypeFlags.Number | ts.TypeFlags.BigInt)) {
+    descriptor.push({ type: "Number" });
     return;
   }
-  if (TypeFlags & ts.TypeFlags.Boolean) {
-    descriptor.push({ type: "boolean" });
+  if (typeFlags & ts.TypeFlags.Boolean) {
+    descriptor.push({ type: "Boolean" });
     return;
   }
-
-  if (TypeFlags & ts.TypeFlags.Object) {
+  // 对象
+  if (typeFlags & ts.TypeFlags.Object) {
     const descriptors = [];
+    const objectFlags = (type as ts.ObjectType).objectFlags;
+    // 数组
     if (checker.isArrayType(type)) {
       parseType((type["typeArguments"] as ts.Type[])[0], checker, descriptors);
-      descriptor.push({
-        type: "array",
-        children: descriptors,
-      });
+      descriptor.push({ type: "Array", children: descriptors });
       return;
     }
+    // 元组
     if (checker.isTupleType(type)) {
       (type["typeArguments"] as ts.Type[]).map((typeArgument) => parseType(typeArgument, checker, descriptors));
-      descriptor.push({
-        type: "tuple",
-        children: descriptors,
-      });
+      descriptor.push({ type: "Tuple", children: descriptors });
       return;
     }
-    // type.getProperties().map((prop) => parseType(checker.getTypeOfSymbolAtLocation(prop, prop.declarations![0]), checker, descriptors));
-    descriptor = [
-      {
-        type: "object",
-        children: descriptors,
-      },
-    ];
+    // 匿名对象
+    if (objectFlags & ts.ObjectFlags.Anonymous) {
+      const properties = checker.getPropertiesOfType(type);
+      const stringIndexInfo = checker.getIndexInfoOfType(type, ts.IndexKind.String);
+      const numberIndexInfo = checker.getIndexInfoOfType(type, ts.IndexKind.Number);
+      const callSignatures = checker.getSignaturesOfType(type, ts.SignatureKind.Call);
+      const constructSignatures = checker.getSignaturesOfType(type, ts.SignatureKind.Construct);
+      if (!properties.length && !stringIndexInfo && !numberIndexInfo) {
+        // 函数
+        if (callSignatures.length === 1 && constructSignatures.length === 0) {
+          descriptor.push({ type: "Function" });
+        }
+        // 构造函数
+        if (constructSignatures.length === 1 && callSignatures.length === 0) {
+          //
+        }
+      }
+    } else {
+      descriptor = [{ type: "Object", children: descriptors }];
+    }
+    return;
   }
 
   checker;
 }
-
-// function parseFunction() {}
+/**
+ * 解析函数
+ * @param property
+ * @param checker
+ * @param descriptor
+ */
+function praseFunctionSignature(property: ts.Symbol, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = []) {
+  property;
+  checker;
+  descriptor.push({ type: "Method" });
+}
+/**
+ * 解析表达式
+ * @param expression
+ */
+function parseExpression(expression: ts.Expression | undefined) {
+  return expression?.getText();
+  if (!expression) {
+    return;
+  }
+  const getValue = (value, type = "Function") => {
+    return {
+      type,
+      value,
+    };
+  };
+  const mergeValue = (...arr) => {
+    let res = "";
+    arr.forEach((i) => {
+      const { value, type } = i ?? {};
+      res += typeof value === "string" && type === "value" ? `"${value}"` : value;
+    });
+    return getValue(res);
+  };
+  switch (expression.kind) {
+    case ts.SyntaxKind.StringLiteral:
+      return getValue((expression as ts.StringLiteral).text, "value");
+    case ts.SyntaxKind.NumericLiteral:
+      return getValue(parseFloat((expression as ts.NumericLiteral).text), "value");
+    case ts.SyntaxKind.BigIntLiteral:
+      return getValue(BigInt((expression as ts.BigIntLiteral).text.replace(/n$/, "")), "value");
+    case ts.SyntaxKind.FalseKeyword:
+      return getValue(false, "value");
+    case ts.SyntaxKind.TrueKeyword:
+      return getValue(true, "value");
+    case ts.SyntaxKind.NullKeyword:
+      return getValue(null, "value");
+    case ts.SyntaxKind.ThisKeyword:
+      return getValue("this");
+    case ts.SyntaxKind.SuperKeyword:
+      return getValue("super");
+    // 单目运算符
+    case ts.SyntaxKind.PrefixUnaryExpression: {
+      let operator = "";
+      switch ((expression as ts.PrefixUnaryExpression).operator) {
+        case ts.SyntaxKind.PlusToken:
+          operator = "+";
+          break;
+        case ts.SyntaxKind.MinusToken:
+          operator = "-";
+          break;
+        case ts.SyntaxKind.ExclamationToken:
+          operator = "!";
+          break;
+        case ts.SyntaxKind.TildeToken:
+          operator = "~";
+          break;
+        case ts.SyntaxKind.PlusPlusToken:
+          operator = "++";
+          break;
+        default:
+          operator = "--";
+          break;
+      }
+      return mergeValue(getValue(operator), parseExpression((expression as ts.PrefixUnaryExpression).operand));
+    }
+    // 双目运算符
+    case ts.SyntaxKind.BinaryExpression: {
+      let operator = "";
+      switch ((expression as ts.BinaryExpression).operatorToken.kind) {
+        case ts.SyntaxKind.PlusToken:
+          operator = "+";
+          break;
+        case ts.SyntaxKind.MinusToken:
+          operator = "-";
+          break;
+        case ts.SyntaxKind.AsteriskToken:
+          operator = "*";
+          break;
+        case ts.SyntaxKind.SlashToken:
+          operator = "/";
+          break;
+        case ts.SyntaxKind.PercentToken:
+          operator = "%";
+          break;
+        case ts.SyntaxKind.AsteriskAsteriskToken:
+          operator = "**";
+          break;
+        case ts.SyntaxKind.AmpersandToken:
+          operator = "&";
+          break;
+        case ts.SyntaxKind.BarToken:
+          operator = "|";
+          break;
+        case ts.SyntaxKind.CaretToken:
+          operator = "^";
+          break;
+        case ts.SyntaxKind.LessThanLessThanToken:
+          operator = "<<";
+          break;
+        case ts.SyntaxKind.GreaterThanGreaterThanToken:
+          operator = ">>";
+          break;
+        case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+          operator = ">>>";
+          break;
+        case ts.SyntaxKind.AmpersandAmpersandToken:
+          operator = "&&";
+          break;
+        case ts.SyntaxKind.BarBarToken:
+          operator = "||";
+          break;
+        case ts.SyntaxKind.QuestionQuestionToken:
+          operator = "??";
+          break;
+        case ts.SyntaxKind.EqualsEqualsToken:
+          operator = "==";
+          break;
+        case ts.SyntaxKind.ExclamationEqualsToken:
+          operator = "!=";
+          break;
+        case ts.SyntaxKind.EqualsEqualsEqualsToken:
+          operator = "===";
+          break;
+        case ts.SyntaxKind.ExclamationEqualsEqualsToken:
+          operator = "!==";
+          break;
+        case ts.SyntaxKind.LessThanToken:
+          operator = "<";
+          break;
+        case ts.SyntaxKind.LessThanEqualsToken:
+          operator = "<=";
+          break;
+        case ts.SyntaxKind.GreaterThanToken:
+          operator = ">";
+          break;
+        case ts.SyntaxKind.GreaterThanEqualsToken:
+          operator = ">=";
+          break;
+        case ts.SyntaxKind.InKeyword:
+          operator = "in";
+          break;
+        case ts.SyntaxKind.InstanceOfKeyword:
+          operator = "instanceof";
+          break;
+        case ts.SyntaxKind.EqualsToken:
+          operator = "=";
+          break;
+        case ts.SyntaxKind.PlusEqualsToken:
+          operator = "+=";
+          break;
+        case ts.SyntaxKind.MinusEqualsToken:
+          operator = "-=";
+          break;
+        case ts.SyntaxKind.AsteriskEqualsToken:
+          operator = "*=";
+          break;
+        case ts.SyntaxKind.SlashEqualsToken:
+          operator = "/=";
+          break;
+        case ts.SyntaxKind.PercentEqualsToken:
+          operator = "%=";
+          break;
+        case ts.SyntaxKind.AsteriskAsteriskEqualsToken:
+          operator = "**=";
+          break;
+        case ts.SyntaxKind.AmpersandEqualsToken:
+          operator = "&=";
+          break;
+        case ts.SyntaxKind.BarEqualsToken:
+          operator = "|=";
+          break;
+        case ts.SyntaxKind.CaretEqualsToken:
+          operator = "^=";
+          break;
+        case ts.SyntaxKind.LessThanLessThanEqualsToken:
+          operator = "<<=";
+          break;
+        case ts.SyntaxKind.GreaterThanGreaterThanEqualsToken:
+          operator = ">>=";
+          break;
+        case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+          operator = ">>>=";
+          break;
+        case ts.SyntaxKind.AmpersandAmpersandEqualsToken:
+          operator = "&&=";
+          break;
+        case ts.SyntaxKind.BarBarEqualsToken:
+          operator = "||=";
+          break;
+        case ts.SyntaxKind.QuestionQuestionEqualsToken:
+          operator = "??=";
+          break;
+        default:
+          operator = ",";
+          break;
+      }
+      const left = parseExpression((expression as ts.BinaryExpression).left);
+      const right = parseExpression((expression as ts.BinaryExpression).right);
+      return mergeValue(left, getValue(operator), right);
+    }
+    case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
+      // 没有变量的模板字符串
+      return getValue((expression as ts.NoSubstitutionTemplateLiteral).text, "value");
+    // 模板
+    case ts.SyntaxKind.TemplateExpression:
+      // const texts = result.texts = [(expression as ts.TemplateExpression).head.text]
+      // const expressions = result.expressions = [] as ExpressionDescriptor[]
+      // for (const span of (expression as ts.TemplateExpression).templateSpans) {
+      //   texts.push(span.literal.text)
+      //   expressions.push(parseExpression(span.expression))
+      // }
+      break;
+    // 模板tag
+    case ts.SyntaxKind.TaggedTemplateExpression:
+      // a.tag = parseExpression((expression as ts.TaggedTemplateExpression).tag)
+      // a.template = parseExpression((expression as ts.TaggedTemplateExpression).template) as StringLiteralExpressionDescriptor | TemplateLiteralExpressionDescriptor
+      break;
+  }
+  console.log(expression);
+}

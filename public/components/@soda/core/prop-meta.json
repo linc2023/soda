@@ -1,9 +1,28 @@
 {
-  "Component": [
+  "Component": [],
+  "BaseComponent": [
     {
       "editorsProps": [],
       "name": "__mode",
       "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Number"
+        }
+      ],
+      "name": "a",
+      "defaultValue": "1"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定"
     }
   ],
   "Container": [
@@ -16,21 +35,71 @@
       "editorsProps": [],
       "name": "__mode",
       "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Number"
+        }
+      ],
+      "name": "a",
+      "defaultValue": "1"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定"
     }
   ],
   "ReactRenderer": [],
   "Page": [
     {
       "editorsProps": [],
+      "name": "canDesign",
+      "description": "是否可设计"
+    },
+    {
+      "editorsProps": [],
       "name": "__mode",
       "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Number"
+        }
+      ],
+      "name": "a",
+      "defaultValue": "1"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": "Boolean"
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定"
     }
   ],
   "WebRender": [
     {
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
+      "name": "modifyNodeProps"
+    },
+    {
       "editorsProps": [],
       "name": "refsMap",
-      "description": "refs"
+      "description": "refs",
+      "defaultValue": "{}"
     },
     {
       "editorsProps": [],
@@ -38,26 +107,31 @@
       "description": "所有 refs"
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
       "name": "getComponent",
       "description": "查询组件"
     },
     {
-      "editorsProps": [],
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
       "name": "schemasToComponent",
       "description": "通过组件 schema 渲染组件"
     },
     {
-      "editorsProps": [],
-      "name": "__mode",
-      "hidden": "true"
+      "editorsProps": [
+        {
+          "type": "Method"
+        }
+      ],
+      "name": "calcProps"
     }
   ],
-  "TypeEditor": [
-    {
-      "editorsProps": [],
-      "name": "__mode",
-      "hidden": "true"
-    }
-  ]
+  "TypeEditor": []
 }

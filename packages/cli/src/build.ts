@@ -153,7 +153,20 @@ function generateDTS(root: string, pkg: Package): vite.Plugin {
       const pkgJson = generatePackageJson(pkg, bundleName);
       this.emitFile({ fileName: "package.json", type: "asset", source: JSON.stringify(pkgJson, null, 2) });
       this.emitFile({ fileName: `manifest.json`, source: JSON.stringify({ name: name, library: libName ?? packageNameToCamelCase(pkg.name), displayName: pkgJson.displayName, version: pkgJson.version, components }, null, 2), type: "asset" });
-      this.emitFile({ fileName: "prop-meta.json", type: "asset", source: JSON.stringify(propsMap, null, 2) });
+      this.emitFile({
+        fileName: "prop-meta.json",
+        type: "asset",
+        source: JSON.stringify(
+          propsMap,
+          (_, value) => {
+            if (typeof value === "bigint") {
+              return value.toString() + "n"; // 转换为字符串
+            }
+            return value;
+          },
+          2
+        ),
+      });
     },
   };
 }

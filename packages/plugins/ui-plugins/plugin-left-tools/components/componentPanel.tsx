@@ -1,11 +1,11 @@
-import { Component, Widget, reactive } from "@soda/core";
+import { Widget, reactive } from "@soda/core";
 import { ComponentMeta, toPinYin } from "@soda/utils";
 import { Collapse, Input } from "@soda/common";
-import { GlobalStateProps, globalState } from "@soda/designer";
+import { UIPlugin, globalState } from "@soda/designer";
 import { ReactNode } from "react";
 
 @Widget
-export default class ComponentPanel extends Component<GlobalStateProps> {
+export default class ComponentPanel extends UIPlugin {
   /**
    * 搜索条件
    */

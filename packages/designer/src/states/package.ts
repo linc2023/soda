@@ -1,6 +1,6 @@
 import { makeObservable, action } from "mobx";
 import { computed, reactive } from "@soda/core";
-import { ComponentGroup, EditorDescriptor, PropDescriptor, getLibName, getMainVersion } from "@soda/utils";
+import { ComponentGroup, EditorDescriptor, PropDescriptor, PropDescriptorType, getLibName, getMainVersion } from "@soda/utils";
 
 import { Http } from "../utils";
 import { A, Button, EventTest, Span } from "@soda/base";
@@ -65,6 +65,7 @@ export default class PackageState {
       .map((group) => {
         return group.components.map((component) => ({
           ...component,
+          displayName: component.displayName ?? component.componentName,
           packageName: group.library,
           packageVersion: group.version,
         }));
@@ -92,15 +93,15 @@ export default class PackageState {
    * @returns
    */
   @action getEditors(descriptors: EditorDescriptor[]) {
-    const getEditorComponrnt = (type: string) => {
+    const getEditorComponrnt = (type: PropDescriptorType) => {
       switch (type) {
-        case "number":
+        case PropDescriptorType.Number:
           return NumberTypeEditor;
-        case "Color":
+        case PropDescriptorType.Color:
           return ColorTypeEditor;
-        case "boolean":
+        case PropDescriptorType.Boolean:
           return BooleanTypeEditor;
-        case "string":
+        case PropDescriptorType.String:
         default:
           return StringTypeEditor;
       }
