@@ -3,7 +3,7 @@ import { computed, reactive } from "@soda/core";
 import { ComponentGroup, EditorDescriptor, PropDescriptor, EditorType, getLibName, getMainVersion } from "@soda/utils";
 
 import { Http } from "../utils";
-import { A, B, Button, EventTest, MixinTest, Span } from "@soda/base";
+import { A, Button, EventTest, MixinTest, Span } from "@soda/base";
 import { StringTypeEditor } from "../typeEditor/stringTypeEditor";
 import { ColorTypeEditor } from "../typeEditor/colorTypeEditor";
 import { BooleanTypeEditor } from "../typeEditor/booleanTypeEditor";
@@ -85,7 +85,7 @@ export default class PackageState {
         map[library] = [classes];
       }
     });
-    return Object.keys(map).length ? map : { sodaBase1: { Span, A, Button, B, EventTest, MixinTest, version: "1.0.0" } };
+    return Object.keys(map).length ? map : { sodaBase1: { Span, A, Button, EventTest, MixinTest, version: "1.0.0" } };
   }
   /**
    * 根据类型获取属性编辑器

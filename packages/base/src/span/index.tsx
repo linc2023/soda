@@ -14,7 +14,7 @@ class A extends BaseComponent {
 
 /**
  * 表示一个文本组件
- * @label 文本
+ * @label 选中组件测试
  * @icon ./span.svg
  * @order 12
  */
@@ -32,6 +32,7 @@ export class Span extends BaseComponent {
     console.log(this.props);
     return (
       <div>
+        组件选中测试
         <button
           className="button"
           onClick={() => {

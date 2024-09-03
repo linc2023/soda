@@ -10,7 +10,7 @@ declare module "base/mixin" {
 	import { BaseComponent, Mixin } from "@soda/core";
 	/**
 	 * 表示一个mixin测试
-	 * @label mixin测试
+	 * @label 多 setter 测试
 	 */
 	export class MixinTest extends BaseComponent {
 	    /**
@@ -33,7 +33,7 @@ declare module "base/event" {
 	type Handler<T> = (data: number, b: T) => T;
 	/**
 	 * 表示一个事件测试
-	 * @label 事件测试
+	 * @label 事件、方法测试
 	 */
 	export class EventTest extends BaseComponent {
 	    /**
@@ -64,7 +64,7 @@ declare module "base/button/button" {
 	import { BaseComponent, Color, MultiLineText, OneOf, Password, Image } from "@soda/core";
 	/**
 	 * 表示一个按钮
-	 * @label 按钮
+	 * @label TODO：所有类型测试
 	 * @icon ./button.svg
 	 * @order 12
 	 */
@@ -159,13 +159,7 @@ declare module "base/button/button" {
 }
 declare module "base/button/a" {
 	import { BaseComponent } from "@soda/core";
-	/**
-	 * 表示一个A
-	 * @label A
-	 * @icon ./button.svg
-	 * @hidden false
-	 */
-	export class B extends BaseComponent {
+	class B extends BaseComponent {
 	    /**
 	     * @label 字符串1
 	     */
@@ -173,6 +167,12 @@ declare module "base/button/a" {
 	    test(str: string): void;
 	    render(): JSX.Element;
 	}
+	/**
+	 * 表示一个A
+	 * @label 继承测试
+	 * @icon ./button.svg
+	 * @hidden false
+	 */
 	export class A extends B {
 	    /**
 	     * @label 字符串
@@ -185,12 +185,13 @@ declare module "base/button/a" {
 	    test(str: string): void;
 	    render(): JSX.Element;
 	}
+	export {};
 }
 declare module "base/span" {
 	import { BaseComponent } from "@soda/core";
 	/**
 	 * 表示一个文本组件
-	 * @label 文本
+	 * @label 选中组件测试
 	 * @icon ./span.svg
 	 * @order 12
 	 */

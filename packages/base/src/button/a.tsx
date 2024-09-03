@@ -1,12 +1,6 @@
 import { BaseComponent, reactive } from "@soda/core";
 
-/**
- * 表示一个A
- * @label A
- * @icon ./button.svg
- * @hidden false
- */
-export class B extends BaseComponent {
+class B extends BaseComponent {
   /**
    * @label 字符串1
    */
@@ -20,6 +14,12 @@ export class B extends BaseComponent {
   }
 }
 
+/**
+ * 表示一个A
+ * @label 继承测试
+ * @icon ./button.svg
+ * @hidden false
+ */
 export class A extends B {
   /**
    * @label 字符串
@@ -35,6 +35,6 @@ export class A extends B {
   }
   render() {
     console.log(this.props, 111);
-    return <span>{this.str + "___" + this.str2}</span>;
+    return <span>继承测试：{this.str + "___" + this.str2}</span>;
   }
 }

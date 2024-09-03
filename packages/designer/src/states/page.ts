@@ -16,7 +16,6 @@ export default class PageState {
       { package: "@soda/base", version: "1.0.0", componentName: "Button" },
       { package: "@soda/base", version: "1.0.0", componentName: "Span" },
       { package: "@soda/base", version: "1.0.0", componentName: "EventTest" },
-      { package: "@soda/base", version: "1.0.0", componentName: "B" },
       { package: "@soda/base", version: "1.0.0", componentName: "MixinTest" },
     ],
     componentsTree: [

@@ -3,7 +3,7 @@ import "./button.scss";
 
 /**
  * 表示一个按钮
- * @label 按钮
+ * @label TODO：所有类型测试
  * @icon ./button.svg
  * @order 12
  */
@@ -102,6 +102,6 @@ export class Button extends BaseComponent {
   };
 
   render() {
-    return <div className="button">按钮111</div>;
+    return <div className="button">TODO：所有类型测试</div>;
   }
 }

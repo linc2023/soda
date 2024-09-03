@@ -269,41 +269,6 @@
       "hidden": "true"
     }
   ],
-  "B": [
-    {
-      "editorsProps": [
-        {
-          "type": 1
-        }
-      ],
-      "name": "str",
-      "label": "字符串1",
-      "tab": "字符串1"
-    },
-    {
-      "editorsProps": [
-        {
-          "type": 8
-        }
-      ],
-      "name": "test"
-    },
-    {
-      "editorsProps": [],
-      "name": "__mode",
-      "hidden": "true"
-    },
-    {
-      "editorsProps": [
-        {
-          "type": 3
-        }
-      ],
-      "name": "lock",
-      "description": "是否锁定",
-      "hidden": "true"
-    }
-  ],
   "A": [
     {
       "editorsProps": [

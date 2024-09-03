@@ -6,7 +6,7 @@ type Handler<T> = (data: number, b: T) => T;
 
 /**
  * 表示一个事件测试
- * @label 事件测试
+ * @label 事件、方法测试
  */
 export class EventTest extends BaseComponent {
   /**
@@ -34,6 +34,6 @@ export class EventTest extends BaseComponent {
   };
 
   render() {
-    return <div>事件测试</div>;
+    return <div>事件、方法测试</div>;
   }
 }
