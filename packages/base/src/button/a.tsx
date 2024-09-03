@@ -26,7 +26,7 @@ export class A extends B {
    */
   override str = "初始值";
   /**
-   *  @label str2
+   *  @label 样式/str2
    */
   @reactive str2 = "xx";
 

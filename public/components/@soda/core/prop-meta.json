@@ -9,20 +9,12 @@
     {
       "editorsProps": [
         {
-          "type": "Number"
-        }
-      ],
-      "name": "a",
-      "defaultValue": "1"
-    },
-    {
-      "editorsProps": [
-        {
-          "type": "Boolean"
+          "type": 3
         }
       ],
       "name": "lock",
-      "description": "是否锁定"
+      "description": "是否锁定",
+      "hidden": "true"
     }
   ],
   "Container": [
@@ -39,20 +31,12 @@
     {
       "editorsProps": [
         {
-          "type": "Number"
-        }
-      ],
-      "name": "a",
-      "defaultValue": "1"
-    },
-    {
-      "editorsProps": [
-        {
-          "type": "Boolean"
+          "type": 3
         }
       ],
       "name": "lock",
-      "description": "是否锁定"
+      "description": "是否锁定",
+      "hidden": "true"
     }
   ],
   "ReactRenderer": [],
@@ -70,27 +54,19 @@
     {
       "editorsProps": [
         {
-          "type": "Number"
-        }
-      ],
-      "name": "a",
-      "defaultValue": "1"
-    },
-    {
-      "editorsProps": [
-        {
-          "type": "Boolean"
+          "type": 3
         }
       ],
       "name": "lock",
-      "description": "是否锁定"
+      "description": "是否锁定",
+      "hidden": "true"
     }
   ],
   "WebRender": [
     {
       "editorsProps": [
         {
-          "type": "Method"
+          "type": 8
         }
       ],
       "name": "modifyNodeProps"
@@ -98,8 +74,7 @@
     {
       "editorsProps": [],
       "name": "refsMap",
-      "description": "refs",
-      "defaultValue": "{}"
+      "description": "refs"
     },
     {
       "editorsProps": [],
@@ -109,7 +84,7 @@
     {
       "editorsProps": [
         {
-          "type": "Method"
+          "type": 8
         }
       ],
       "name": "getComponent",
@@ -118,7 +93,7 @@
     {
       "editorsProps": [
         {
-          "type": "Method"
+          "type": 8
         }
       ],
       "name": "schemasToComponent",
@@ -127,7 +102,7 @@
     {
       "editorsProps": [
         {
-          "type": "Method"
+          "type": 8
         }
       ],
       "name": "calcProps"

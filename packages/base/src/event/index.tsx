@@ -1,4 +1,4 @@
-import { BaseComponent, reactive } from "@soda/core";
+import { BaseComponent } from "@soda/core";
 
 type User = { name: string; age: string };
 type Params = { total: number; list: User[] };
@@ -9,10 +9,6 @@ type Handler<T> = (data: number, b: T) => T;
  * @label 事件测试
  */
 export class EventTest extends BaseComponent {
-  /**
-   * @label 属性/A
-   */
-  @reactive a: string = 9998;
   /**
    * @label 交互/单击
    */

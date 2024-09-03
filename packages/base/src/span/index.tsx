@@ -23,6 +23,10 @@ export class Span extends BaseComponent {
    * @label 属性/字符串
    */
   @reactive num = 1;
+  /**
+   * @label 样式/字符串
+   */
+  @reactive num2 = 1;
 
   render() {
     console.log(this.props);

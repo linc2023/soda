@@ -186,10 +186,10 @@ export type EditorDescriptor = {
   /** 子属性 */
   children?: PropDescriptor[];
   /** 类型 */
-  type?: PropDescriptorTypeValue;
+  type?: EditorType;
 };
 
-export enum PropDescriptorType {
+export enum EditorType {
   Property,
   String,
   Number,
@@ -201,7 +201,6 @@ export enum PropDescriptorType {
   Method,
   Object,
 }
-export type PropDescriptorTypeValue = keyof typeof PropDescriptorType;
 
 /**
  * 属性信息
@@ -214,7 +213,7 @@ export type PropDescriptor = {
   /** 是否展开分组 */
   expanded?: boolean;
   /** 默认属性编辑器 */
-  defaultEditorType: PropDescriptorTypeValue;
+  defaultEditorType: EditorType;
   /** 组件信息 */
   editorsProps?: EditorDescriptor[];
   /** 子节点 */

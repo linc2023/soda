@@ -1,52 +1,70 @@
-import { Collapse, Dropdown, Form, LinkOutlined, Tabs } from "@soda/common";
+import { Collapse, Dropdown, Form, LinkOutlined, SwapOutlined, Tabs } from "@soda/common";
 import { Component, Widget, action, reactive } from "@soda/core";
 import "./index.scss";
 import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
-import { DesignNode, PropDescriptor } from "@soda/utils";
+import { DesignNode, PropDescriptor, EditorType } from "@soda/utils";
 import { ReactNode, createRef } from "react";
 
+type Config = { [key: string]: { [prop: string]: (PropDescriptor & { editors: { editor: Component; status: boolean }[] })[] } };
 @Widget
 export class EditorPlugin extends UIPlugin {
   @reactive values = {};
   /** 组件配置 */
-  @reactive propsConfig: PropDescriptor[] = [];
+  @reactive propMates: Config = {};
 
-  propsConfigMap: { [key: string]: PropDescriptor } = {};
+  componentName: string = "";
+  /** 编辑器状态 */
+  @reactive editorsState: { [key: string]: boolean } = {};
 
   formRef = createRef();
 
-  @action setPropsConfig(propsConfig) {
-    this.propsConfig = propsConfig;
+  @action setPropMates(propMates) {
+    this.propMates = propMates;
+  }
+
+  @action showEditor({ tab, group, name, editor }: { tab: string; group: string; name: string; editor: Component }) {
+    const props = this.propMates[tab][group];
+    const { editors } = props.find((prop) => prop.name === name) ?? {};
+    editors.forEach((item) => {
+      if (item.status) {
+        item.status = false;
+      }
+      if (item.editor === editor) {
+        item.status = true;
+      }
+    });
+    this.propMates = { ...this.propMates };
   }
 
   componentDidMount(): void {
     this.$on("designNode:change", (selectedNode: DesignNode, component: Component) => {
-      const configs = globalState.package.getPropsConfig(selectedNode.libary, selectedNode.componentName);
-      const propsConfig: { [key: string]: { [prop: string]: PropDescriptor[] } } = {};
+      this.componentName = selectedNode.componentName;
+      const configs = globalState.package.getPropMetas(selectedNode.libary, selectedNode.componentName);
+      const propMates: Config = {};
       configs.forEach((item) => {
-        if (item.editorsProps?.[0]?.type === "Method") {
+        if (item.editorsProps?.[0]?.type === EditorType.Method) {
           return;
         }
         // 隐藏
         const config = { ...item };
         config.hidden = item.hidden ? new Function(`return ${item.hidden}`).bind(component) : () => false;
-        this.propsConfigMap[item.name] = item;
         config.group = config.group ?? "";
         const tab = config.tab ?? "属性";
-        if (!propsConfig[tab]) {
-          propsConfig[tab] = {};
+        if (!propMates[tab]) {
+          propMates[tab] = {};
         }
-        if (!propsConfig[tab][config.group]) {
-          propsConfig[tab][config.group] = [];
+        if (!propMates[tab][config.group]) {
+          propMates[tab][config.group] = [];
         }
         if (typeof config.order !== "number") {
           config.order = 0;
         }
+        config.editors = globalState.package.getEditors(item.editorsProps) ?? [];
         config.defaultValue = component[item.name];
-        const index = propsConfig[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
-        propsConfig[tab][config.group].splice(index + 1, 0, config);
+        const index = propMates[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
+        propMates[tab][config.group].splice(index + 1, 0, config);
       });
-      this.setPropsConfig(propsConfig);
+      this.setPropMates(propMates);
     });
   }
   @action onValuesChange = (value: unknown) => {
@@ -54,10 +72,12 @@ export class EditorPlugin extends UIPlugin {
     this.$emit("designNode:propsChange", key, value[key]);
   };
   render(): ReactNode {
-    const { propsConfig } = this;
-    const { componentName } = this.props;
-    return (
+    const { propMates, componentName } = this;
+    const tabs = Object.keys(propMates);
+    console.log(propMates, 111999);
+    return tabs.length > 0 ? (
       <Form onValuesChange={this.onValuesChange} className="plugin-editor-panel" ref={this.formRef}>
+        <div className="panel-title"> {componentName}</div>
         <Tabs
           tabBarStyle={{
             height: 40,
@@ -65,20 +85,20 @@ export class EditorPlugin extends UIPlugin {
             borderBottom: "1px solid #DEE1E4",
           }}
           centered
-          items={Object.keys(propsConfig).map((tab) => {
-            const groups = Object.keys(propsConfig[tab])
+          items={tabs.map((tab) => {
+            const groups = Object.keys(propMates[tab])
               .filter((i) => i !== "")
               .map((i) => ({
                 groupName: i,
-                items: propsConfig[tab][i],
+                items: propMates[tab][i],
               }));
-            const items = propsConfig[tab][""] ?? [];
+            const items = propMates[tab][""] ?? [];
             return {
               label: tab,
               key: tab,
               children: (
                 <div>
-                  {items?.length > 0 ? <div style={{ padding: "6px 8px" }}>{renderFormItems.call(this, items)}</div> : null}
+                  {items?.length > 0 ? <div style={{ padding: "6px 8px" }}>{renderFormItems.call(this, items, tab, "")}</div> : null}
                   <Collapse
                     defaultActiveKey={groups.map((i) => i.groupName)}
                     expandIconPosition="end"
@@ -93,7 +113,7 @@ export class EditorPlugin extends UIPlugin {
                           marginBottom: 4,
                           border: "none",
                         },
-                        children: renderFormItems.call(this, group.items),
+                        children: renderFormItems.call(this, group.items, tab, group.groupName),
                       };
                     })}
                   />
@@ -103,33 +123,47 @@ export class EditorPlugin extends UIPlugin {
           })}
         ></Tabs>
       </Form>
-    );
-    function renderFormItems(items) {
+    ) : null;
+    function renderFormItems(items, tab, groupName) {
       return items.map((config) => {
-        const { name, label, editorsProps, hidden, defaultValue } = config;
+        const { name: name, label, editors, hidden, defaultValue } = config;
         const key = `${name}-${componentName}`;
-        const components = globalState.package.getEditors(editorsProps) ?? [];
-        const formComponents = Array.isArray(components) ? components : [];
         return (
-          <div key={key}>
-            {formComponents.map((Comp, key) => {
-              return !hidden() ? (
-                <div key={key} className={`editor-item`}>
-                  <Form.Item
-                    name={name}
-                    initialValue={defaultValue}
-                    label={
-                      <Dropdown menu={{ items }} trigger={["contextMenu"]}>
-                        <span>{label ?? name}</span>
-                      </Dropdown>
-                    }
-                  >
-                    <Comp />
-                  </Form.Item>
-                  <LinkOutlined></LinkOutlined>
-                </div>
-              ) : null;
-            })}
+          <div key={key} className="editor-item">
+            {!hidden() ? (
+              <>
+                <Form.Item
+                  name={name}
+                  initialValue={defaultValue}
+                  label={
+                    <Dropdown menu={{ items }} trigger={["contextMenu"]}>
+                      <span>{label ?? name}</span>
+                    </Dropdown>
+                  }
+                >
+                  {editors.map(({ editor, status }) => {
+                    const Comp = editor();
+                    return status ? <Comp key={key + Comp.name} /> : null;
+                  })}
+                </Form.Item>
+                <Dropdown
+                  menu={{
+                    items: editors
+                      .filter(({ status }) => !status)
+                      .map(({ editor }) => {
+                        const menuName = editor().name;
+                        return {
+                          label: <div onClick={() => this.showEditor({ tab, group: groupName, name: name, editor })}>{menuName}</div>,
+                          key: key + menuName,
+                        };
+                      }),
+                  }}
+                  placement="bottomLeft"
+                >
+                  {editors.length > 1 ? <SwapOutlined /> : <LinkOutlined style={{ rotate: "45deg" }} />}
+                </Dropdown>
+              </>
+            ) : null}
           </div>
         );
       });

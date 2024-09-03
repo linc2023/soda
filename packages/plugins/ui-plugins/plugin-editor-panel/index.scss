@@ -1,12 +1,50 @@
 @import "../../../core/variable.scss";
 .plugin-editor-panel {
   display: flex;
-  justify-content: center;
   height: 100%;
+  flex-direction: column;
+  .panel-title {
+    color: #011833;
+    font-weight: 600;
+    padding: $padding-y 0px $padding-y $padding-x;
+    height: 20px;
+  }
+  .ant-tabs-nav {
+    height: 42px !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: $padding-y-xs 0px;
+    border-radius: $border-radius;
+
+    &::before {
+      display: none !important;
+    }
+    .ant-tabs-tab {
+      padding: 0px;
+      height: 34px;
+    }
+    .ant-tabs-ink-bar {
+      display: none;
+    }
+    .ant-tabs-tab-active {
+      background: #1677ff;
+      border-radius: $border-radius;
+      .ant-tabs-tab-btn {
+        color: #ffffff;
+      }
+    }
+  }
   .ant-tabs {
+    flex: 1;
     width: 100%;
+    padding: $padding-y-xs;
+    .ant-tabs-tab + .ant-tabs-tab {
+      margin: 0px;
+    }
     .ant-collapse-header {
-      padding: 8px 8px 4px 8px;
+      padding: $padding-y-sm $padding-x-sm $padding-y-xs $padding-x-sm;
       border-bottom: 1px solid $border-color;
       background-color: $background-color-lighter;
       .ant-collapse-header-text {
@@ -19,14 +57,14 @@
       overflow: auto;
     }
     .ant-collapse .ant-collapse-item .ant-collapse-content .ant-collapse-content-box {
-      padding: $padding-y-lg $padding-x-sm;
+      padding: $padding-y-md $padding-x-sm;
     }
     .ant-tabs-nav-list {
       width: 100%;
       box-sizing: border-box;
       padding-inline: $padding-x-xs;
       .ant-tabs-tab {
-        font-size: 12px;
+        font-size: $font-size-sm;
         flex: 1;
         justify-content: center;
       }
@@ -35,10 +73,10 @@
   .editor-item {
     display: flex;
     margin-bottom: $margin-y-sm;
-    .anticon-link {
+    [role="img"] {
       width: 16px;
       cursor: pointer;
-      transform: rotate(45deg);
+      // transform: rotate(45deg);
       margin-left: $margin-x-sm;
       margin-right: $margin-x-xxs;
     }

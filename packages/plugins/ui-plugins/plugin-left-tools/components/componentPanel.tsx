@@ -5,7 +5,7 @@ import { UIPlugin, globalState } from "@soda/designer";
 import { ReactNode } from "react";
 
 @Widget
-export default class ComponentPanel extends UIPlugin {
+export class ComponentPanel extends UIPlugin {
   /**
    * 搜索条件
    */

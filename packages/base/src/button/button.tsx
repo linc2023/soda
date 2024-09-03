@@ -1,4 +1,4 @@
-import { BaseComponent, reactive } from "@soda/core";
+import { BaseComponent, Color, MultiLineText, OneOf, Password, reactive, Image } from "@soda/core";
 import "./button.scss";
 
 /**

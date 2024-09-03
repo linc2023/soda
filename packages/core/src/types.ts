@@ -31,6 +31,11 @@ export type Image = string;
 export type File = string;
 
 /**
+ * 合集
+ */
+export type Mixin<Types extends any[]> = Types[number];
+
+/**
  * 下拉框
  * @editor SelectTypeEditor
  */

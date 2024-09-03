@@ -5,10 +5,10 @@
   box-sizing: border-box;
   flex: 1;
   overflow: hidden;
-  margin-bottom: $margin-sm;
+  margin-bottom: $margin-y-sm;
   border: $border-width solid $border-color;
   .ant-segmented {
-    margin: 8px;
+    margin: $margin-sm;
   }
   .#{$project-prefix}-component-wrapper {
     height: calc(100% - 48px);
@@ -22,10 +22,10 @@
       height: 38px;
       line-height: 38px;
       padding-left: $padding-x;
-      margin: 8px;
+      margin: $margin-sm;
     }
     .ant-input {
-      margin: 0px 8px 8px 8px;
+      margin: 0px $margin-x-sm $margin-y-sm $margin-x-sm;
       border-radius: $border-radius-sm;
       width: calc(100% - 16px);
     }
@@ -34,13 +34,13 @@
       flex: 1;
       overflow: auto;
       .ant-collapse-content-box {
-        padding: 8px 4px;
+        padding: $padding-y-xs $padding-x-xs;
         display: flex;
         flex-wrap: wrap;
         gap: 4px 8px;
       }
       .ant-collapse-header {
-        padding: 8px 8px 4px 8px;
+        padding: 0 $padding-x-sm $padding-y-xs $padding-x-sm;
         border-bottom: 1px solid $border-color;
         .ant-collapse-header-text {
           font-size: $font-size-sm;
@@ -55,7 +55,7 @@
         border: 1px solid #dee1e4;
         border-radius: $border-radius;
         height: 40px;
-        padding: 0px 8px;
+        padding: 0px $padding-x-sm;
         cursor: move;
         width: calc(50% - 22px);
         &:hover {
@@ -70,5 +70,17 @@
         }
       }
     }
+  }
+  .#{$project-prefix}-componentTree {
+    margin: $margin-sm;
+  }
+  .#{$project-prefix}-dataSourcePanel {
+    margin: $margin-sm;
+  }
+  .#{$project-prefix}-logicPanel {
+    margin: $margin-sm;
+  }
+  .#{$project-prefix}-variablePanel {
+    margin: $margin-sm;
   }
 }

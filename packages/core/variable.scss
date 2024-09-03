@@ -55,10 +55,11 @@ $font-size-sm: $font-size-base - 2px; // 小号字体，最小不能小于 12px
 // $line-height-sm: 1.5;
 
 // 盒子内部的垂直留白
-$padding-y-base: 4px;
+$padding-y-base: 12px;
 $padding-y: $padding-y-base;
-$padding-y-lg: $padding-y-base + 2px;
-$padding-y-sm: calc($padding-y-base - 2px);
+$padding-y-md: $padding-y-base + 4px;
+$padding-y-lg: $padding-y-base + 8px;
+$padding-y-sm: calc($padding-y-base - 4px);
 $padding-y-xs: calc($padding-y-base - 8px);
 
 // 盒子内部的水平留白
@@ -79,16 +80,23 @@ $margin-x-xxs: calc($margin-x-base - 10px);
 // 盒子之间的水平留白
 $margin-y-base: 12px;
 $margin-y: $margin-y-base;
-$margin-y-lg: $margin-y-base + 4px;
+$margin-y-md: $margin-y-base + 4px;
+$margin-y-lg: $margin-y-base + 8px;
 $margin-y-sm: calc($margin-y-base - 4px);
+$margin-y-xs: calc($margin-y-base - 8px);
+$margin-y-xxs: calc($margin-y-base - 10px);
 
 // 盒子之间留白
 $margin-base: 12px;
 $margin: $margin-base;
-$margin-lg: $margin-base + 4px;
+$margin-md: $margin-base + 4px;
+$margin-lg: $margin-base + 8px;
 $margin-sm: calc($margin-base - 4px);
 
 // 圆角
 $border-radius: 4px; // 圆角越大、显得更简约、友好；圆角越小、显得更专业、严谨
 $border-radius-lg: $border-radius * 2; // 大号圆角
 $border-radius-sm: calc($border-radius / 2); // 小号圆角
+
+// 宽度
+$width-100: 100px;

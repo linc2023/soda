@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 const reactDefaultFunctions = ["setState", "forceUpdate", "render", "componentWillReceiveProps", "componentWillMount", "componentWillUnmount", "componentDidMount", "shouldComponentUpdate", "getSnapshotBeforeUpdate", "componentWillUpdate", "componentDidUpdate", "componentDidCatch", "UNSAFE_componentWillMount", "UNSAFE_componentWillReceiveProps", "UNSAFE_componentWillUpdate"];
 const reactDefaultProperties = ["context", "props", "state", "refs"];
-import { PropDescriptor } from "@soda/utils";
+import { PropDescriptor, EditorType } from "@soda/utils";
 
 /**
  * 转换属性
@@ -27,13 +27,14 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
     praseFunctionSignature(property, checker, descriptor.editorsProps);
   } else if (flags & ts.SymbolFlags.Property) {
     const type = checker.getTypeOfSymbolAtLocation(property, declaration);
-    parseType(type, checker, descriptor.editorsProps);
+    const declarationType = (declaration as ts.PropertyDeclaration).type;
+    const isMixin = declarationType && ts.isTypeReferenceNode(declarationType!) ? declarationType.typeName.getText() === "Mixin" : false;
+    parseType(type, checker, descriptor.editorsProps, isMixin);
     // 有初始值的 Function 是 Method
-    if (initializer && descriptor.editorsProps?.[0]?.type === "Function") {
-      descriptor.editorsProps[0].type = "Method";
-    } else {
-      // 不是方法，解析默认值
-      descriptor.defaultValue = parseExpression(initializer);
+    if (initializer && descriptor.editorsProps?.[0]?.type === EditorType.Function) {
+      descriptor.editorsProps[0].type = EditorType.Method;
+      // TODO: 解析方法参数默认值
+      parseExpression;
     }
   }
   return descriptor;
@@ -48,7 +49,6 @@ export function parseClassProperties(property: ts.Symbol, checker: ts.TypeChecke
  */
 function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descriptor: PropDescriptor) {
   const declaration = property.declarations![0];
-
   const modifiers = ts.getCombinedModifierFlags(declaration);
   if (modifiers & ts.ModifierFlags.Private) {
     descriptor.hidden = "return true";
@@ -116,35 +116,47 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
  * @param checker 语义解析器
  * @param descriptor 解析结果
  */
-function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = []) {
+function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = [], isMixin = false) {
   const typeFlags = type.getFlags();
+
+  if (type.aliasSymbol) {
+    if (type.aliasSymbol.flags & ts.SymbolFlags.Enum) {
+      descriptor.push({ type: EditorType.Array });
+      return;
+    }
+  }
   if (typeFlags & ts.TypeFlags.String) {
-    descriptor.push({ type: "String" });
+    descriptor.push({ type: EditorType.String });
     return;
   }
   if (typeFlags & (ts.TypeFlags.Number | ts.TypeFlags.BigInt)) {
-    descriptor.push({ type: "Number" });
+    descriptor.push({ type: EditorType.Number });
     return;
   }
-  if (typeFlags & ts.TypeFlags.Boolean) {
-    descriptor.push({ type: "Boolean" });
+  if (typeFlags & (ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral)) {
+    descriptor.push({ type: EditorType.Boolean });
     return;
   }
   // 对象
   if (typeFlags & ts.TypeFlags.Object) {
     const descriptors = [];
     const objectFlags = (type as ts.ObjectType).objectFlags;
-    // 数组
-    if (checker.isArrayType(type)) {
-      parseType((type["typeArguments"] as ts.Type[])[0], checker, descriptors);
-      descriptor.push({ type: "Array", children: descriptors });
-      return;
-    }
-    // 元组
-    if (checker.isTupleType(type)) {
-      (type["typeArguments"] as ts.Type[]).map((typeArgument) => parseType(typeArgument, checker, descriptors));
-      descriptor.push({ type: "Tuple", children: descriptors });
-      return;
+
+    // 泛型
+    if (objectFlags & ts.ObjectFlags.Reference) {
+      // 数组
+      if (checker.isArrayType(type)) {
+        parseType((type["typeArguments"] as ts.Type[])[0], checker, descriptors);
+        descriptor.push({ type: EditorType.Array, children: descriptors });
+        return;
+      }
+
+      // 元组
+      if (checker.isTupleType(type)) {
+        (type["typeArguments"] as ts.Type[]).map((typeArgument) => parseType(typeArgument, checker, descriptors));
+        descriptor.push({ type: EditorType.Tuple, children: descriptors });
+        return;
+      }
     }
     // 匿名对象
     if (objectFlags & ts.ObjectFlags.Anonymous) {
@@ -156,20 +168,28 @@ function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescr
       if (!properties.length && !stringIndexInfo && !numberIndexInfo) {
         // 函数
         if (callSignatures.length === 1 && constructSignatures.length === 0) {
-          descriptor.push({ type: "Function" });
-        }
-        // 构造函数
-        if (constructSignatures.length === 1 && callSignatures.length === 0) {
-          //
+          descriptor.push({ type: EditorType.Function });
         }
       }
     } else {
-      descriptor = [{ type: "Object", children: descriptors }];
+      descriptor = [{ type: EditorType.Object, children: descriptors }];
     }
     return;
   }
-
-  checker;
+  // 并集
+  if (typeFlags & ts.TypeFlags.Union) {
+    const types: { [prop: string]: ts.Type } = {};
+    (type as ts.UnionOrIntersectionType).types.forEach((type) => (types[type.flags] = type));
+    const result = Object.values(types).map((type) => {
+      const editor: PropDescriptor["editorsProps"] = [];
+      parseType(type, checker, editor);
+      return editor;
+    });
+    if (isMixin) {
+      descriptor.push(...result.flat());
+    }
+    return;
+  }
 }
 /**
  * 解析函数
@@ -180,7 +200,7 @@ function parseType(type: ts.Type, checker: ts.TypeChecker, descriptor: PropDescr
 function praseFunctionSignature(property: ts.Symbol, checker: ts.TypeChecker, descriptor: PropDescriptor["editorsProps"] = []) {
   property;
   checker;
-  descriptor.push({ type: "Method" });
+  descriptor.push({ type: EditorType.Method });
 }
 /**
  * 解析表达式

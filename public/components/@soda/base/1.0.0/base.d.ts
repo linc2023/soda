@@ -1,11 +1,24 @@
 
 declare module "base" {
+	export * from "base/mixin";
 	export * from "base/event";
 	export * from "base/button/button";
 	export * from "base/button/a";
 	export * from "base/span";
-	export const a = 1;
-	export function add(num1: number, num2: number): number;
+}
+declare module "base/mixin" {
+	import { BaseComponent, Mixin } from "@soda/core";
+	/**
+	 * 表示一个mixin测试
+	 * @label mixin测试
+	 */
+	export class MixinTest extends BaseComponent {
+	    /**
+	     * @label 属性/A
+	     */
+	    a: Mixin<[string, number, boolean]>;
+	    render(): JSX.Element;
+	}
 }
 declare module "base/event" {
 	import { BaseComponent } from "@soda/core";
@@ -23,10 +36,6 @@ declare module "base/event" {
 	 * @label 事件测试
 	 */
 	export class EventTest extends BaseComponent {
-	    /**
-	     * @label 属性/A
-	     */
-	    a: string;
 	    /**
 	     * @label 交互/单击
 	     */
@@ -52,7 +61,7 @@ declare module "base/event" {
 	export {};
 }
 declare module "base/button/button" {
-	import { BaseComponent } from "@soda/core";
+	import { BaseComponent, Color, MultiLineText, OneOf, Password, Image } from "@soda/core";
 	/**
 	 * 表示一个按钮
 	 * @label 按钮
@@ -170,7 +179,7 @@ declare module "base/button/a" {
 	     */
 	    str: string;
 	    /**
-	     *  @label str2
+	     *  @label 样式/str2
 	     */
 	    str2: string;
 	    test(str: string): void;
@@ -190,6 +199,10 @@ declare module "base/span" {
 	     * @label 属性/字符串
 	     */
 	    num: number;
+	    /**
+	     * @label 样式/字符串
+	     */
+	    num2: number;
 	    render(): JSX.Element;
 	}
 }

@@ -1,13 +1,13 @@
 import { globalState } from "../states";
 import React, { DragEvent, ReactNode, createRef } from "react";
 import ReactDOM from "react-dom/client";
-import { BorderBox, DesignNodeBox } from "../components/borderBox";
+import { BorderBox, DesignNodeBox } from "./borderBox";
 import { ComponentMeta, DesignNode, findDesignInfoByDOM, findDomByFiber } from "@soda/utils";
 import { UIPlugin } from "..";
 import { Widget, WebRender, reactive, action } from "@soda/core";
 
 @Widget
-export class Designer extends UIPlugin {
+export class PageDesigner extends UIPlugin {
   /** 需要挂载的根节点 */
   positionRef = createRef<HTMLElement>();
   webRenderRef = createRef<WebRender>();

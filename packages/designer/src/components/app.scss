@@ -6,20 +6,20 @@
   .#{$project-prefix}-designer-main {
     user-select: none;
     flex: 1;
-    margin: 16px;
+    margin: $margin-y-md;
     background: $background-color;
     overflow: hidden;
     border: none;
   }
   .#{$project-prefix}-designer-left {
-    padding: 0px 4px;
+    padding: 0px $padding-x-xs;
     background: $background-color;
     display: flex;
     flex-direction: column;
     .#{$project-prefix}-left-group-0 {
       display: flex;
       flex-direction: column;
-      margin-bottom: 17px;
+      margin-bottom: $margin-y-md;
       height: 100%;
     }
   }
