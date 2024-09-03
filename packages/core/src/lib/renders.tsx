@@ -1,6 +1,7 @@
 import { ElementType, ReactNode, forwardRef } from "react";
 import { Component, Container } from "./component";
 import { NodeSchema, PageSchema, getMainVersion, packageNameToCamelCase } from "@soda/utils";
+import { globalState } from "@soda/designer";
 
 /**
  * @container
@@ -60,14 +61,14 @@ abstract class Render extends Component<RenderType> {
    * @param componentMap
    * @returns
    */
-  schemasToComponent(schemas: NodeSchema[], componentMap = this.props.componentMap) {
+  schemasToComponent(schemas: NodeSchema[], componentMap = this.props.componentMap): ReactNode[] {
     return schemas.map((schema) => {
       const { componentName, id, children: childrenMeta, props, advanced: { isContainer } = { isContainer: false } } = schema;
       const Comp = this.getComponent(componentName, componentMap);
       const children = !Array.isArray(childrenMeta) ? null : this.schemasToComponent(childrenMeta, componentMap);
       return (
         <Comp key={id} id={id} {...this.calcProps(props)} ref={(ref) => (this.refsMap[id] = ref)}>
-          {isContainer ? <Container children={children}></Container> : children}
+          {isContainer ? <Container mode={globalState.environment.mode} children={children}></Container> : children}
         </Comp>
       );
     });

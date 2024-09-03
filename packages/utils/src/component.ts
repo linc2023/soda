@@ -1,4 +1,4 @@
-import { Component } from "@soda/core";
+import { Component, Container } from "@soda/core";
 import { ComponentType } from "react";
 
 /**
@@ -60,7 +60,7 @@ export class DesignNode {
   /** 子组件 */
   children?: DesignNode[];
   /** 实例 */
-  type?: Component;
+  type?: Component | Container;
   /** 组件名称 */
   componentName?: string;
   /** 打包对象名 */

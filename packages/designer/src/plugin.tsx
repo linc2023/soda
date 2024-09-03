@@ -1,6 +1,5 @@
-import { Component, Widget } from "@soda/core";
+import { Component } from "@soda/core";
 import { globalState } from "./states";
-import { ReactNode } from "react";
 import { PlatformModeValue } from "@soda/utils";
 
 export class Event {
@@ -35,27 +34,6 @@ enum Placement {
 export type UIPluginPlacement = Lowercase<keyof typeof Placement>;
 
 export class UIPlugin extends Component {
-  render(): ReactNode {
-    throw new Error("Method not implemented.");
-  }
-  /**
-   * 插件名称
-   */
-  pluginName: string = "";
-  /**
-   * 位置
-   */
-  placement?: UIPluginPlacement;
-  /**
-   * 分组序号
-   */
-  groupIndex: number = 0;
-
-  /**
-   * 优先级
-   */
-  priority?: number = 0;
-
   /**
    * 发射事件
    * @param eventName
@@ -74,6 +52,7 @@ export class UIPlugin extends Component {
     Event.$emit(eventName, ...props);
   }
 }
+
 export class LogicPlugin {
   /**
    * 销毁回调
@@ -110,11 +89,11 @@ export type PluginOptions = {
  * 渲染插件
  */
 
-export function pluginRunder(placement: UIPluginPlacement, props: Record<string, unknown> = {}) {
+export function pluginRunder(placement: UIPluginPlacement, props: Record<string, unknown> = {}): any[] {
   const uiPlugins = globalState.plugin.uiPlugins;
   const pluginGroup = globalState.plugin.getUiPluginsByPlacement(placement, uiPlugins!);
   return pluginGroup.map(({ plugins }) => {
-    return plugins.map((fn: () => any, index) => {
+    return plugins.map((fn: any, index) => {
       const Plugin = fn();
       const key = `${placement}-plugin-${Plugin.pluginName}-${index}`;
       return <Plugin {...props} key={key} />;

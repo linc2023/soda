@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 export class ComponentTree extends UIPlugin {
   render(): ReactNode {
-    const treeData = globalState.page.schema.componentsTree as unknown[];
+    const treeData = globalState.page.schema.componentsTree as any[];
     return (
       <Tree
         showLine={false}
@@ -12,7 +12,7 @@ export class ComponentTree extends UIPlugin {
         treeData={treeData}
         fieldNames={{ key: "id" }}
         className={`${globalState.environment.$project_name}-componentTree-panel`}
-        titleRender={(item: any) => {
+        titleRender={(item) => {
           return (
             <div key={item.id} onClick={() => this.chooseNode(item.id)}>
               {item.componentName}

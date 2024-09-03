@@ -11,12 +11,6 @@ export default class EventState {
    */
   on(eventName: string | string[], plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), options: PluginOptions = { allowOverride: false }) {
     const register = (event: string, plugin: LogicPlugin) => {
-      if (typeof plugin === "function") {
-        const tmp = new LogicPlugin();
-        tmp.exec = plugin;
-        tmp.uniqueName = eventName as string;
-        plugin = tmp;
-      }
       const { logicPluginMap } = this;
       if (!logicPluginMap[event]) {
         logicPluginMap[event] = [];
@@ -38,12 +32,21 @@ export default class EventState {
       logicPluginMap[event].push(plugin);
       logicPluginMap[event].sort((i1, i2) => i1.priority - i2.priority);
     };
+    const formatPlugin = (plugin: LogicPlugin | ((...args: unknown[]) => Promise<unknown> | unknown), pluginName: string) => {
+      if (typeof plugin === "function") {
+        const tmp = new LogicPlugin();
+        tmp.exec = plugin;
+        tmp.uniqueName = pluginName;
+        return tmp;
+      }
+      return plugin;
+    };
     if (Array.isArray(eventName)) {
       eventName.forEach((i) => {
-        register(i, plugin);
+        register(i, formatPlugin(plugin, i));
       });
     } else {
-      register(eventName, plugin);
+      register(eventName, formatPlugin(plugin, eventName));
     }
   }
   /**

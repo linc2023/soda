@@ -1,4 +1,4 @@
-import { Collapse, Dropdown, Form, LinkOutlined, SwapOutlined, Tabs } from "@soda/common";
+import { Collapse, Dropdown, Form, FormInstance, LinkOutlined, SwapOutlined, Tabs } from "@soda/common";
 import { Component, Widget, action, reactive } from "@soda/core";
 import "./index.scss";
 import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
@@ -16,7 +16,7 @@ export class EditorPlugin extends UIPlugin {
   /** 编辑器状态 */
   @reactive editorsState: { [key: string]: boolean } = {};
 
-  formRef = createRef();
+  formRef = createRef<FormInstance>();
 
   @action setPropMates(propMates) {
     this.propMates = propMates;

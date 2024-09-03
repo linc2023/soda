@@ -1,6 +1,5 @@
 import { globalState } from "../states";
-import React, { DragEvent, ReactNode, createRef } from "react";
-import ReactDOM from "react-dom/client";
+import { DragEvent, ReactNode, createRef } from "react";
 import { BorderBox, DesignNodeBox } from "./borderBox";
 import { ComponentMeta, DesignNode, findDesignInfoByDOM, findDomByFiber } from "@soda/utils";
 import { UIPlugin } from "..";
@@ -82,7 +81,7 @@ export class PageDesigner extends UIPlugin {
     ev.preventDefault();
     const slibing = this.findDesignInfoByDOM(ev.target as HTMLElement);
     let lastChildNode = slibing.element.previousElementSibling;
-    if (slibing.type.__isContainer__) {
+    if ((slibing.type as any).__isContainer__) {
       const childNodes = slibing.element.childNodes;
       lastChildNode = childNodes[childNodes.length - 1] as HTMLElement;
     }
@@ -125,7 +124,7 @@ export class PageDesigner extends UIPlugin {
   /**
    * 鼠标移出
    */
-  @action onPointerLeave = (ev) => {
+  @action onPointerLeave = () => {
     this.hoverNode = null;
   };
   @action onPointerMove = (ev) => {
@@ -156,12 +155,4 @@ export class PageDesigner extends UIPlugin {
     const isDesignComponent = (fiber) => fiber?.tag == 1 && fiber?.type.__sodaComponent;
     return findDesignInfoByDOM(dom, isDesignComponent) as DesignNode;
   };
-}
-
-declare global {
-  interface Window {
-    React: typeof React;
-    ReactDOM: typeof ReactDOM;
-    sodaCore: typeof SodaCore;
-  }
 }

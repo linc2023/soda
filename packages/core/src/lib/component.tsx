@@ -1,10 +1,10 @@
 import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode } from "react";
-import { ComponentMeta, PageSchema, PlatformModeValue } from "@soda/utils";
+import { ComponentMeta, PageSchema, PlatformMode, PlatformModeValue } from "@soda/utils";
 import { Widget, reactive } from "./mobx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-export class Component<P = any> extends ReactComponent<P, any, any> {
+export abstract class Component<P = any> extends ReactComponent<P & { children?: ReactNode | ReactNode[] }, any, any> {
   state: Readonly<P> = {} as Readonly<P>;
 
   setState(): void {
@@ -13,13 +13,10 @@ export class Component<P = any> extends ReactComponent<P, any, any> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.log(error, errorInfo);
   }
-  render(): ReactNode {
-    return <></>;
-  }
 }
 
 @Widget
-export class BaseComponent<P = any> extends Component<P> {
+export class BaseComponent<P = object> extends Component<P & { __mode?: PlatformMode }> {
   /** @hidden */
   get __mode() {
     return this.props.__mode;
@@ -43,7 +40,6 @@ export type ContainerProps = {
   style?: CSSProperties;
   childrenDragDisabled?: boolean;
   getWhiteList?: (meta: ComponentMeta) => boolean;
-  components: { [key: string]: { version: string; [key: string]: object | string }[] };
   mode: PlatformModeValue;
   chooseNode?: (selectedNode: PageSchema) => void;
 };
@@ -66,7 +62,7 @@ export class Container extends BaseComponent<ContainerProps> {
     const { children } = this.props;
     return this.canDesign ? (
       <div style={style} className={`${className}`}>
-        {children?.length > 0 ? (
+        {Array.isArray(children) && children.length > 0 ? (
           children
         ) : (
           <div className={`default-page-containerEmpty`}>

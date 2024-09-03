@@ -8,9 +8,9 @@ import { EditorPlugin, LeftToolsPlugin, PageManagerPlugin } from "@soda/plugins"
 
 async function main() {
   await globalState.package.register(["/components/@soda/base/1.0.0"]);
-  globalState.plugin.register(PageManagerPlugin);
-  globalState.plugin.register(EditorPlugin);
-  globalState.plugin.register(LeftToolsPlugin);
+  globalState.plugin.register(PageManagerPlugin, "PageManagerPlugin");
+  globalState.plugin.register(EditorPlugin, "EditorPlugin");
+  globalState.plugin.register(LeftToolsPlugin, "LeftToolsPlugin");
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <RouterProvider router={router} />

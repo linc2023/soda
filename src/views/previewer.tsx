@@ -27,7 +27,6 @@ export default class Previewer extends Component {
       iframe.insertStyle("/components/@soda/base/1.0.0/style.css");
       // const ReactDOM = iframe.window.ReactDOM;
       // const sodaCore = iframe.window.sodaCore;
-      console.log(iframe.window.sodaBase_1_0_0);
       // ReactDOM.createRoot(iframe.document.getElementById("app")!).render(<>xxx</>);
     });
   }
