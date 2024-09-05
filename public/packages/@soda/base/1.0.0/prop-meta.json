@@ -13,7 +13,8 @@
         }
       ],
       "name": "a",
-      "label": "A"
+      "label": "A",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
@@ -39,7 +40,8 @@
         }
       ],
       "name": "onClick",
-      "label": "单击"
+      "label": "单击",
+      "tab": "交互"
     },
     {
       "editorsProps": [
@@ -48,7 +50,8 @@
         }
       ],
       "name": "onSearch",
-      "label": "搜索"
+      "label": "搜索",
+      "tab": "交互"
     },
     {
       "editorsProps": [
@@ -94,7 +97,8 @@
         }
       ],
       "name": "str1",
-      "label": "字符串1"
+      "label": "字符串1",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -103,7 +107,8 @@
         }
       ],
       "name": "str2",
-      "label": "字符串2"
+      "label": "字符串2",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -112,17 +117,20 @@
         }
       ],
       "name": "num",
-      "label": "数字"
+      "label": "数字",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
       "name": "obj",
-      "label": "对象"
+      "label": "对象",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
       "name": "password",
-      "label": "密码框"
+      "label": "密码框",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -131,7 +139,8 @@
         }
       ],
       "name": "bool",
-      "label": "布尔"
+      "label": "布尔",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -140,12 +149,14 @@
         }
       ],
       "name": "multiLine",
-      "label": "文本框"
+      "label": "文本框",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
       "name": "color",
-      "label": "颜色"
+      "label": "颜色",
+      "tab": "样式"
     },
     {
       "editorsProps": [
@@ -154,17 +165,20 @@
         }
       ],
       "name": "url",
-      "label": "文件"
+      "label": "文件",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
       "name": "select",
-      "label": "下拉框"
+      "label": "下拉框",
+      "tab": "属性"
     },
     {
       "editorsProps": [],
       "name": "radio",
-      "label": "枚举"
+      "label": "枚举",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -181,7 +195,8 @@
         }
       ],
       "name": "tuple",
-      "label": "元组"
+      "label": "元组",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -198,7 +213,8 @@
         }
       ],
       "name": "tupleWithLabel",
-      "label": "标签元组"
+      "label": "标签元组",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -212,7 +228,8 @@
         }
       ],
       "name": "arr",
-      "label": "数组"
+      "label": "数组",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -221,7 +238,8 @@
         }
       ],
       "name": "editor",
-      "label": "editor"
+      "label": "editor",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -231,7 +249,7 @@
       ],
       "name": "onClick",
       "label": "单击",
-      "tab": "单击"
+      "tab": "交互"
     },
     {
       "editorsProps": [
@@ -278,7 +296,7 @@
       ],
       "name": "str",
       "label": "字符串",
-      "tab": "字符串"
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -287,7 +305,8 @@
         }
       ],
       "name": "str2",
-      "label": "str2"
+      "label": "str2",
+      "tab": "样式"
     },
     {
       "editorsProps": [
@@ -321,7 +340,8 @@
         }
       ],
       "name": "num",
-      "label": "字符串"
+      "label": "字符串",
+      "tab": "属性"
     },
     {
       "editorsProps": [
@@ -330,7 +350,8 @@
         }
       ],
       "name": "num2",
-      "label": "字符串"
+      "label": "字符串",
+      "tab": "样式"
     },
     {
       "editorsProps": [],

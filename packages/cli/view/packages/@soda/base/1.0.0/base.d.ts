@@ -48,7 +48,7 @@ declare module "base/event" {
 	     * @label 获取文本
 	     * @param res
 	     */
-	    getText(res: Params): string;
+	    getText(res: Params): Params;
 	    /**
 	     * @label 设置文本
 	     * @param error 属性
@@ -141,7 +141,7 @@ declare module "base/button/button" {
 	     */
 	    editor: string;
 	    /**
-	     * @label 单击
+	     * @label 交互/单击
 	     */
 	    onClick: () => void;
 	    /**
@@ -161,7 +161,7 @@ declare module "base/button/a" {
 	import { BaseComponent } from "@soda/core";
 	class B extends BaseComponent {
 	    /**
-	     * @label 字符串1
+	     * @label 属性/字符串1
 	     */
 	    str: string;
 	    test(str: string): void;
@@ -175,7 +175,7 @@ declare module "base/button/a" {
 	 */
 	export class A extends B {
 	    /**
-	     * @label 字符串
+	     * @label 属性/字符串
 	     */
 	    str: string;
 	    /**

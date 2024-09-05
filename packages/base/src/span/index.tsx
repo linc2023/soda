@@ -29,7 +29,6 @@ export class Span extends BaseComponent {
   @reactive num2 = 1;
 
   render() {
-    console.log(this.props);
     return (
       <div>
         组件选中测试

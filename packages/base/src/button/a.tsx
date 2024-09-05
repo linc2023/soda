@@ -2,7 +2,7 @@ import { BaseComponent, reactive } from "@soda/core";
 
 class B extends BaseComponent {
   /**
-   * @label 字符串1
+   * @label 属性/字符串1
    */
   @reactive str = "初始值";
 
@@ -22,7 +22,7 @@ class B extends BaseComponent {
  */
 export class A extends B {
   /**
-   * @label 字符串
+   * @label 属性/字符串
    */
   override str = "初始值";
   /**
@@ -34,7 +34,6 @@ export class A extends B {
     this.str = str;
   }
   render() {
-    console.log(this.props, 111);
     return <span>继承测试：{this.str + "___" + this.str2}</span>;
   }
 }

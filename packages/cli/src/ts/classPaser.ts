@@ -97,10 +97,13 @@ function parseBaseDescriptor(property: ts.Symbol, checker: ts.TypeChecker, descr
       label = property.name;
     }
     const arr = label.split("/");
-
     descriptor.label = arr[arr.length - 1];
     if (arr.length === 1) {
       descriptor.tab = arr[0];
+    }
+    if (arr.length === 2) {
+      descriptor.tab = arr[0];
+      descriptor.label = arr[1];
     }
     if (arr.length === 3) {
       if (arr[1].endsWith("-")) {
@@ -420,5 +423,4 @@ function parseExpression(expression: ts.Expression | undefined) {
       // a.template = parseExpression((expression as ts.TaggedTemplateExpression).template) as StringLiteralExpressionDescriptor | TemplateLiteralExpressionDescriptor
       break;
   }
-  console.log(expression);
 }

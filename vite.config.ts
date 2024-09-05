@@ -3,9 +3,6 @@ import react from "@vitejs/plugin-react";
 import { createHtmlPlugin } from "vite-plugin-html";
 
 // https://vitejs.dev/config/
-
-const isPlatform = process.argv.includes("-platform");
-console.log(isPlatform);
 export default defineConfig({
   plugins: [
     react({

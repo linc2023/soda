@@ -40,5 +40,3 @@ export type Mixin<Types extends any[]> = Types[number];
  * @editor SelectTypeEditor
  */
 export type OneOf<T extends { label: string; value: string | number | boolean }[]> = T extends { value: infer U }[] ? U : never;
-
-export type A<T> = Reserved<T & string>;

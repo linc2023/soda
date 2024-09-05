@@ -82,7 +82,7 @@ export class Button extends BaseComponent {
   editor = "";
 
   /**
-   * @label 单击
+   * @label 交互/单击
    */
   onClick: () => void;
 

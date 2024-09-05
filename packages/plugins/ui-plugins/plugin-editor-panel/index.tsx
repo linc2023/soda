@@ -5,7 +5,7 @@ import { UIPlugin, UIPluginPlacement, globalState } from "@soda/designer";
 import { DesignNode, PropDescriptor, EditorType } from "@soda/utils";
 import { ReactNode, createRef } from "react";
 
-type Config = { [key: string]: { [prop: string]: (PropDescriptor & { editors: { editor: Component; status: boolean }[] })[] } };
+type Config = { [key: string]: { [prop: string]: (PropDescriptor & { editors: { editor: Component; status: boolean }[]; hidden: () => boolean })[] } };
 @Widget
 export class EditorPlugin extends UIPlugin {
   @reactive values = {};
@@ -64,6 +64,18 @@ export class EditorPlugin extends UIPlugin {
         const index = propMates[tab][config.group].findLastIndex((i: PropDescriptor) => i.order <= config.order);
         propMates[tab][config.group].splice(index + 1, 0, config);
       });
+      const keys = Object.keys(propMates);
+      for (let i = 0; i < keys.length; i++) {
+        if (Object.keys(propMates[keys[i]]).length === 0) {
+          delete propMates[keys[i]];
+        }
+        const isAllMetaHidden = Object.keys(propMates[keys[i]]).every((key) => {
+          return propMates[keys[i]][key].every(({ hidden }) => hidden?.());
+        });
+        if (isAllMetaHidden) {
+          delete propMates[keys[i]];
+        }
+      }
       this.setPropMates(propMates);
     });
   }
@@ -74,7 +86,6 @@ export class EditorPlugin extends UIPlugin {
   render(): ReactNode {
     const { propMates, componentName } = this;
     const tabs = Object.keys(propMates);
-    console.log(propMates, 111999);
     return tabs.length > 0 ? (
       <Form onValuesChange={this.onValuesChange} className="plugin-editor-panel" ref={this.formRef}>
         <div className="panel-title"> {componentName}</div>
@@ -84,6 +95,7 @@ export class EditorPlugin extends UIPlugin {
             marginBottom: 0,
             borderBottom: "1px solid #DEE1E4",
           }}
+          activeKey={tabs[0]}
           centered
           items={tabs.map((tab) => {
             const groups = Object.keys(propMates[tab])

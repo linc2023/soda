@@ -22,8 +22,7 @@ export class EventTest extends BaseComponent {
    * @param res
    */
   getText(res: Params) {
-    console.log(res);
-    return "";
+    return res;
   }
   /**
    * @label 设置文本
@@ -32,7 +31,6 @@ export class EventTest extends BaseComponent {
   setText = (error = { message: "服务端异常" }) => {
     console.log(error);
   };
-
   render() {
     return <div>事件、方法测试</div>;
   }
