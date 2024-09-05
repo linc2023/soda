@@ -1,0 +1,13 @@
+{
+  "name": "@soda/common",
+  "displayName": "@soda/common",
+  "main": "common.js",
+  "module": "common.js",
+  "types": "common.d.ts",
+  "version": "1.0.0",
+  "author": "",
+  "description": "",
+  "license": "ISC",
+  "dependencies": {},
+  "createTime": "2024-09-04 14:55:13"
+}

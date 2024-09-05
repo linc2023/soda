@@ -1,0 +1,33 @@
+{
+  "name": "@soda/core",
+  "library": "sodaCore",
+  "displayName": "@soda/core",
+  "version": "1.0.0",
+  "components": [
+    {
+      "hidden": "true",
+      "componentName": "Component"
+    },
+    {
+      "componentName": "BaseComponent"
+    },
+    {
+      "description": "容器",
+      "componentName": "Container"
+    },
+    {
+      "componentName": "ReactRenderer"
+    },
+    {
+      "componentName": "Page"
+    },
+    {
+      "description": "渲染浏览器组件",
+      "componentName": "WebRender"
+    },
+    {
+      "hidden": "true",
+      "componentName": "TypeEditor"
+    }
+  ]
+}

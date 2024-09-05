@@ -7,7 +7,9 @@ import { globalState } from "@soda/designer";
 import { EditorPlugin, LeftToolsPlugin, PageManagerPlugin } from "@soda/plugins";
 
 async function main() {
-  await globalState.package.register(["/components/@soda/base/1.0.0"]);
+  if (process.env.NODE_ENV === "development" || process.env.platform) {
+    await globalState.package.register(["/packages/@soda/base/1.0.0"]);
+  }
   globalState.plugin.register(PageManagerPlugin, "PageManagerPlugin");
   globalState.plugin.register(EditorPlugin, "EditorPlugin");
   globalState.plugin.register(LeftToolsPlugin, "LeftToolsPlugin");

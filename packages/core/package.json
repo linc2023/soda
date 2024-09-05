@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}"
+    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/packages/{name}"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.7",

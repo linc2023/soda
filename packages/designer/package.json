@@ -2,6 +2,10 @@
   "name": "@soda/designer",
   "version": "1.0.0",
   "main": "src/index.tsx",
+  "noMeta": true,
   "license": "MIT",
+  "scripts": {
+    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/packages/{name}"
+  },
   "dependencies": {}
 }

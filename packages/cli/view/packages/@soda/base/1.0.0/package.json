@@ -1,0 +1,14 @@
+{
+  "name": "@soda/base",
+  "displayName": "基础组件",
+  "main": "base.js",
+  "module": "base.js",
+  "types": "base.d.ts",
+  "version": "1.0.0",
+  "author": "",
+  "description": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {},
+  "createTime": "2024-09-04 14:56:09"
+}

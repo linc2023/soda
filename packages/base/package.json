@@ -5,8 +5,8 @@
   "displayName": "基础组件",
   "main": "src/index.ts",
   "scripts": {
-    "build:name": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}",
-    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/components/{name}/{version}"
+    "dev": "ts-node  ../cli/src/index.ts dev  --open --port 3306",
+    "build": "ts-node  ../cli/src/index.ts build  --out-dir ../../public/packages/{name}/{version}"
   },
   "peerDependencies": {},
   "keywords": [],

@@ -25,19 +25,18 @@ export class ComponentPanel extends UIPlugin {
       );
     };
   };
-
-  render(): ReactNode {
-    const { keyWord, onDragStart } = this;
+  getGrousp() {
     const originGroups = globalState.package.componentMeta;
     const groups = [];
     const groupMap = {};
+    const { keyWord } = this;
     originGroups
       .filter(({ displayName, componentName }) => {
         return toPinYin(displayName).includes(keyWord) || displayName?.includes(keyWord) || componentName?.startsWith(keyWord);
       })
       .forEach((component) => {
         const { packageName, packageVersion, group: groupName = "默认分组" } = component;
-        const groupKey = `${packageName}-${packageVersion}-${groupName}`;
+        const groupKey = `${packageName}-${packageVersion.replace(/\./g, "")}-${groupName}`;
         const systems = ["isc-base-components", "isc-chart-components"];
         if (!groupMap[groupKey]) {
           const group = {
@@ -51,12 +50,19 @@ export class ComponentPanel extends UIPlugin {
           groupMap[groupKey].children.push(component);
         }
       });
+    return groups;
+  }
+
+  render(): ReactNode {
+    const { onDragStart } = this;
+    const groups = this.getGrousp();
+    const keys = groups.map((group) => group.key);
     return (
       <div className={`${globalState.environment.$project_name}-component-wrapper`}>
         <div className="wrapper-name">组件库</div>
         <Input onChange={({ target: { value } }) => (this.keyWord = value)} placeholder="搜索组件"></Input>
         <Collapse
-          defaultActiveKey={groups.map((group) => group.key)}
+          defaultActiveKey={keys}
           expandIconPosition="end"
           bordered={false}
           ghost

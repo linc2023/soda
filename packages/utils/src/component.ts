@@ -153,6 +153,10 @@ export interface Package extends PackageCoreInfo {
   include?: string | string[];
   /** 打包时需要排除的类 */
   excludesClass?: string[];
+  /** 是否是 lib */
+  private?: boolean;
+  /** 不需要元数据 */
+  noMeta?: boolean;
 }
 
 /**

@@ -15,16 +15,23 @@ declare module "core" {
 }
 declare module "core/lib/component" {
 	import { CSSProperties, ErrorInfo, Component as ReactComponent, ReactNode } from "react";
-	import { ComponentMeta, PageSchema, PlatformModeValue } from "@soda/utils";
-	export class Component<P = any> extends ReactComponent<P, any, any> {
+	import { ComponentMeta, PageSchema, PlatformMode, PlatformModeValue } from "@soda/utils";
+	export abstract class Component<P = any> extends ReactComponent<P & {
+	    children?: ReactNode | ReactNode[];
+	}, any, any> {
 	    state: Readonly<P>;
 	    setState(): void;
 	    componentDidCatch(error: Error, errorInfo: ErrorInfo): void;
-	    render(): ReactNode;
 	}
-	export class BaseComponent<P = any> extends Component<P> {
+	export class BaseComponent<P = object> extends Component<P & {
+	    __mode?: PlatformMode;
+	}> {
 	    /** @hidden */
-	    get __mode(): any;
+	    get __mode(): (P & {
+	        __mode?: PlatformMode;
+	    } & {
+	        children?: ReactNode | ReactNode[];
+	    })["__mode"];
 	    /** 组件标识 */
 	    static __sodaComponent: boolean;
 	    /**
@@ -40,12 +47,6 @@ declare module "core/lib/component" {
 	    style?: CSSProperties;
 	    childrenDragDisabled?: boolean;
 	    getWhiteList?: (meta: ComponentMeta) => boolean;
-	    components: {
-	        [key: string]: {
-	            version: string;
-	            [key: string]: object | string;
-	        }[];
-	    };
 	    mode: PlatformModeValue;
 	    chooseNode?: (selectedNode: PageSchema) => void;
 	};
@@ -153,7 +154,7 @@ declare module "core/lib/renders" {
 	        [key: string]: {
 	            [key: string]: Component<any>;
 	        }[];
-	    }): JSX.Element[];
+	    }): ReactNode[];
 	    calcProps(props?: {}): {};
 	}
 	/**

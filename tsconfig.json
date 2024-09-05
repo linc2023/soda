@@ -24,7 +24,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "packages/designer/plugins/ui-plupackages/designer/src/plugins/plugins"],
+  "exclude": ["*.html"],
   "references": [
     {
       "path": "./tsconfig.node.json"

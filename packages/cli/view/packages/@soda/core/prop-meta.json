@@ -1,0 +1,112 @@
+{
+  "Component": [],
+  "BaseComponent": [
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "Container": [
+    {
+      "editorsProps": [],
+      "name": "canDesign",
+      "description": "是否可设计"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "ReactRenderer": [],
+  "Page": [
+    {
+      "editorsProps": [],
+      "name": "canDesign",
+      "description": "是否可设计"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "WebRender": [
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "modifyNodeProps"
+    },
+    {
+      "editorsProps": [],
+      "name": "refsMap",
+      "description": "refs"
+    },
+    {
+      "editorsProps": [],
+      "name": "$refs",
+      "description": "所有 refs"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "getComponent",
+      "description": "查询组件"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "schemasToComponent",
+      "description": "通过组件 schema 渲染组件"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "calcProps"
+    }
+  ],
+  "TypeEditor": []
+}

@@ -44,7 +44,6 @@ export default class PackageState {
    * @param urls
    */
   @action async register(urls: string[]) {
-    this.urls = urls;
     const [groups, props] = await Promise.all([Promise.all(urls.map((url) => Http.get<ComponentGroup>(`${url}/manifest.json`))), Promise.all(urls.map((url) => Http.get<PropDescriptor[]>(`${url}/prop-meta.json`)))]);
     this.init(groups, props);
   }

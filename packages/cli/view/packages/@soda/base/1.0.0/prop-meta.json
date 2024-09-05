@@ -1,0 +1,351 @@
+{
+  "MixinTest": [
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        },
+        {
+          "type": 2
+        },
+        {
+          "type": 3
+        }
+      ],
+      "name": "a",
+      "label": "A"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "EventTest": [
+    {
+      "editorsProps": [
+        {
+          "type": 7
+        }
+      ],
+      "name": "onClick",
+      "label": "单击"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 7
+        }
+      ],
+      "name": "onSearch",
+      "label": "搜索"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "getText",
+      "label": "获取文本",
+      "tab": "获取文本"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "setText",
+      "label": "设置文本",
+      "tab": "设置文本"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "Button": [
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "str1",
+      "label": "字符串1"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "str2",
+      "label": "字符串2"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 2
+        }
+      ],
+      "name": "num",
+      "label": "数字"
+    },
+    {
+      "editorsProps": [],
+      "name": "obj",
+      "label": "对象"
+    },
+    {
+      "editorsProps": [],
+      "name": "password",
+      "label": "密码框"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "bool",
+      "label": "布尔"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "multiLine",
+      "label": "文本框"
+    },
+    {
+      "editorsProps": [],
+      "name": "color",
+      "label": "颜色"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "url",
+      "label": "文件"
+    },
+    {
+      "editorsProps": [],
+      "name": "select",
+      "label": "下拉框"
+    },
+    {
+      "editorsProps": [],
+      "name": "radio",
+      "label": "枚举"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 6,
+          "children": [
+            {
+              "type": 1
+            },
+            {
+              "type": 2
+            }
+          ]
+        }
+      ],
+      "name": "tuple",
+      "label": "元组"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 6,
+          "children": [
+            {
+              "type": 1
+            },
+            {
+              "type": 2
+            }
+          ]
+        }
+      ],
+      "name": "tupleWithLabel",
+      "label": "标签元组"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 5,
+          "children": [
+            {
+              "type": 1
+            }
+          ]
+        }
+      ],
+      "name": "arr",
+      "label": "数组"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "editor",
+      "label": "editor"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 7
+        }
+      ],
+      "name": "onClick",
+      "label": "单击",
+      "tab": "单击"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "setText",
+      "label": "设置按钮内容",
+      "tab": "设置按钮内容"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "getText",
+      "label": "获取按钮内容",
+      "tab": "获取按钮内容"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "A": [
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "str",
+      "label": "字符串",
+      "tab": "字符串"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 1
+        }
+      ],
+      "name": "str2",
+      "label": "str2"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 8
+        }
+      ],
+      "name": "test"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ],
+  "Span": [
+    {
+      "editorsProps": [
+        {
+          "type": 2
+        }
+      ],
+      "name": "num",
+      "label": "字符串"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 2
+        }
+      ],
+      "name": "num2",
+      "label": "字符串"
+    },
+    {
+      "editorsProps": [],
+      "name": "__mode",
+      "hidden": "true"
+    },
+    {
+      "editorsProps": [
+        {
+          "type": 3
+        }
+      ],
+      "name": "lock",
+      "description": "是否锁定",
+      "hidden": "true"
+    }
+  ]
+}
